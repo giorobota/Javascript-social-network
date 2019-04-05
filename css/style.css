@@ -1,47 +1,4 @@
-.top-bar{
-    background-color: crimson;
-    height: 40px;
-    float: top;
-    color: white;
-}
 
-.top-bar #logo{
-    width: 30px;
-    height: 30px;
-    padding-top: 5px;
-    float: left;
-    padding-left: 5%;
-    padding-right: 5%;
-    border-radius: 50%;
-}
-.top-bar form{ 
-    padding-top: 10px;
-    float: left;
-    width:30%;
-    /* vertical-align: middle; */
-}
-
-.top-bar form #search{ 
-    background-color: whitesmoke;
-    color: crimson;
-}
-.top-bar .active-profile{ 
-    float:right;
-    
-    width: 15%;
-    height: 40px;
-}
-.top-bar .active-profile #avatar{ 
-    height: 30px;
-    width: 30px;
-    padding-top: 5px;
-    border-radius: 50%;
-    float:left;
-}
-.top-bar .active-profile #username{ 
-    padding-top: 10px;
-    
-}
 .main-content{
     float:top;
     height: 100%;
@@ -89,7 +46,7 @@
 .main-content .middle-section .create-post{
     border: crimson 1px solid;
     text-align: center;
-
+    margin: 5px;
 }
 .main-content .middle-section .create-post #post-content{
     width: 98%;
@@ -108,4 +65,56 @@
     border: crimson 1px solid;
     margin: 5px;
     
+}
+.main-content .middle-section .posts .single-post .post-content{
+    margin: 5px;
+}
+.main-content .middle-section .posts .single-post .post-author{
+    margin: 5px;
+    height: 30px;
+
+}
+.main-content  a{
+    text-decoration: none;
+    color: crimson;
+
+
+}
+.main-content a:hover{
+    
+    color: crimson;
+    text-decoration: underline;
+
+}
+.main-content .middle-section .posts .single-post .post-author .post-date{
+    float:right;
+
+}
+
+.main-content .right-section{
+    float:right;
+    width: 20%;
+}
+
+.main-content .right-section .stories{
+    margin-top: 20px;
+    border: crimson 1px solid;
+    height: 40%;
+    
+    
+}
+.main-content .right-section .stories .single-story{
+    padding-bottom: 20px;
+    margin-top:1px black;
+}
+
+.main-content .right-section .friend-suggestions{
+    border: crimson 1px solid;
+    margin-top: 20px;
+    
+}
+.main-content .right-section .friend-suggestions .single-friend-suggestion{
+    padding-bottom: 20px;
+    
+
 }
