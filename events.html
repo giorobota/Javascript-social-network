@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>BookFace</title>
+    <link rel="stylesheet" type="text/css" href="css/top-bar.css">
+    <link rel="stylesheet" type="text/css" href="css/events.css">
+    <script src="scripts/event-participants-modal.js"></script>
+</head>
+
+<body>
+    <div class="top-bar">
+
+        <img id="logo" src="images/logo.jpg">
+        <form action="/search-results.html">
+            find people: <input type="text" name="firstname">
+
+            <input type="submit" value="search" id="search">
+        </form>
+        <div class="active-profile">
+            <img id="avatar" src="images/default-profile.png">
+            <div id="username">
+                <a href="#">Firstname </a>
+            </div>
+        </div>
+
+    </div>
+    <div class="main-content">
+        <div class="left-section">
+            <ul>
+                <li>
+                    <a href="home.html">Home</a>
+                </li>
+                <li>
+                    <a href="groups.html">Groups</a>
+                </li>
+                <li>
+                    <a class="active" href="">Events</a>
+                </li>
+            </ul>
+
+        </div>
+        <div class="middle-section">
+            <div class="events">
+
+                <div class="single-event">
+                    <div class="event-author">
+
+                        <a class="event-name" id="openlist" href="#">event name</a>
+                        <div class="event-date">
+                            18:30 11/9/2001(date)
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="event-content">
+                        event description
+                        
+                        
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="right-section">
+
+
+            <div class="event-suggestions">
+                <h2>popular events:</h2>
+                <div class="single-event-suggestion">
+                    <h3><a href="#"> event suggestion 1</a> </h3>
+                </div>
+                <div class="single-event-suggestion">
+                    <h3><a href="#"> event suggestion 2</a> </h3>
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+    </div>
+    <div id="modal" class="event-participants-modal">
+        <div class = "modal-header">
+            
+           
+        </div>
+
+        <div class="modal-content">
+            <button id = "closemodal">close</button>
+            <h2> list of participants</h2>
+            <a href = "">participant1</a>
+            <a href = "">participant2</a>
+            <a href = "">participant1</a>
+            <a href = "">participant2</a>
+            <a href = "">participant1</a>
+            <a href = "">participant2</a>
+            <a href = "">participant1</a>
+            <a href = "">participant2</a>
+            <a href = "">participant1</a>
+            <a href = "">participant2</a>
+        </div>
+
+    </div>
+
+</body>

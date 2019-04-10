@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>BookFace</title>
+    <link rel="stylesheet" type="text/css" href="css/top-bar.css">
+    <link rel="stylesheet" type="text/css" href="css/groups.css">
+
+</head>
+
+<body>
+    <div class="top-bar">
+
+        <img id="logo" src="images/logo.jpg">
+        <form action="/search-results.html">
+            find people: <input type="text" name="firstname">
+
+            <input type="submit" value="search" id="search">
+        </form>
+        <div class="active-profile">
+            <img id="avatar" src="images/default-profile.png">
+            <div id="username">
+                <a href="#">Firstname </a>
+            </div>
+        </div>
+
+    </div>
+    <div class="main-content">
+        <div class="left-section">
+            <ul>
+                <li>
+                    <a href="home.html">Home</a>
+                </li>
+                <li>
+                    <a class="active" href="">Groups</a>
+                </li>
+                <li>
+                    <a href="events.html">Events</a>
+                </li>
+            </ul>
+
+        </div>
+        <div class="middle-section">
+            <div class="events">
+
+                <div class="single-event">
+                    <div class="event-author">
+
+                        <h2><a class="event-name" href="group.html">group name</a></h2>
+
+                    </div>
+                    <hr>
+                    <div class="event-content">
+                        group description
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="right-section">
+
+
+            <div class="event-suggestions">
+                <h2>popular groups:</h2>
+                <div class="single-event-suggestion">
+                    <h3><a href="group.html"> group 1</a> </h3>
+                </div>
+                <div class="single-event-suggestion">
+                    <h3><a href="group.html"> group 2</a> </h3>
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+    </div>
+ 
+
+</body>

@@ -5,6 +5,40 @@ h2{
 body{
     background-color: rgba(255, 192, 203, 0.466);
 }
+.event-participants-modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.363);
+  }
+
+  
+  /* Modal Content/Box */
+  .modal-content {
+    background-color:  whitesmoke;
+    margin: 10% auto; 
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%; /* Could be more or less, depending on screen size */
+  }
+  
+  /* The Close Button */
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
 
 .main-content{
     float:top;
@@ -50,34 +84,16 @@ body{
     float:left;
 
 }
-.main-content .middle-section .create-post{
-    border: crimson 1px solid;
-    text-align: center;
-    margin: 5px;
-}
-.main-content .middle-section .create-post #post-content{
-    width: 98%;
-    
-    
-}
-.main-content .middle-section .create-post #post-button{
-    background-color: crimson;
-    color: white;
-    height: 30px;
-    width: 60px;
-    
-    
-}
-.main-content .middle-section .posts .single-post{
+.main-content .middle-section .events .single-event{
     border: crimson 1px solid;
     margin: 5px;
     
 }
-.main-content .middle-section .posts .single-post .post-content{
+.main-content .middle-section .events .single-event .event-content{
     margin: 5px;
     
 }
-.main-content .middle-section .posts .single-post .post-author{
+.main-content .middle-section .events .single-event .event-author{
     
     margin: 5px;
     height: 30px;
@@ -95,7 +111,7 @@ body{
     text-decoration: underline;
 
 }
-.main-content .middle-section .posts .single-post .post-author .post-date{
+.main-content .middle-section .events .single-event .event-author .event-date{
     float:right;
 
 }
@@ -105,29 +121,28 @@ body{
     width: 20%;
 }
 
-.main-content .right-section .stories{
+.main-content .right-section .event-suggestions{
     margin-top: 20px;
     border: crimson 1px solid;
-    max-height: 250px;
-    overflow-y: scroll;
     
     
-}
-.main-content .right-section .stories .single-story{
-    padding-bottom: 20px;
-    margin-top:1px black;
-    padding-left: 5px;
-}
-
-.main-content .right-section .friend-suggestions{
-    border: crimson 1px solid;
-    margin-top: 20px;
-    max-height: 250px;
-    overflow-y: scroll;
     
 }
-.main-content .right-section .friend-suggestions .single-friend-suggestion{
-    padding-bottom: 20px;
-    padding-left: 5px;
-
+.main-content .right-section .event-suggestions .single-event-suggestion{
+    padding-bottom: 5px;
+    padding-left:5px;
+}
+.event-name{
+    font-size: 25px;
+}
+a{
+    text-decoration: none;
+    color: crimson;
+}
+a:hover{
+    text-decoration: underline;
+}
+#closemodal{
+    float:right;
+    color: crimson;
 }

@@ -1,3 +1,4 @@
+
 h2{
     text-align:center;
     color: crimson;
@@ -105,29 +106,19 @@ body{
     width: 20%;
 }
 
-.main-content .right-section .stories{
+.main-content .right-section .group-members{
     margin-top: 20px;
     border: crimson 1px solid;
-    max-height: 250px;
-    overflow-y: scroll;
+    
+    overflow-y: scroll; 
+    height:500px;
+    padding-left: 5px;
     
     
 }
-.main-content .right-section .stories .single-story{
+.main-content .right-section .group-members .single-member{
     padding-bottom: 20px;
     margin-top:1px black;
-    padding-left: 5px;
 }
 
-.main-content .right-section .friend-suggestions{
-    border: crimson 1px solid;
-    margin-top: 20px;
-    max-height: 250px;
-    overflow-y: scroll;
-    
-}
-.main-content .right-section .friend-suggestions .single-friend-suggestion{
-    padding-bottom: 20px;
-    padding-left: 5px;
 
-}
