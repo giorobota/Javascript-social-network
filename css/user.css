@@ -1,0 +1,80 @@
+h2{
+    text-align:center;
+    color: crimson;
+}
+
+ .fullname{
+    color:crimson;
+    width: 60%;
+    font-size: 20px;
+   
+}
+.timeline{
+    padding-left: 15%;
+
+    padding-right: 15%;
+
+    
+}
+.timeline .profile-photos{
+    background-image: url("../images/timeline-photo.jpg");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    height:100px;
+    padding-top:240px;
+    padding-left:50px;
+}
+#profile-photo-big{
+    margin-top: 50px;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    
+}
+#profile-photo-big :hover{
+
+    cursor: pointer;
+}
+.about{
+    margin-top: 100px;
+    border-bottom: crimson 1px solid;
+    color: crimson;
+}
+
+.user-info{
+    padding:15px;
+    font-family: sans-serif;
+}
+
+#add-friend{
+    float:right;
+    color:whitesmoke;
+    background-color:crimson;
+    border: black 2px;
+    
+    font-size:20px;
+    height:40px;
+    
+}
+#add-friend :hover{
+    cursor: pointer;
+    background-color:rgb(173, 16, 48);
+    
+}
+.posts .single-post{
+    border: crimson 1px solid;
+    margin: 5px;
+    
+}
+ .posts .single-post .post-content{
+    margin: 5px;
+    
+    
+}
+ .posts .single-post .post-author{
+    
+    margin: 5px;
+    height: 30px;
+    
+
+}

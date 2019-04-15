@@ -1,7 +1,7 @@
 window.onload = function(){ 
     var modal = document.getElementById("modal");
     var closeBtn = document.getElementById("closemodal");
-    var openBtn = document.getElementById("openlist");
+    var openBtn = document.getElementById("openmodal");
     openBtn.onclick = function () {
         modal.style.display = "block";
     }

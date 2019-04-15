@@ -3,6 +3,8 @@
     height: 40px;
     float: top;
     color: white;
+    position: sticky;
+    top: 0;
 }
 
 .top-bar #logo{
@@ -32,17 +34,7 @@
     width: 15%;
     height: 40px;
 }
-/* .top-bar .active-profile #avatar{ 
-    height: 30px;
-    width: 30px;
-    padding-top: 5px;
-    border-radius: 50%;
-    float:left;
-} */
-/* .top-bar .active-profile #username{ 
-    padding-top: 10px;
-    
-} */
+
 #avatar{ 
     height: 30px;
     width: 30px;
@@ -64,4 +56,7 @@
 #username a:hover{ 
     
     text-decoration: underline;
+}
+body{
+    background-color: rgba(255, 192, 203, 0.466);
 }
