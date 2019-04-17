@@ -1,0 +1,25 @@
+.comments-modal {
+    display: none; 
+    position: fixed; 
+    overflow: auto;
+    
+    width: 100%; 
+    height: 100%; 
+    background-color: rgba(0, 0, 0, 0.363);
+}
+
+.close-modal{
+    float:right;
+    color: crimson;
+}
+
+.comments-modal-content {
+    background-color:  whitesmoke;
+    margin: 5% auto; 
+    padding: 20px;
+    
+    width: 55%;
+}
+.modal-header{
+    padding-bottom:25px;
+}

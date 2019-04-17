@@ -49,39 +49,8 @@ h2{
     float:left;
 
 }
-.main-content .middle-section .create-post{
-    border: crimson 1px solid;
-    text-align: center;
-    margin: 5px;
-}
-.main-content .middle-section .create-post #post-content{
-    width: 98%;
-    
-    
-}
-.main-content .middle-section .create-post #post-button{
-    background-color: crimson;
-    color: white;
-    height: 30px;
-    width: 60px;
-    
-    
-}
-.main-content .middle-section .posts .single-post{
-    border: crimson 1px solid;
-    margin: 5px;
-    
-}
-.main-content .middle-section .posts .single-post .post-content{
-    margin: 5px;
-    
-}
-.main-content .middle-section .posts .single-post .post-author{
-    
-    margin: 5px;
-    height: 30px;
 
-}
+
 .main-content  a{
     text-decoration: none;
     color: crimson;
@@ -92,10 +61,6 @@ h2{
     
     color: crimson;
     text-decoration: underline;
-
-}
-.main-content .middle-section .posts .single-post .post-author .post-date{
-    float:right;
 
 }
 

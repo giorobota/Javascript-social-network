@@ -1,0 +1,38 @@
+.create-post{
+    border: crimson 1px solid;
+    text-align: center;
+    margin: 5px;
+}
+.create-post #post-content{
+    width: 98%;
+    
+    
+}
+.create-post #post-button{
+    background-color: crimson;
+    color: white;
+    height: 30px;
+    width: 60px;
+    
+    
+}
+.single-post{
+    border: crimson 1px solid;
+    margin: 5px;
+    
+}
+ .single-post .post-content{
+    margin: 5px;
+    
+}
+ .posts .single-post .post-author{
+    
+    margin: 5px;
+    height: 30px;
+
+}
+
+.posts .single-post .post-author .post-date{
+    float:right;
+
+}

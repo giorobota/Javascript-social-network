@@ -3,9 +3,14 @@
 
 <head>
     <title>BookFace</title>
-    
+
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/top-bar.css">
+    <link rel="stylesheet" type="text/css" href="css/story-modal.css">
+    <link rel="stylesheet" type="text/css" href="css/post.css">
+    <link rel="stylesheet" type="text/css" href="css/comments-modal.css">
+    
+    <script src="scripts/home-modals.js"></script>
 </head>
 
 <body>
@@ -18,7 +23,7 @@
             <input type="submit" value="search" id="search">
         </form>
         <div class="active-profile">
-            <img id="avatar" src="images/default-profile.png">
+            <img class="avatar" src="images/default-profile.png">
             <div id="username">
                 <a href="user.html">Firstname </a>
             </div>
@@ -52,7 +57,7 @@
 
                 <div class="single-post">
                     <div class="post-author">
-                        <img id="avatar" src="images/default-profile.png">
+                        <img class="avatar" src="images/default-profile.png">
                         <a href="#"> Post author 2</a>
                         <div class="post-date">
                             11/9/2001
@@ -72,84 +77,12 @@
                         In post mean shot ye. There out her child sir his lived. Design at uneasy me season of branch on
                         praise esteem. Abilities discourse believing consisted remaining to no. Mistaken no me denoting
                         dashwood as screened. Whence or esteem easily he on. Dissuade husbands at of no if disposal.
-                        </p>
+                        
+                        <div class="comments-button">
+                            <a id="open-comments-modal" href = "javascript:;">view comments</a>
+                        </div>
                     </div>
                 </div>
-                <div class="single-post">
-                        <div class="post-author">
-                            <img id="avatar" src="images/default-profile.png">
-                            <a href="#"> Post author 2</a>
-                            <div class="post-date">
-                                11/9/2001
-                            </div>
-                        </div>
-    
-                        <hr>
-                        <div class="post-content">Any delicate you how kindness horrible outlived servants. You high bed
-                            wish help call draw side. Girl quit if case mr sing as no have. At none neat am do over will.
-                            Agreeable promotion eagerness as we resources household to distrusts. Polite do object at passed
-                            it is. Small for ask shade water manor think men begin.
-    
-                            Whether article spirits new her covered hastily sitting her. Money witty books nor son add.
-                            Chicken age had evening believe but proceed pretend mrs. At missed advice my it no sister. Miss
-                            told ham dull knew see she spot near can. Spirit her entire her called.
-    
-                            In post mean shot ye. There out her child sir his lived. Design at uneasy me season of branch on
-                            praise esteem. Abilities discourse believing consisted remaining to no. Mistaken no me denoting
-                            dashwood as screened. Whence or esteem easily he on. Dissuade husbands at of no if disposal.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="single-post">
-                            <div class="post-author">
-                                <img id="avatar" src="images/default-profile.png">
-                                <a href="#"> Post author 2</a>
-                                <div class="post-date">
-                                    11/9/2001
-                                </div>
-                            </div>
-        
-                            <hr>
-                            <div class="post-content">Any delicate you how kindness horrible outlived servants. You high bed
-                                wish help call draw side. Girl quit if case mr sing as no have. At none neat am do over will.
-                                Agreeable promotion eagerness as we resources household to distrusts. Polite do object at passed
-                                it is. Small for ask shade water manor think men begin.
-        
-                                Whether article spirits new her covered hastily sitting her. Money witty books nor son add.
-                                Chicken age had evening believe but proceed pretend mrs. At missed advice my it no sister. Miss
-                                told ham dull knew see she spot near can. Spirit her entire her called.
-        
-                                In post mean shot ye. There out her child sir his lived. Design at uneasy me season of branch on
-                                praise esteem. Abilities discourse believing consisted remaining to no. Mistaken no me denoting
-                                dashwood as screened. Whence or esteem easily he on. Dissuade husbands at of no if disposal.
-                                </p>
-                            </div>
-                        </div>
-                        <div class="single-post">
-                                <div class="post-author">
-                                    <img id="avatar" src="images/default-profile.png">
-                                    <a href="#"> Post author 2</a>
-                                    <div class="post-date">
-                                        11/9/2001
-                                    </div>
-                                </div>
-            
-                                <hr>
-                                <div class="post-content">Any delicate you how kindness horrible outlived servants. You high bed
-                                    wish help call draw side. Girl quit if case mr sing as no have. At none neat am do over will.
-                                    Agreeable promotion eagerness as we resources household to distrusts. Polite do object at passed
-                                    it is. Small for ask shade water manor think men begin.
-            
-                                    Whether article spirits new her covered hastily sitting her. Money witty books nor son add.
-                                    Chicken age had evening believe but proceed pretend mrs. At missed advice my it no sister. Miss
-                                    told ham dull knew see she spot near can. Spirit her entire her called.
-            
-                                    In post mean shot ye. There out her child sir his lived. Design at uneasy me season of branch on
-                                    praise esteem. Abilities discourse believing consisted remaining to no. Mistaken no me denoting
-                                    dashwood as screened. Whence or esteem easily he on. Dissuade husbands at of no if disposal.
-                                    </p>
-                                </div>
-                            </div>
             </div>
         </div>
         <div class="right-section">
@@ -157,46 +90,19 @@
                 <h2>stories:</h2>
                 <div class="single-story">
                     <div class="post-author">
-                        <img id="avatar" src="images/default-profile.png">
-                        <a href="#"> story author</a>
+                        <img id="open-story-modal-image" class = "avatar" src="images/default-profile.png">
+                        <a id="open-story-modal" href = "javascript:;"> story author</a>
 
                     </div>
                 </div>
                 <div class="single-story">
                     <div class="post-author">
-                        <img id="avatar" src="images/default-profile.png">
-                        <a href="#"> story author</a>
+                        <img class="avatar" src="images/default-profile.png">
+                        <a class="open-story-modal" href = "javascript:;"> story author</a>
 
                     </div>
                 </div>
-                <div class="single-story">
-                    <div class="post-author">
-                        <img id="avatar" src="images/default-profile.png">
-                        <a href="#"> story author</a>
-
-                    </div>
-                </div>
-                <div class="single-story">
-                    <div class="post-author">
-                        <img id="avatar" src="images/default-profile.png">
-                        <a href="#"> story author</a>
-
-                    </div>
-                </div>
-                <div class="single-story">
-                    <div class="post-author">
-                        <img id="avatar" src="images/default-profile.png">
-                        <a href="#"> story author</a>
-
-                    </div>
-                </div>
-                <div class="single-story">
-                    <div class="post-author">
-                        <img id="avatar" src="images/default-profile.png">
-                        <a href="#"> story author</a>
-
-                    </div>
-                </div>
+               
 
             </div>
 
@@ -205,16 +111,16 @@
                 <div class="single-friend-suggestion">
 
                     <div class="post-author">
-                        <img id="avatar" src="images/default-profile.png">
-                        <a href="#"> suggestion1</a>
+                        <img class="avatar" src="images/default-profile.png">
+                        <a href="user.html"> suggestion1</a>
 
                     </div>
 
                 </div>
                 <div class="single-friend-suggestion">
                     <div class="post-author">
-                        <img id="avatar" src="images/default-profile.png">
-                        <a href="#"> suggestion2</a>
+                        <img class="avatar" src="images/default-profile.png">
+                        <a href="user.html"> suggestion2</a>
 
                     </div>
                 </div>
@@ -223,4 +129,58 @@
         </div>
 
     </div>
+
+    <div id="comments-modal" class="comments-modal">
+        <div class="comments-modal-content">
+            <div class = "modal-header">
+                <button id="close-comments-modal" class = "close-modal">close</button>
+            </div>
+            <div class="create-post">
+                <h3> add a comment </h3>
+                <form action="">
+                    <textarea id="post-content"></textarea>
+                    <button id="post-button"> post </button>
+                </form>
+            </div>
+            <h2> comments </h2>
+            <div class="single-post">
+                <div class="post-author">
+                    <img class="avatar" src="images/default-profile.png">
+                    <a href="#"> Post author 2</a>
+                    <div class="post-date">
+                        11/9/2001
+                    </div>
+                </div>
+
+                <hr>
+                <div class="post-content">Any delicate you how kindness horrible outlived servants. You high bed
+                    ands at of no if disposal.
+                    
+                </div>
+            </div>
+            <div class="single-post">
+                <div class="post-author">
+                    <img class="avatar" src="images/default-profile.png">
+                    <a href="#"> Post author 2</a>
+                    <div class="post-date">
+                        11/9/2001
+                    </div>
+                </div>
+
+                <hr>
+                <div class="post-content">Any delicate you how kindness horrible outlived servants. You high bed
+                    ands at of no if disposal.
+                    
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div id="story-modal" class="story-modal">
+        <div class = "story-modal-content">
+                <img src = "images/story-image.png">
+        </div>
+    </div>
+
+
 </body>

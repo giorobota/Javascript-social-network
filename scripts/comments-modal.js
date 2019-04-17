@@ -1,7 +1,8 @@
 window.onload = function(){ 
-    var modal = document.getElementById("event-modal");
-    var closeBtn = document.getElementById("closemodal");
-    var openBtn = document.getElementById("openmodal");
+    var modal = document.getElementById("comments-modal");
+    var closeBtn = document.getElementById("close-comments-modal");
+    var openBtn = document.getElementById("open-comments-modal");
+    
     openBtn.onclick = function () {
         modal.style.display = "block";
     }
@@ -14,7 +15,3 @@ window.onload = function(){
         modal.style.display = "none";
     }
 }
-
-
-
-
