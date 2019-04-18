@@ -7,7 +7,8 @@
     <link rel="stylesheet" type="text/css" href="css/group.css">
     <link rel="stylesheet" type="text/css" href="css/post.css">
     <link rel="stylesheet" type="text/css" href="css/comments-modal.css">
-    <script src="scripts/comments-modal.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/friend-requests-modal.css">
+    <script src="scripts/group-modal.js"></script>
 </head>
 
 <body>
@@ -20,6 +21,7 @@
             <input type="submit" value="search" id="search">
         </form>
         <div class="active-profile">
+            <img id="friend-requests" src="images/friend-requests.jpg">
             <img class="avatar" src="images/default-profile.png">
             <div id="username">
                 <a href="user.html">Firstname </a>
@@ -75,7 +77,7 @@
                         praise esteem. Abilities discourse believing consisted remaining to no. Mistaken no me denoting
                         dashwood as screened. Whence or esteem easily he on. Dissuade husbands at of no if disposal.
                         <div class="comments-button">
-                            <a id="open-comments-modal">view comments</a>
+                            <a class="open-comments-modal">view comments</a>
                         </div>
                     </div>
                 </div>
@@ -287,5 +289,16 @@
             </div>
         </div>
 
+    </div>
+    <div class="friend-requests-modal" id="friend-requests-modal">
+        <div class="friend-requests-modal-content">
+            <h2> friend requests </h2>
+            <div class="single-friend-request">
+                <a href="user.html">request1</a>
+            </div>
+            <div class="single-friend-request">
+                <a href="user.html">request2</a>
+            </div>
+        </div>
     </div>
 </body>

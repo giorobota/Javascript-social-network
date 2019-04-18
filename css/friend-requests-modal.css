@@ -1,0 +1,33 @@
+.friend-requests-modal {
+    display: none; 
+    position: fixed; 
+    overflow: auto;
+    width: 100%; 
+    height: 100%; 
+    
+}
+
+.friend-requests-modal-content {
+    background-color: whitesmoke;
+    /* margin: 5% auto;  */
+    padding: 20px;
+    float:right;
+    width: 25%;
+    height:60%;
+    overflow: scroll;
+    border: 1px solid crimson;
+    
+}
+.modal-header{
+    padding-bottom:25px;
+}
+
+.single-friend-request{
+    padding:10px;
+    border: 1px crimson;
+}
+
+.single-friend-request a{
+    color:crimson;
+    font-size: 20px;
+}

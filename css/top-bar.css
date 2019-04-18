@@ -30,8 +30,8 @@
 }
 .top-bar .active-profile{ 
     float:right;
-    
-    width: 15%;
+    border-right: 5%;
+    width: 25%;
     height: 40px;
 }
 
@@ -41,6 +41,15 @@
     padding-top: 5px;
     border-radius: 50%;
     float:left;
+}
+#friend-requests{ 
+    height: 30px;
+    width: 30px;
+    padding-top: 5px;
+    border-radius: 30%;
+    float:left;
+    margin-right: 100px;
+    cursor: pointer;
 }
 .avatar:hover{
     cursor: pointer;

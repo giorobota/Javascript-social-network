@@ -5,7 +5,8 @@
     <title>BookFace</title>
     <link rel="stylesheet" type="text/css" href="css/top-bar.css">
     <link rel="stylesheet" type="text/css" href="css/events.css">
-    <script src="scripts/event-participants-modal.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/friend-requests-modal.css">
+    <script src="scripts/event-modals.js"></script>
 </head>
 
 <body>
@@ -18,6 +19,7 @@
             <input type="submit" value="search" id="search">
         </form>
         <div class="active-profile">
+            <img id="friend-requests" src="images/friend-requests.jpg">
             <img class="avatar" src="images/default-profile.png">
             <div id="username">
                 <a href="user.html">Firstname </a>
@@ -46,7 +48,7 @@
                 <div class="single-event">
                     <div class="event-author">
 
-                        <a class="event-name" id="openmodal" href="">event name</a>
+                        <a class="event-name" class="open-event-modal" href="javascript:;">event name</a>
                         <div class="event-date">
                             18:30 11/9/2001(date)
                         </div>
@@ -65,10 +67,10 @@
             <div class="event-suggestions">
                 <h2>popular events:</h2>
                 <div class="single-event-suggestion">
-                    <h3><a href="#"> event suggestion 1</a> </h3>
+                    <a class="event-name" href="javascript:;"> event suggestion 1</a>
                 </div>
                 <div class="single-event-suggestion">
-                    <h3><a href="#"> event suggestion 2</a> </h3>
+                    <a class="event-name" href="javascript:;"> event suggestion 2</a>
                 </div>
 
             </div>
@@ -83,7 +85,7 @@
 
 
         <div class="modal-content">
-            <button id="closemodal">close</button>
+            <button id="close-event-modal">close</button>
             <button class="event-button">going</button>
             <button class="event-button">Not going</button>
             <h2> list of participants</h2>
@@ -99,6 +101,17 @@
             <a href="">participant2</a>
         </div>
 
+    </div>
+    <div class="friend-requests-modal" id="friend-requests-modal">
+        <div class="friend-requests-modal-content">
+            <h2> friend requests </h2>
+            <div class="single-friend-request">
+                <a href="user.html">request1</a>
+            </div>
+            <div class="single-friend-request">
+                <a href="user.html">request2</a>
+            </div>
+        </div>
     </div>
 
 </body>

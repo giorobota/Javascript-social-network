@@ -5,7 +5,8 @@
     <title>BookFace</title>
     <link rel="stylesheet" type="text/css" href="css/top-bar.css">
     <link rel="stylesheet" type="text/css" href="css/groups.css">
-
+    <link rel="stylesheet" type="text/css" href="css/friend-requests-modal.css">
+    <script src="scripts/top-bar-modals.js"></script>
 </head>
 
 <body>
@@ -18,6 +19,7 @@
             <input type="submit" value="search" id="search">
         </form>
         <div class="active-profile">
+            <img id="friend-requests" src="images/friend-requests.jpg">
             <img class="avatar" src="images/default-profile.png">
             <div id="username">
                 <a href="user.html">Firstname </a>
@@ -79,6 +81,17 @@
 
 
 
+    </div>
+    <div class="friend-requests-modal" id="friend-requests-modal">
+        <div class="friend-requests-modal-content">
+            <h2> friend requests </h2>
+            <div class="single-friend-request">
+                <a href="user.html">request1</a>
+            </div>
+            <div class="single-friend-request">
+                <a href="user.html">request2</a>
+            </div>
+        </div>
     </div>
 
 </body>
