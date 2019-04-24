@@ -31,3 +31,18 @@
     color:crimson;
     font-size: 20px;
 }
+.decline-request{
+    background-color: red;
+    float:right;
+    margin-left: 5px;
+    cursor: pointer;   
+    
+
+}
+.confirm-request{
+    background-color: green;
+    float:right;
+    cursor: pointer;
+}
+
+
