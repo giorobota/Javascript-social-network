@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="css/post.css">
     <link rel="stylesheet" type="text/css" href="css/comments-modal.css">
     <link rel="stylesheet" type="text/css" href="css/friend-requests-modal.css">
-    <script src="scripts/top-bar-modals.js"></script>
+    <script src="scripts/group-modal.js"></script>
 </head>
 
 <body>
@@ -51,6 +51,7 @@
                     <div class="post-date">
                         11/9/2001
                     </div>
+ 
                 </div>
 
                 <hr>
@@ -67,7 +68,7 @@
                     praise esteem. Abilities discourse believing consisted remaining to no. Mistaken no me denoting
                     dashwood as screened. Whence or esteem easily he on. Dissuade husbands at of no if disposal.
                     <div class="comments-button">
-                        <a id="open-comments-modal" href="javascript:;">view comments</a>
+                        <a class="open-comments-modal" href="javascript:;">view comments</a>
                     </div>
                 </div>
             </div>
@@ -93,7 +94,9 @@
                     In post mean shot ye. There out her child sir his lived. Design at uneasy me season of branch on
                     praise esteem. Abilities discourse believing consisted remaining to no. Mistaken no me denoting
                     dashwood as screened. Whence or esteem easily he on. Dissuade husbands at of no if disposal.
-                    </p>
+                    <div class="comments-button">
+                        <a class="open-comments-modal" href="javascript:;">view comments</a>
+                    </div>
                 </div>
             </div>
             <div class="single-post">
@@ -118,13 +121,15 @@
                     In post mean shot ye. There out her child sir his lived. Design at uneasy me season of branch on
                     praise esteem. Abilities discourse believing consisted remaining to no. Mistaken no me denoting
                     dashwood as screened. Whence or esteem easily he on. Dissuade husbands at of no if disposal.
-                    </p>
+                    <div class="comments-button">
+                        <a class="open-comments-modal" href="javascript:;">view comments</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="comments-modal1" class="comments-modal">
+    <div id="comments-modal" class="comments-modal">
         <div class="comments-modal-content">
             <div class="modal-header">
                 <button id="close-comments-modal1" class="close-modal">close</button>
@@ -175,10 +180,63 @@
             <h2> friend requests </h2>
             <div class="single-friend-request">
                 <a href="user.html">request1</a>
+                <button class="decline-request">decline</button>
+                <button class="confirm-request">confirm</button>
             </div>
             <div class="single-friend-request">
                 <a href="user.html">request2</a>
+                <button class="decline-request">decline</button>
+                <button class="confirm-request">confirm</button>
             </div>
         </div>
+    </div>
+
+    <div id="comments-modal" class="comments-modal">
+
+
+        <div class="comments-modal-content">
+            <div class="modal-header">
+                <button id="close-comments-modal" class="close-modal">close</button>
+            </div>
+            <div class="create-post">
+                <h3> add a comment </h3>
+                <form action="">
+                    <textarea id="post-content"></textarea>
+                    <button id="post-button"> post </button>
+                </form>
+            </div>
+            <h2> comments </h2>
+            <div class="single-post">
+                <div class="post-author">
+                    <img class="avatar" src="images/default-profile.png">
+                    <a href="#"> Post author 2</a>
+                    <div class="post-date">
+                        11/9/2001
+                    </div>
+                </div>
+
+                <hr>
+                <div class="post-content">Any delicate you how kindness horrible outlived servants. You high bed
+                    ands at of no if disposal.
+
+                </div>
+            </div>
+            <div class="single-post">
+                <div class="post-author">
+                    <img class="avatar" src="images/default-profile.png">
+                    <a href="#"> Post author 2</a>
+                    <div class="post-date">
+                        11/9/2001
+                    </div>
+                </div>
+
+                <hr>
+                <div class="post-content">Any delicate you how kindness horrible outlived servants. You high bed
+                    ands at of no if disposal.
+
+                </div>
+            </div>
+        </div>
+
     </div>
 </body>

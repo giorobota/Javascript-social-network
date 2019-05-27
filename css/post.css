@@ -13,6 +13,7 @@
     color: white;
     height: 30px;
     width: 60px;
+    margin-bottom: 5px;
     
     
 }
@@ -25,14 +26,22 @@
     margin: 5px;
     
 }
- .posts .single-post .post-author{
+.single-post .post-author{
     
     margin: 5px;
     height: 30px;
 
 }
 
-.posts .single-post .post-author .post-date{
+.single-post .post-date{
     float:right;
 
+}
+
+.single-post a{
+    color: crimson;
+    text-decoration: none;
+}
+.single-post a:hover{
+    text-decoration: underline;
 }

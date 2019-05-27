@@ -4,10 +4,8 @@ h2{
 }
 
 
-
-
 .main-content{
-    float:top;
+    
     height: 100%;
     background-color: pink;
 }
@@ -50,7 +48,6 @@ h2{
     float:left;
 
 }
-
 .main-content  a{
     text-decoration: none;
     color: crimson;

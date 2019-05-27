@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="css/top-bar.css">
     <link rel="stylesheet" type="text/css" href="css/groups.css">
     <link rel="stylesheet" type="text/css" href="css/friend-requests-modal.css">
-    <script src="scripts/top-bar-modals.js"></script>
+    <script src="scripts/groups.js"></script>
 </head>
 
 <body>
@@ -43,9 +43,9 @@
 
         </div>
         <div class="middle-section">
-            <div class="events">
+            <div class="events" id = "groups">
 
-                <div class="single-event">
+                <!-- <div class="single-event">
                     <div class="event-author">
 
                         <h2><a class="event-name" href="group.html">group name</a></h2>
@@ -58,7 +58,7 @@
 
 
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
 
@@ -87,9 +87,13 @@
             <h2> friend requests </h2>
             <div class="single-friend-request">
                 <a href="user.html">request1</a>
+                <button class ="decline-request">decline</button>
+                <button class ="confirm-request">confirm</button>
             </div>
             <div class="single-friend-request">
                 <a href="user.html">request2</a>
+                <button class ="decline-request">decline</button>
+                <button class ="confirm-request">confirm</button>
             </div>
         </div>
     </div>

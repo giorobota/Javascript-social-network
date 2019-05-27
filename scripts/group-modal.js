@@ -1,5 +1,5 @@
 window.onload = function () {
-
+    
     var commentModal = document.getElementById("comments-modal");
     var requestsModal = document.getElementById("friend-requests-modal");
 
