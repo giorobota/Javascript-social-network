@@ -1,4 +1,4 @@
-[
+var groups = [
     {
         "groupId": 0,
         "groupName": "elit occaecat nulla"

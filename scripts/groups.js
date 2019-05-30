@@ -28,21 +28,28 @@ window.onload = function () {
         }
     }
     //test
-
-
+    var groupList = document.getElementById("groups");
+    var groups = [
+        {
+            groupId: 0,
+            groupName: "elit occaecat nulla",
+            description: "group description"
+        },
+        {
+            groupId: 1,
+            groupName: "fla cnosds",
+            description: "another group description"
+        }
+    ]
+    var res = "";
+    for (var group in groups) {
+        res += '<div class="single-event"><div class="event-author"><h2><a class="event-name" href="group.html/' + groups[group].groupId +
+            '">' + groups[group].groupName + '</a></h2></div><hr><div class="event-content">' + groups[group].description + "</div></div>";
+    }
+    groupList.innerHTML = res;
+    console.log(group);
 }
-var groupList = document.getElementById("groups");
-var groups = require('../data/groups.json');
-var res = "";
-for (var group in groups) {
-    res += '<div class="single-event"><div class="event-author"><h2><a class="event-name" href="group.html' + group.groupId +
-        '">' + group.groupName + '</a></h2></div><hr><div class="event-content">' + group.description + "</div>";
-}
-groupList.innerHTML = res;
 
-var JSONItems = [];
-$.getJSON("js/settings.json", function (group) {
-    res += '<div class="single-event"><div class="event-author"><h2><a class="event-name" href="group.html' + group.groupId +
-        '">' + group.groupName + '</a></h2></div><hr><div class="event-content">' + group.description + "</div>";
-    console.log(JSONItems);
-});
+
+
+
