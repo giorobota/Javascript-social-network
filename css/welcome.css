@@ -12,7 +12,10 @@ h2{
     font-size: 35px;
     text-align: center;
 }
-
+#message{
+    color: red;
+    font-weight: bold;
+}
 
 input{
     width: 100%;

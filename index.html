@@ -1,45 +1,48 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <link rel="stylesheet" type="text/css" href="css/welcome.css">
+    <script src="scripts/index.js"></script>
 </head>
+
 <body>
     <h1>
         welcome to bookface
     </h1>
-    <div class = "main-content">
-        <div class = "login-section"> 
+    <div class="main-content">
+        <div class="login-section">
             <h2> login </h2>
-            <form action="home.html">
-                <label for="email">email</label>
-                <input type="text" id="email"  placeholder="email">
-            
-                <label for="password">password</label>
-                <input type="password" id="password" placeholder="password">
-            
-              
-                <input type="submit" value="login">
-            </form>
+            <div id = "message"></div>
+            <label>email</label>
+            <input type="text" id="email" placeholder="email">
+
+            <label>password</label>
+            <input type="password" id="password" placeholder="password">
+
+
+            <button id="login"> login </button>
+
         </div>
-        <div class = signup-section>
+        <div class=signup-section>
             <h2> create a new account </h2>
-            <form action="home.html">
-                
-                <label for="firstname">firstname</label>
-                <input type="text" id="firstname"  placeholder="fistname">
-                <label for="lastname">lastname</label>
-                <input type="text" id="lastname"  placeholder="lastname">
-                
-                <label for="email">email</label>
-                <input type="text" id="email"  placeholder="email">
-            
-                <label for="password">password</label>
-                <input type="password" id="password"  placeholder="password">
-            
-              
-                <input type="submit" value="signup">
-            </form>
+
+
+            <label for="firstname">firstname</label>
+            <input type="text" id="firstname" placeholder="fistname">
+            <label for="lastname">lastname</label>
+            <input type="text" id="lastname" placeholder="lastname">
+
+            <label >email</label>
+            <input type="text" id="email-signup" placeholder="email">
+
+            <label for="password">password</label>
+            <input type="password" id="password-signup" placeholder="password">
+
+
+            <button id="signup">signup</button>
+
         </div>
     </div>
-    
+
 </body>
