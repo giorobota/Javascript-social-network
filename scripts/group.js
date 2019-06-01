@@ -1,5 +1,4 @@
 window.onload = function () {
-    
     var users = [
         {
             id: 0,
@@ -29,24 +28,66 @@ window.onload = function () {
         },
 
     ]
-    
-    var passwordField = document.getElementById("password");
-    var emailField = document.getElementById("email");
-    var loginBtn = document.getElementById("login");
-    var loginMsg = document.getElementById("message");
-    
-    loginBtn.addEventListener("click", function () {
-        for(user in users){
-            if(users[user].email == emailField.value && users[user].password == passwordField.value){
-                window.location.href = "home.html?userid=" + users[user].id;
-            }
+    var groupMembers = [
+        {
+            groupId: 0,
+            members: [1, 2]
+        },
+        {
+            groupId: 1,
+            members: [1, 0]
         }
-        loginMsg.innerHTML="incorrect username or password";
+    ]
+
+    var url = new URL(window.location.href);
+    var userid = url.searchParams.get("userid");
+    var groupid = url.searchParams.get("groupid");
+    if (userid >= users.length) window.location.href = "index.html";
+
+    var activeProfile = document.getElementById("active-profile");
+    activeProfile.innerHTML = '<img id="friend-requests" src="images/friend-requests.jpg"><img class="avatar" src="'
+        + users[userid].picture + '"><div id="username"><a href="user.html' + "?userid=" + userid + '">'
+        + users[userid].fistName + '</a></div>';
+
+    var navigation = document.getElementById("navigation");
+    navigation.innerHTML = '<ul><li><a  href="home.html' + "?userid="
+        + userid + '">Home</a></li><li><a href="">Groups</a></li><li><a href="events.html'
+        + "?userid=" + userid + '">Events</a></li></ul></div>';
+
+    var memberList = "<h2>members:</h2>";
+    var members = document.getElementById("group-members");
+
+    for(i in groupMembers[groupid].members){
+        var memberid = groupMembers[groupid].members[i];
+        memberList += "<hr>" + '<div class="single-member"><div class="post-author"><img class="avatar" src="' + users[memberid].picture +
+        '"><a href="user.html?userid=' + memberid + '">' + users[memberid].fistName + " " +users[memberid].lastName + "</a></div></div>";
+    }
+    members.innerHTML = memberList;
+
+
+
+
+    var requestsModal = document.getElementById("friend-requests-modal");
+    var requestsOpenBtn = document.getElementById("friend-requests");
+    var homeBtn = document.getElementById("logo");
+
+    requestsModal.addEventListener("click", function () {
+        requestsModal.style.display = "none";
     });
 
-    var signupBtn = document.getElementById("signup");
-    signupBtn.onclick = function () {
-        //add new user to database
+    homeBtn.addEventListener("click", function () {
+
+        window.location.href = "home.html?userid=" + userid;
+    });
+
+    requestsOpenBtn.onclick = function () {
+        if (requestsModal.style.display == "block") {
+            requestsModal.style.display = "none";
+        } else {
+            requestsModal.style.display = "block";
+        }
     }
-    
+
+
 }
+

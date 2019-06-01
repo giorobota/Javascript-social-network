@@ -1,5 +1,7 @@
 window.onload = function () {
-
+    var url = new URL(window.location.href);
+    var userid = url.searchParams.get("userid");
+    if(userid >= users.length) window.location.href = "index.html";
 
     var requestsModal = document.getElementById("friend-requests-modal");
 
@@ -12,7 +14,7 @@ window.onload = function () {
 
 
     homeBtn.onclick = function () {
-        window.location.href = "home.html";
+        window.location.href = "home.html?userid=" + userid;
     }
     requestsOpenBtn.onclick = function () {
         if (requestsModal.style.display == "block") {

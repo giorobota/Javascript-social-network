@@ -29,24 +29,86 @@ window.onload = function () {
         },
 
     ]
+
+
+
+
+
+
+    //getting userid from url
+    var url = new URL(window.location.href);
+    var userid = url.searchParams.get("userid");
+    if(userid >= users.length) window.location.href = "index.html";
     
-    var passwordField = document.getElementById("password");
-    var emailField = document.getElementById("email");
-    var loginBtn = document.getElementById("login");
-    var loginMsg = document.getElementById("message");
-    
-    loginBtn.addEventListener("click", function () {
-        for(user in users){
-            if(users[user].email == emailField.value && users[user].password == passwordField.value){
-                window.location.href = "home.html?userid=" + users[user].id;
-            }
+    var activeProfile = document.getElementById("active-profile");
+    activeProfile.innerHTML = '<img id="friend-requests" src="images/friend-requests.jpg"><img class="avatar" src="' 
+        + users[userid].picture + '"><div id="username"><a href="user.html' + "?userid=" + userid + '">'
+        + users[userid].fistName + '</a></div>';
+    var navigation = document.getElementById("navigation");
+    navigation.innerHTML =  '<ul><li><a class="active" href="">Home</a></li><li><a href="groups.html' + 
+        "?userid=" + userid + '">Groups</a></li><li><a href="events.html' + "?userid=" + userid + 
+        '">Events</a></li></ul></div>';
+        
+
+
+
+
+
+    var storyModal = document.getElementById("story-modal");
+    var commentModal = document.getElementById("comments-modal");
+    var requestsModal = document.getElementById("friend-requests-modal");
+
+    var requestsOpenBtn = document.getElementById("friend-requests");
+    var commentOpenBtn = document.getElementsByClassName("open-comments-modal");
+    var storyOpenBtn1 = document.getElementsByClassName("open-story-modal");
+    // var storyOpenBtn2 = document.getElementsByClassName("open-story-modal-image");
+
+
+    var commentCloseBtn = document.getElementById("close-comments-modal");
+
+
+    var homeBtn = document.getElementById("logo");
+
+
+
+    requestsOpenBtn.onclick = function () {
+        if (requestsModal.style.display == "block") {
+            requestsModal.style.display = "none";
+        } else {
+            requestsModal.style.display = "block";
         }
-        loginMsg.innerHTML="incorrect username or password";
+
+    }
+
+    homeBtn.onclick = function () {
+        window.location.href = "home.html?userid=" + userid;
+    }
+
+    Array.from(commentOpenBtn).forEach((elem) => {
+
+        elem.onclick = function () {
+            commentModal.style.display = "block";
+        }
+    });
+    Array.from(storyOpenBtn1).forEach((elem) => {
+
+        elem.onclick = function () {
+            storyModal.style.display = "block";
+        }
     });
 
-    var signupBtn = document.getElementById("signup");
-    signupBtn.onclick = function () {
-        //add new user to database
-    }
+    commentModal.addEventListener("click", function (){
+        commentModal.style.display = "none";
+    });
+    storyModal.addEventListener("click", function (){
+        storyModal.style.display = "none";
+    });
+    requestsModal.addEventListener("click", function (){
+        requestsModal.style.display = "none";
+    });
     
+    commentCloseBtn.onclick = function () {
+        commentModal.style.display = "none";
+    }
+
 }

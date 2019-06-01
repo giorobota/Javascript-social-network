@@ -1,5 +1,4 @@
 window.onload = function () {
-    
     var users = [
         {
             id: 0,
@@ -29,24 +28,60 @@ window.onload = function () {
         },
 
     ]
+    var url = new URL(window.location.href);
+    var userid = url.searchParams.get("userid");
+    if(userid >= users.length) window.location.href = "index.html";
     
-    var passwordField = document.getElementById("password");
-    var emailField = document.getElementById("email");
-    var loginBtn = document.getElementById("login");
-    var loginMsg = document.getElementById("message");
-    
-    loginBtn.addEventListener("click", function () {
-        for(user in users){
-            if(users[user].email == emailField.value && users[user].password == passwordField.value){
-                window.location.href = "home.html?userid=" + users[user].id;
-            }
+    var activeProfile = document.getElementById("active-profile");
+    activeProfile.innerHTML = '<img id="friend-requests" src="images/friend-requests.jpg"><img class="avatar" src="' 
+        + users[userid].picture + '"><div id="username"><a href="user.html' + "?userid=" + userid + '">'
+        + users[userid].fistName + '</a></div>';
+    var navigation = document.getElementById("navigation");
+    navigation.innerHTML =  '<ul><li><a  href="home.html' + "?userid=" 
+        + userid + '">Home</a></li><li><a href="groups.html' + "?userid=" + userid 
+        + '">Groups</a></li><li><a class = "active" href="">Events</a></li></ul></div>';
+
+
+    var eventModal = document.getElementById("event-modal");
+    var requestsModal = document.getElementById("friend-requests-modal");
+
+
+    var eventOpenBtn = document.getElementsByClassName("event-name");
+    var requestsOpenBtn = document.getElementById("friend-requests");
+
+    var eventCloseBtn = document.getElementById("close-event-modal");
+
+    var homeBtn = document.getElementById("logo");
+
+    Array.from(eventOpenBtn).forEach((elem) => {
+
+        elem.onclick = function () {
+            eventModal.style.display = "block";
         }
-        loginMsg.innerHTML="incorrect username or password";
     });
 
-    var signupBtn = document.getElementById("signup");
-    signupBtn.onclick = function () {
-        //add new user to database
+    eventCloseBtn.onclick = function () {
+        eventModal.style.display = "none";
     }
-    
+    window.onclick = function (event) {
+        if (event.target == eventModal) {
+            eventModal.style.display = "none";
+        }
+        if (event.target == requestsModal) {
+            requestsModal.style.display = "none";
+        }
+    }
+    homeBtn.onclick = function () {
+        window.location.href = "home.html?userid=" + userid;
+    }
+
+
+    requestsOpenBtn.onclick = function () {
+        if (requestsModal.style.display == "block") {
+            requestsModal.style.display = "none";
+        } else {
+            requestsModal.style.display = "block";
+        }
+
+    }
 }
