@@ -207,10 +207,13 @@ window.onload = function () {
     if (activePost != null) {
         for (i in comments) {
             var authorid = comments[i].userid;
-            commentsListing += '<div class="single-post"><div class="post-author"><img class="avatar" src="' + users[authorid].picture +
+            if(comments[i].postid == activePost){
+                commentsListing += '<div class="single-post"><div class="post-author"><img class="avatar" src="' + users[authorid].picture +
                 '"><a href="user.html?userid=' + authorid + '">' + users[authorid].firstName + " " + users[authorid].lastName + 
                 '</a><div class="post-date">' + comments[i].date + '</div></div><hr><div class="post-content">' + comments[i].content + 
                 '   </div></div>';
+            }
+          
         }
         commentHTML.innerHTML = commentsListing;
         commentModal.style.display = "block";
@@ -243,12 +246,6 @@ window.onload = function () {
     }
 
  
-    // Array.from(storyOpenBtn1).forEach((elem) => {
-
-    //     elem.onclick = function () {
-    //         storyModal.style.display = "block";
-    //     }
-    // });
 
     storyModal.addEventListener("click", function () {
         storyModal.style.display = "none";
