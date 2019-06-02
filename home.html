@@ -10,8 +10,8 @@
     <link rel="stylesheet" type="text/css" href="css/post.css">
     <link rel="stylesheet" type="text/css" href="css/comments-modal.css">
     <link rel="stylesheet" type="text/css" href="css/friend-requests-modal.css">
-
-
+    <script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
+    
     <script src="scripts/home.js"></script>
 </head>
 
@@ -47,10 +47,10 @@
         <div class="middle-section">
             <div class="create-post">
                 <h3> Create post </h3>
-                <form action="">
-                    <textarea id="post-content"></textarea>
-                    <button id="post-button"> post </button>
-                </form>
+                
+                    <textarea class="post-content" id="post-content"></textarea>
+                    <button class="post-button" id="post-button"> post </button>
+                
             </div>
             <div class="posts" id="posts">
 
@@ -101,26 +101,14 @@
             <div class="create-post">
                 <h3> add a comment </h3>
                 <form action="">
-                    <textarea id="post-content"></textarea>
-                    <button id="post-button"> post </button>
+                    <textarea class="post-content" id = "comment-content"></textarea>
+                    <button class="post-button" id = "comment-button"> post </button>
                 </form>
             </div>
 
             <h2> comments </h2>
             <div id="comments-listing">
-                <div class="single-post">
-                    <div class="post-author">
-                        <img class="avatar" src="images/default-profile.png">
-                        <a href="user.html"> Post author 2</a>
-                        <div class="post-date">
-                            11/9/2001
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="post-content">Any delicate you how kindness horrible outlived servants. You high bed
-                        ands at of no if disposal.
-                    </div>
-                </div>
+
 
             </div>
 

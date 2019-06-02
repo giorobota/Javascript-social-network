@@ -3,13 +3,13 @@
     text-align: center;
     margin: 5px;
 }
-.create-post #post-content{
+.create-post .post-content{
     width: 98%;
     margin-bottom: 5px;
     
     
 }
-.create-post #post-button{
+.create-post .post-button{
     background-color: crimson;
     color: white;
     height: 30px;
