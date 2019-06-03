@@ -42,8 +42,9 @@ window.onload = function () {
     ]
 
 
-    var url = new URL(window.location.href);
-    var userid = url.searchParams.get("userid");
+   //getting userid from url
+   var url = new URL(window.location.href);
+   var userid = url.searchParams.get("userid");
     if (userid >= users.length) window.location.href = "index.html";
 
     var activeProfile = document.getElementById("active-profile");
@@ -79,7 +80,7 @@ window.onload = function () {
         }
 
     }
-
+    //load group lists
     var groupList = document.getElementById("groups");
     var groupSuggestions = document.getElementById("group-suggestions");
     
@@ -95,5 +96,21 @@ window.onload = function () {
     }
     groupList.innerHTML = res;
 
+    //load friend requests
+    var requestsHTML = document.getElementById("friend-requests-listing");
+    var requestsListing = "";
+    for (i in friendRequests) {
+        if (friendRequests[i].to == userid) {
+            requestsListing += '<div class="single-friend-request"><a href="user.html?userid=' + friendRequests[i].from +
+                '">' + users[friendRequests[i].from].firstName + " " + users[friendRequests[i].from].lastName +
+                '</a><button class="decline-request" onclick = "this.declineRequest(' + friendRequests[i].reqId + 
+                ')">decline</button><button class="confirm-request">confirm</button></div>';
+        }
+    }
+    requestsHTML.innerHTML = requestsListing;
+    function getDateNow() {
+        var date = new Date();
+        return + date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate();
+    }
 }
 
