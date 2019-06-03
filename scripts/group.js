@@ -133,8 +133,9 @@ window.onload = function () {
             date: "2019/3/22"
         },
         {
-            userid: 7,
-            postid: 2,
+            postid: 7,
+            userid: 2,
+           
             content: "Labore in dolore irure officia incididunt. Consectetur sunt enim labore laborum commodo pariatur sit in elit aliquip ipsum. Consectetur elit anim dolore non anim nulla ex mollit duis incididunt officia laboris. Incididunt nulla labore proident tempor Lorem culpa do veniam occaecat aliquip. Deserunt velit magna laborum dolore.",
             date: "2019/3/25"
         },
@@ -226,24 +227,7 @@ window.onload = function () {
         }
     }
 
-    //load comments if post is selected
-    var commentHTML = document.getElementById("comments-listing");
-    var commentsListing = "";
-    if (activePost != null) {
-        for (i in comments) {
-            var authorid = comments[i].userid;
-            if (comments[i].postid == activePost) {
-                commentsListing += '<div class="single-post"><div class="post-author"><img class="avatar" src="' + users[authorid].picture +
-                    '"><a href="user.html?userid=' + authorid + '">' + users[authorid].firstName + " " + users[authorid].lastName +
-                    '</a><div class="post-date">' + comments[i].date + '</div></div><hr><div class="post-content">' + comments[i].content +
-                    '   </div></div>';
-            }
-
-        }
-        commentHTML.innerHTML = commentsListing;
-        commentModal.style.display = "block";
-    }
-
+    
 
     var requestsModal = document.getElementById("friend-requests-modal");
     var requestsOpenBtn = document.getElementById("friend-requests");
@@ -265,7 +249,9 @@ window.onload = function () {
             requestsModal.style.display = "block";
         }
     }
-    //load comments for post
+    
+
+    //load comments if post is selected
     var commentHTML = document.getElementById("comments-listing");
     var commentsListing = "";
     if (activePost != null) {
@@ -284,6 +270,44 @@ window.onload = function () {
     }
 
 
+    var commentContent = document.getElementById("comment-content");
+    var commentButton = document.getElementById("comment-button");
+    commentButton.onclick = function () {
+        if (commentContent.value != "") {
+            var index = comments.length;
+            comments[index] = {
+                postId: activePost,
+                userId: userid,
+                content: commentContent.value,
+                date: getDateNow()
+            }
+            console.log(comments[index]);
+
+
+            var authorid = userid;
+
+            commentsListing = '<div class="single-post"><div class="post-author"><img class="avatar" src="' + users[authorid].picture +
+                '"><a href="user.html?userid=' + authorid + '">' + users[authorid].firstName + " " + users[authorid].lastName +
+                '</a><div class="post-date">' + comments[index].date + '</div></div><hr><div class="post-content">' + comments[index].content +
+                '   </div></div>' + commentsListing;
+
+
+
+            commentHTML.innerHTML = commentsListing;
+        }
+    }
+    //friend reqeuests
+    var requestsHTML = document.getElementById("friend-requests-listing");
+    var requestsListing = "";
+    for (i in friendRequests) {
+        if (friendRequests[i].to == userid) {
+            requestsListing += '<div class="single-friend-request"><a href="user.html?userid=' + friendRequests[i].from +
+                '">' + users[friendRequests[i].from].firstName + " " + users[friendRequests[i].from].lastName +
+                '</a><button class="decline-request" onclick = "this.declineRequest(' + friendRequests[i].reqId +
+                ')">decline</button><button class="confirm-request">confirm</button></div>';
+        }
+    }
+    requestsHTML.innerHTML = requestsListing;
 
 
     function getDateNow() {

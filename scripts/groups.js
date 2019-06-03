@@ -108,6 +108,8 @@ window.onload = function () {
         }
     }
     requestsHTML.innerHTML = requestsListing;
+
+    
     function getDateNow() {
         var date = new Date();
         return + date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate();
