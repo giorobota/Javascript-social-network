@@ -44,7 +44,7 @@ window.onload = function () {
 
    //getting userid from url
    var url = new URL(window.location.href);
-   var userid = url.searchParams.get("userid");
+   var userid = Number(url.searchParams.get("userid"), 10);
     if (userid >= users.length) window.location.href = "index.html";
 
     var activeProfile = document.getElementById("active-profile");

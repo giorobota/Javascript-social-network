@@ -30,4 +30,14 @@
     color: crimson;
 }
 
+.open-story-modal{
+    border: none;
+    background-color: transparent;
+    color: crimson;
+}
+.open-story-modal:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 
