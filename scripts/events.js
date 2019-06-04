@@ -219,6 +219,22 @@ var events = [
         eventDate: "18:00 12/6/2019"
     },
 ]
+
+var eventParticipants = [
+    {
+        eventid: 0,
+        userid: 0,
+    },
+    {
+        eventid: 0,
+        userid: 2,
+    },
+    {
+        eventid: 1,
+        userid: 1,
+    }
+
+]
 var userid;
 var activeProfile;
 var navigation;
@@ -231,6 +247,10 @@ var homeBtn;
 var events;
 var eventSuggestions;
 var requestsHTML;
+var participantsList;
+var eventButtons;
+var activeEvent;
+var invitedUser;
 window.onload = function () {
 
     var url = new URL(window.location.href);
@@ -248,6 +268,12 @@ window.onload = function () {
     eventsHTML = document.getElementById("events");
     eventSuggestions = document.getElementById("event-suggestions");
     requestsHTML = document.getElementById("friend-requests-listing");
+    participantsList = document.getElementById("event-participants");
+    eventButtons = document.getElementById("event-modal-buttons");
+    activeEvent = -1;
+    invitedUser = document.getElementById("invitedUser");
+    inviteButton = document.getElementById("inviteButton");
+
     loadTopPanel();
 
     navigation.innerHTML = '<ul><li><a  href="home.html' + "?userid="
@@ -262,14 +288,14 @@ window.onload = function () {
     eventCloseBtn.onclick = function () {
         eventModal.style.display = "none";
     }
-    window.onclick = function (event) {
-        if (event.target == eventModal) {
-            eventModal.style.display = "none";
-        }
-        if (event.target == requestsModal) {
-            requestsModal.style.display = "none";
-        }
-    }
+    // window.onclick = function (event) {
+    //     if (event.target == eventModal) {
+    //         eventModal.style.display = "none";
+    //     }
+    //     if (event.target == requestsModal) {
+    //         requestsModal.style.display = "none";
+    //     }
+    // }
     homeBtn.onclick = function () {
         window.location.href = "home.html?userid=" + userid;
     }
@@ -282,6 +308,9 @@ window.onload = function () {
             requestsModal.style.display = "block";
         }
 
+    }
+    inviteButton.onclick = function(){
+        inviteFriend();
     }
 }
 
@@ -344,6 +373,57 @@ function loadTopPanel(){
 }
 
 function openEvent(id){
-    //todo
+    activeEvent = id;
+    var userGoing = false;
+    var listing = "";
+    for(i in eventParticipants){
+        if(eventParticipants[i].eventid == id){
+            listing += '<a href="user.html?userid=' + eventParticipants[i].userid + '&activeuser=' 
+            + userid + '">' + users[eventParticipants[i].userid].firstName + " " + users[eventParticipants[i].userid].lastName + '  '
+            + '</a>';
+            if(eventParticipants[i].userid == userid) userGoing = true;
+        }
+        
 
+    }
+    if(userGoing){
+        eventButtons.innerHTML = '<button class="event-button" onclick = "removeParticipant()">Not going</button>'
+    }else{
+        eventButtons.innerHTML = '<button class="event-button" onclick = "addParticipant('+ userid +')">going</button>'
+    }
+    participantsList.innerHTML = listing;
+    eventModal.style.display = "block";
+
+}
+function removeParticipant(){
+    for(i in eventParticipants){
+        if(eventParticipants[i].eventid == activeEvent && eventParticipants[i].userid == userid){
+            eventParticipants[i].eventid = -1;
+            eventParticipants[i].userid = -1;
+            openEvent(activeEvent);
+            return;
+        }
+    }
+}
+
+function addParticipant(user){
+    var index = eventParticipants.length
+    eventParticipants[index] = {
+        eventid: activeEvent,
+        userid: user
+    };
+    openEvent(activeEvent);
+}
+
+function inviteFriend(){
+    for(i in users){
+        var name = users[i].firstName + " " + users[i].lastName;
+        if(name == invitedUser.value){
+            invitedUser.value = "";
+            addParticipant(users[i].id);
+            invitedUser.placeholer = 'invited users';
+            return;
+        }
+    }
+    invitedUser.placeholer = 'no user found';
 }
