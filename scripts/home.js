@@ -208,6 +208,7 @@ var commentsListing;
 var requestsOpenBtn;
 var commentCloseBtn;
 var homeBtn;
+var requestsListing;
 window.onload = function () {
     // var script = document.createElement('script');
     // script.src = 'http://code.jquery.com/jquery-1.11.0.min.js';
@@ -244,17 +245,17 @@ window.onload = function () {
     commentCloseBtn = document.getElementById("close-comments-modal");
 
     homeBtn = document.getElementById("logo");
+    requestsListing = "";
 
 
 
+    
 
-    //getting userid from url
-
-    // if (userid >= users.length) window.location.href = "index.html";
+    if (userid >= users.length) window.location.href = "index.html";
 
     //load top panel
     
-    activeProfile.innerHTML = '<img id="friend-requests" src="images/friend-requests.jpg"><img class="avatar" src="'
+    activeProfile.innerHTML = '<img class="avatar" src="'
         + users[userid].picture + '"><div id="username"><a href="user.html' + "?userid=" + userid + '">'
         + users[userid].firstName + '</a></div>';
 
@@ -286,9 +287,6 @@ window.onload = function () {
 
 
     //load stories
-    
-    
-
     for (i in stories) {
         var author = stories[i].userid;
         //display only friends' stories and his
@@ -303,7 +301,6 @@ window.onload = function () {
 
     //load friend requests
     
-    var requestsListing = "";
     for (i in friendRequests) {
         if (friendRequests[i].to == userid) {
             requestsListing += '<div class="single-friend-request"><a href="user.html?userid=' + friendRequests[i].from +
@@ -315,7 +312,6 @@ window.onload = function () {
     requestsHTML.innerHTML = requestsListing;
 
     //load comments if post is selected
-
     if (activePost != null) {
         for (i in comments) {
             var authorid = comments[i].userid;
@@ -359,9 +355,10 @@ window.onload = function () {
     storyModal.addEventListener("click", function () {
         storyModal.style.display = "none";
     });
-    // requestsModal.addEventListener("click", function () {
-    //     requestsModal.style.display = "none";
-    // });
+    
+    requestModal.onclick = function() {
+        requestModal.style.display = "none";
+    }
 
     commentCloseBtn.onclick = function () {
         commentModal.style.display = "none";
@@ -427,6 +424,7 @@ function declineRequest(reqId) {
     friendRequests[reqId].from = -1;
     friendRequests[reqId].to = -1;
     //reload friend requests
+    console.log("declined");
     for (i in friendRequests) {
         
         if (friendRequests[i].to == userid) {
