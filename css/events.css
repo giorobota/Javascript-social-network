@@ -12,7 +12,17 @@ h2{
     background-color: rgba(0, 0, 0, 0.363);
 }
 
-  
+.open-events-modal{
+    font-size: 20px;
+    background-color: transparent;
+    margin: none;
+    border : none;
+    color: crimson;
+}
+.open-events-modal:hover{
+   text-decoration: underline;
+   cursor: pointer;
+}
 
 .modal-content {
     background-color:  whitesmoke;
