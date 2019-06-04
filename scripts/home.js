@@ -198,14 +198,14 @@ var postButton;
 var postContent;
 var postsHTML;
 var storyHTML;
-var postListing;
-var storyListing;
+
+
 var commentHTML;
-var commentsListing;
+
 var requestsOpenBtn;
 var commentCloseBtn;
 var homeBtn;
-var requestsListing;
+
 var requestModal;
 var suggestionsHTML;
 
@@ -236,28 +236,26 @@ window.onload = function () {
     postsHTML = document.getElementById("posts");
     postContent = document.getElementById("post-content");
     postButton = document.getElementById("post-button");
-    postListing = "";
-    storyListing = "";
+
     commentHTML = document.getElementById("comments-listing");
-    commentsListing = "";
+
     requestsOpenBtn = document.getElementById("friend-requests");
     commentCloseBtn = document.getElementById("close-comments-modal");
     requestModal = document.getElementById("friend-requests-modal");
     homeBtn = document.getElementById("logo");
     suggestionsHTML = document.getElementById("friend-suggestion-listing");
-    requestsListing = "";
+
 
     if (userid >= users.length) window.location.href = "index.html";
 
+    loadTopPanel();
     //load top panel
-    activeProfile.innerHTML = '<img class="avatar" src="'
-        + users[userid].picture + '"><div id="username"><a href="user.html' + "?userid=" + userid + '&activeUer=' + userid  +'">'
-        + users[userid].firstName + '</a></div>';
+    
 
     //load navigation bar
 
     navigation.innerHTML = '<ul><li><a class="active" href="">Home</a></li><li><a href="groups.html' +
-        "?userid=" + userid + '">Groups</a></li><li><a href="events.html' + "?userid=" + userid + 
+        "?userid=" + userid + '">Groups</a></li><li><a href="events.html' + "?userid=" + userid +
         '">Events</a></li></ul></div>';
 
     loadPublicPosts();
@@ -320,11 +318,11 @@ function acceptRequest(reqId) {
 }
 
 function loadFriendRequests() {
-    requestsListing = "";
+    var requestsListing = "";
     for (i in friendRequests) {
 
         if (friendRequests[i].to == userid) {
-            requestsListing = '<div class="single-friend-request"><a href="user.html?userid=' + friendRequests[i].from + '&activeUer=' + userid  +
+            requestsListing = '<div class="single-friend-request"><a href="user.html?userid=' + friendRequests[i].from + '&activeUer=' + userid +
                 '">' + users[friendRequests[i].from].firstName + " " + users[friendRequests[i].from].lastName +
                 '</a><button class="decline-request" onclick = "declineRequest(' + friendRequests[i].reqId + ')">decline</button>' +
                 '<button class="confirm-request" onclick = "acceptRequest(' + friendRequests[i].reqId + ')">confirm</button></div>' + requestsListing;
@@ -333,7 +331,7 @@ function loadFriendRequests() {
     requestsHTML.innerHTML = requestsListing;
 }
 function loadStories() {
-
+    var storyListing = "";
     for (i in stories) {
         var author = stories[i].userid;
         //display only friends' stories and his
@@ -347,13 +345,13 @@ function loadStories() {
 }
 
 function loadPublicPosts() {
-    postListing = "";
+    var postListing = "";
     var userFriends = friends[userid].friends;
     for (i in posts) {
         var authorid = posts[i].userId;
         if (posts[i].groupId == -1 && (userFriends.includes(authorid) || userid == authorid)) {
             postListing = '<div class="single-post"><div class="post-author"><img class="avatar" src="' +
-                users[authorid].picture + '"><a href="user.html?userid=' + authorid + '&activeUer=' + userid  + '">' +
+                users[authorid].picture + '"><a href="user.html?userid=' + authorid + '&activeUer=' + userid + '">' +
                 users[authorid].firstName + " " + users[authorid].lastName + '</a><div class="post-date">' +
                 posts[i].date + '</div></div><hr><div class="post-content">' + posts[i].content +
                 '<div class="comments-button"><button class="open-story-modal" onclick = "openComments(' + i + ')">' +
@@ -367,12 +365,12 @@ function loadPublicPosts() {
 function openComments(currentPostId) {
     console.log(comments);
     activePost = currentPostId;
-    commentsListing = "";
+    var commentsListing = "";
     for (i in comments) {
         var authorid = comments[i].userid;
         if (comments[i].postid == currentPostId) {
             commentsListing = '<div class="single-post"><div class="post-author"><img class="avatar" src="' + users[authorid].picture +
-                '"><a href="user.html?userid=' + authorid + '&activeUer=' + userid  + '">' + users[authorid].firstName + " " + users[authorid].lastName +
+                '"><a href="user.html?userid=' + authorid + '&activeUer=' + userid + '">' + users[authorid].firstName + " " + users[authorid].lastName +
                 '</a><div class="post-date">' + comments[i].date + '</div></div><hr><div class="post-content">' + comments[i].content +
                 '   </div></div>' + commentsListing;
             console.log(comments[i]);
@@ -433,8 +431,8 @@ function loadFriendSuggestions() {
     for (var i = 0; i < 3; i++) {
         if (i != userid) {
             suggestionListing = '<div class="single-friend-suggestion"><div class="post-author"><img class="avatar" src="' +
-                users[i].picture + '"><a href="user.html?userid=' + users[i].id + '&activeUer=' + userid  + '">' + users[i].firstName + " " +
-                users[i].lastName + '</a><button class="confirm-request" onclick = "sendRequest('+ users[i].id + 
+                users[i].picture + '"><a href="user.html?userid=' + users[i].id + '&activeUer=' + userid + '">' + users[i].firstName + " " +
+                users[i].lastName + '</a><button class="confirm-request" onclick = "sendRequest(' + users[i].id +
                 ')">add</button></div></div>' + suggestionListing;
         }
         console.log(users[i]);
@@ -442,10 +440,15 @@ function loadFriendSuggestions() {
     suggestionsHTML.innerHTML = suggestionListing;
 }
 
-function sendRequest(requestUserId){
+function sendRequest(requestUserId) {
     var index = friendRequests.length;
     friendRequests[index].from = userid;
     friendRequests[index].to = requestUserId;
     friendRequests[index].reqId = index;
     console.log(friendRequests[index]);
+}
+function loadTopPanel(){
+    activeProfile.innerHTML = '<img class="avatar" src="'
+        + users[userid].picture + '"><div id="username"><a href="user.html' + "?userid=" + userid + '&activeUer=' + userid + '">'
+        + users[userid].firstName + '</a></div>';
 }
