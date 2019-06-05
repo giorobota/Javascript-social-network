@@ -182,29 +182,70 @@ var friendRequests = [
         to: 1,
     }
 ]
+var groups = [
+    {
+        groupId: 0,
+        groupName: "elit occaecat nulla",
+        description: "group description"
+    },
+    {
+        groupId: 1,
+        groupName: "fla cnosds",
+        description: "another group description"
+    }
+]
 
 
 
 
 var userid;
 var viewingUser;
-var postsHTML;
+
+
+
+
+
+
+
 window.onload = function () {
     var url = new URL(window.location.href);
     userid = Number(url.searchParams.get("activeUser"), 10);
     viewingUser = Number(url.searchParams.get("userid"), 10);
-    postsHTML = document.getElementById("posts");
+    activePost = -1;
     loadTopPanel();
     loadUserPosts(viewingUser);
+
+    loadButtons();
+    
+}
+function loadButtons() {
+    var requestsOpenBtn = document.getElementById("friend-requests");
+
+    requestsOpenBtn.onclick = function () {
+        loadFriendRequests();
+    }
+    
+    var commentButton = document.getElementById("comment-button");
+    commentButton.onclick = function(){
+        addComment();
+    }
+    var commentCloseBtn = document.getElementById("close-comments-modal");
+    commentCloseBtn.onclick = function() {
+        var commentModal = document.getElementById("comments-modal");
+        commentModal.style.display = "none";
+    }
 }
 
-function loadTopPanel() {
+function loadTopPanel(activeProfile) {
+    var activeProfile = document.getElementById("active-profile");
     activeProfile.innerHTML = '<img class="avatar" src="'
         + users[userid].picture + '"><div id="username"><a href="user.html' + "?userid=" + userid + '&activeUer=' + userid + '">'
         + users[userid].firstName + '</a></div>';
 }
 
 function openComments(currentPostId) {
+    var commentHTML = document.getElementById("comments-listing");
+    var commentModal = document.getElementById("comments-modal");
     activePost = currentPostId;
     var commentsListing = "";
     for (i in comments) {
@@ -224,6 +265,46 @@ function openComments(currentPostId) {
 }
 
 function addComment() {
+
+    if (commentContent.value != "") {
+        var index = comments.length;
+        comments[index] = {
+            postid: activePost,
+            userid: userid,
+            content: commentContent.value,
+            date: getDateNow()
+        }
+        commentContent.value = "";
+
+        openComments(activePost);
+    }
+}
+
+function loadUserPosts(viewingUser) {
+    var postsHTML = document.getElementById("posts");
+    var postListing = "<h2> posts </h2>";
+   
+    for (i in posts) {
+        var authorid = posts[i].userId;
+
+        if (viewingUser == authorid) {
+            var singlePost = '<div class="single-post"><div class="post-author"><img class="avatar" src="' +
+                users[authorid].picture + '"><a href="user.html?userid=' + authorid + '&activeUser=' + userid + '">' + users[authorid].firstName + " " + users[authorid].lastName + '</a>'; 
+                if(posts[i].groupId != -1) singlePost += '>><a href = "group.html?userid=' + userid + '&groupid=' + posts[i].groupId +'">'+
+                    groups[posts[i].groupId].groupName + '</a>';
+
+                singlePost += '<div class="post-date">' +
+                posts[i].date + '</div></div><hr><div class="post-content">' + posts[i].content +
+                '<div class="comments-button"><button class="open-story-modal" onclick = "openComments(' + i + ')">' +
+                'view comments</button></div></div></div>';
+
+                postListing += singlePost;
+        }
+    }
+    postsHTML.innerHTML = postListing;
+}
+
+function addComment() {
     if (commentContent.value != "") {
         var index = comments.length;
         comments[index] = {
@@ -239,27 +320,37 @@ function addComment() {
         openComments(activePost);
     }
 }
+function loadFriendRequests() {
+    
+    var requestsHTML = document.getElementById("friend-requests-listing");
+    var requestsListing = "";
+    for (i in friendRequests) {
 
-function loadUserPosts(viewingUser) {
-    var postListing = "";
-   
-    for (i in posts) {
-        var authorid = posts[i].userId;
-
-        if (viewingUser == authorid) {
-            var singlePost = '<div class="single-post"><div class="post-author"><img class="avatar" src="' +
-                users[authorid].picture + '"><a href="user.html?userid=' + authorid + '&activeUser=' + userid + '">'; 
-                if(posts[i].groupId != -1) singlePost += '--><a href = group.html?userid=' + userid + '&groupid=' posts[i].groupId +'">'+
-                    groups[posts[i].groupId].groupName + '</a>';
-
-                singlePost += users[authorid].firstName + " " + users[authorid].lastName + '</a><div class="post-date">' +
-                posts[i].date + '</div></div><hr><div class="post-content">' + posts[i].content +
-                '<div class="comments-button"><button class="open-story-modal" onclick = "openComments(' + i + ')">' +
-                'view comments</button></div></div></div>';
-
-                postListing += singlePost;
-
+        if (friendRequests[i].to == userid) {
+            requestsListing = '<div class="single-friend-request"><a href="user.html?userid=' + friendRequests[i].from + '&activeUer=' + userid +
+                '">' + users[friendRequests[i].from].firstName + " " + users[friendRequests[i].from].lastName +
+                '</a><button class="decline-request" onclick = "declineRequest(' + friendRequests[i].reqId + ')">decline</button>' +
+                '<button class="confirm-request" onclick = "acceptRequest(' + friendRequests[i].reqId + ')">confirm</button></div>' + requestsListing;
         }
     }
-    postsHTML.innerHTML = postListing;
+    requestsHTML.innerHTML = requestsListing;
+
+}
+
+function declineRequest(reqId) {
+    friendRequests[reqId].from = -1;
+    friendRequests[reqId].to = -1;
+    //reload friend requests
+    console.log("declined");
+    loadFriendRequests();
+
+}
+
+function acceptRequest(reqId) {
+    friends[friendRequests[reqId].from].friends.push(friendRequests[reqId].to);
+    friends[friendRequests[reqId].to].friends.push(friendRequests[reqId].from);
+    friendRequests[reqId].from = -1;
+    friendRequests[reqId].to = -1;
+    console.log("accepted");
+    loadFriendRequests();
 }

@@ -18,7 +18,7 @@ h2{
 }
 .timeline .profile-photos{
     background-image: url("../images/timeline-photo.jpg");
-    background-size: 100% 100%;
+    /* background-size: 100% 100%; */
     background-repeat: no-repeat;
     height:100px;
     padding-top:240px;

@@ -299,6 +299,7 @@ window.onload = function () {
         addComment();
     }
 }
+
 function declineRequest(reqId) {
     friendRequests[reqId].from = -1;
     friendRequests[reqId].to = -1;
@@ -330,6 +331,7 @@ function loadFriendRequests() {
     }
     requestsHTML.innerHTML = requestsListing;
 }
+
 function loadStories() {
     var storyListing = "";
     for (i in stories) {
