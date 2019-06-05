@@ -178,7 +178,7 @@ var stories = [
 var friendRequests = [
     {
         reqId: 0,
-        from: 0,
+        from: 2,
         to: 1,
     }
 ]

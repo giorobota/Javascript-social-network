@@ -178,34 +178,27 @@ var stories = [
 var friendRequests = [
     {
         reqId: 0,
-        from: 0,
+        from: 2,
         to: 1,
     }
 ]
 
 var userid;
 var activePost;
-var activeStory;
+
 var commentContent;
 var commentButton;
 var storyModal;
 var commentModal;
 var requestsModal;
-var activeProfile;
-var navigation;
-var requestsHTML;
 var postButton;
 var postContent;
 var postsHTML;
 var storyHTML;
 
-
-var commentHTML;
-
 var requestsOpenBtn;
 var commentCloseBtn;
 var homeBtn;
-
 var requestModal;
 var suggestionsHTML;
 
@@ -221,6 +214,7 @@ window.onload = function () {
     //     users = data;
     //     console.log(data);
     // });
+ 
     var url = new URL(window.location.href);
     userid = Number(url.searchParams.get("userid"), 10);
     activePost = -1;
@@ -229,15 +223,12 @@ window.onload = function () {
     storyModal = document.getElementById("story-modal");
     commentModal = document.getElementById("comments-modal");
     requestsModal = document.getElementById("friend-requests-modal");
-    activeProfile = document.getElementById("active-profile");
-    navigation = document.getElementById("navigation");
-    requestsHTML = document.getElementById("friend-requests-listing");
     storyHTML = document.getElementById("story-listing");
     postsHTML = document.getElementById("posts");
     postContent = document.getElementById("post-content");
     postButton = document.getElementById("post-button");
 
-    commentHTML = document.getElementById("comments-listing");
+    
 
     requestsOpenBtn = document.getElementById("friend-requests");
     commentCloseBtn = document.getElementById("close-comments-modal");
@@ -253,7 +244,7 @@ window.onload = function () {
     
 
     //load navigation bar
-
+    var navigation = document.getElementById("navigation");
     navigation.innerHTML = '<ul><li><a class="active" href="">Home</a></li><li><a href="groups.html' +
         "?userid=" + userid + '">Groups</a></li><li><a href="events.html' + "?userid=" + userid +
         '">Events</a></li></ul></div>';
@@ -319,6 +310,7 @@ function acceptRequest(reqId) {
 }
 
 function loadFriendRequests() {
+    var requestsHTML = document.getElementById("friend-requests-listing");
     var requestsListing = "";
     for (i in friendRequests) {
 
@@ -365,7 +357,7 @@ function loadPublicPosts() {
 }
 
 function openComments(currentPostId) {
-    console.log(comments);
+    var commentHTML = document.getElementById("comments-listing");
     activePost = currentPostId;
     var commentsListing = "";
     for (i in comments) {
@@ -450,6 +442,7 @@ function sendRequest(requestUserId) {
     console.log(friendRequests[index]);
 }
 function loadTopPanel(){
+    var activeProfile = document.getElementById("active-profile");
     activeProfile.innerHTML = '<img class="avatar" src="'
         + users[userid].picture + '"><div id="username"><a href="user.html' + "?userid=" + userid + '&activeUer=' + userid + '">'
         + users[userid].firstName + '</a></div>';

@@ -196,15 +196,9 @@ var groups = [
 ]
 
 
-
-
 var userid;
 var viewingUser;
-
 var activePost;
-
-
-
 
 
 window.onload = function () {
