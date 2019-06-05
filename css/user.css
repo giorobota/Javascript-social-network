@@ -1,5 +1,5 @@
 h2{
-    text-align:center;
+    text-align: center;
     color: crimson;
 }
 
@@ -18,7 +18,7 @@ h2{
 }
 .timeline .profile-photos{
     background-image: url("../images/timeline-photo.jpg");
-    /* background-size: 100% 100%; */
+    background-size: 100% 100%; 
     background-repeat: no-repeat;
     height:100px;
     padding-top:240px;
@@ -44,9 +44,11 @@ h2{
 .user-info{
     padding:15px;
     font-family: sans-serif;
+    text-align: center;
 }
 
 #add-friend{
+    margin-top: 10px;
     float:right;
     color:whitesmoke;
     background-color:crimson;
@@ -61,6 +63,11 @@ h2{
     background-color:rgb(173, 16, 48);
     
 }
+#add-friend:disabled{
+    cursor: not-allowed;
+
+}
+
 .posts .single-post{
     border: crimson 1px solid;
     margin: 5px;

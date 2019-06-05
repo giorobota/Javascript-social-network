@@ -178,7 +178,7 @@ var stories = [
 var friendRequests = [
     {
         reqId: 0,
-        from: 0,
+        from: 2,
         to: 1,
     }
 ]
@@ -201,7 +201,7 @@ var groups = [
 var userid;
 var viewingUser;
 
-
+var activePost;
 
 
 
@@ -216,24 +216,27 @@ window.onload = function () {
     loadUserPosts(viewingUser);
 
     loadButtons();
-    
+    loadProfile();
+    loadFriendRequests();
 }
 function loadButtons() {
     var requestsOpenBtn = document.getElementById("friend-requests");
 
     requestsOpenBtn.onclick = function () {
-        loadFriendRequests();
+        var requestsModal = document.getElementById("friend-requests-modal");
+        requestsModal.style.display = 'block';
     }
-    
+
     var commentButton = document.getElementById("comment-button");
-    commentButton.onclick = function(){
+    commentButton.onclick = function () {
         addComment();
     }
     var commentCloseBtn = document.getElementById("close-comments-modal");
-    commentCloseBtn.onclick = function() {
+    commentCloseBtn.onclick = function () {
         var commentModal = document.getElementById("comments-modal");
         commentModal.style.display = "none";
     }
+    loadAddFriend();
 }
 
 function loadTopPanel(activeProfile) {
@@ -283,22 +286,22 @@ function addComment() {
 function loadUserPosts(viewingUser) {
     var postsHTML = document.getElementById("posts");
     var postListing = "<h2> posts </h2>";
-   
+
     for (i in posts) {
         var authorid = posts[i].userId;
 
         if (viewingUser == authorid) {
             var singlePost = '<div class="single-post"><div class="post-author"><img class="avatar" src="' +
-                users[authorid].picture + '"><a href="user.html?userid=' + authorid + '&activeUser=' + userid + '">' + users[authorid].firstName + " " + users[authorid].lastName + '</a>'; 
-                if(posts[i].groupId != -1) singlePost += '>><a href = "group.html?userid=' + userid + '&groupid=' + posts[i].groupId +'">'+
-                    groups[posts[i].groupId].groupName + '</a>';
+                users[authorid].picture + '"><a href="user.html?userid=' + authorid + '&activeUser=' + userid + '">' + users[authorid].firstName + " " + users[authorid].lastName + '</a>';
+            if (posts[i].groupId != -1) singlePost += '>><a href = "group.html?userid=' + userid + '&groupid=' + posts[i].groupId + '">' +
+                groups[posts[i].groupId].groupName + '</a>';
 
-                singlePost += '<div class="post-date">' +
+            singlePost += '<div class="post-date">' +
                 posts[i].date + '</div></div><hr><div class="post-content">' + posts[i].content +
                 '<div class="comments-button"><button class="open-story-modal" onclick = "openComments(' + i + ')">' +
                 'view comments</button></div></div></div>';
 
-                postListing += singlePost;
+            postListing += singlePost;
         }
     }
     postsHTML.innerHTML = postListing;
@@ -334,6 +337,7 @@ function loadFriendRequests() {
         }
     }
     requestsHTML.innerHTML = requestsListing;
+    
 
 }
 
@@ -353,4 +357,67 @@ function acceptRequest(reqId) {
     friendRequests[reqId].to = -1;
     console.log("accepted");
     loadFriendRequests();
+}
+function loadProfile() {
+    var userHTML = document.getElementById("profile-info");
+    userHTML.innerHTML = '<img id="profile-photo-big" src="' + users[viewingUser].picture + '"><div class="fullname">'
+        + users[viewingUser].firstName + " " + users[viewingUser].lastName + '</div>';
+    var userBio = document.getElementById("bio");
+    userBio.innerHTML =  users[viewingUser].bio;
+}
+function loadAddFriend(){
+    var button = document.getElementById("add-friend");
+    var userFriends = friends[userid].friends;
+    
+    
+    
+    if(userid==viewingUser){
+        button.style.display = 'none';
+    }else{
+        if(userFriends.includes(viewingUser)){
+            button.innerHTML = 'friends';
+            button.disabled = true;
+        }else{
+            var requestSent = false;
+            var requestRecieved = false;
+            var reqId;
+            for(i in friendRequests){
+                if(friendRequests[i].from == userid && friendRequests[i].to == viewingUser) requestSent = true;
+                if(friendRequests[i].to == userid && friendRequests[i].from == viewingUser) {
+                    requestRecieved = true;
+                    reqId = friendRequests[i].reqId;
+                }
+            }
+            if(requestSent){
+                console.log("requestSent");
+                button.innerHTML = 'request sent';
+                button.disabled = true;
+            }else  if(requestRecieved){
+                console.log("requestRecieved");
+                button.innerHTML = 'accept friend request';
+                button.onclick = function(){
+                    acceptRequest(reqId);
+                    button.innerHTML = 'friends';
+                    button.disabled = true;
+                }
+            }else {
+                button.onclick = function (){
+                    sendRequest(viewingUser);
+                    button.innerHTML = 'request sent';
+                    button.disabled = true;
+                }
+            }
+           
+
+
+        }
+    }
+}
+
+function sendRequest(requestUserId) {
+    var index = friendRequests.length;
+    friendRequests[index].from = userid;
+    friendRequests[index].to = requestUserId;
+    friendRequests[index].reqId = index;
+    console.log(friendRequests[index]);
 }
