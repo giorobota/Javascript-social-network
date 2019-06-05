@@ -182,200 +182,28 @@ var friendRequests = [
         to: 1,
     }
 ]
-var groups = [
-    {
-        groupId: 0,
-        groupName: "elit occaecat nulla",
-        description: "group description"
-    },
-    {
-        groupId: 1,
-        groupName: "fla cnosds",
-        description: "another group description"
-    }
-]
-var groupMembers = [
-    {
-        groupId: 0,
-        members: [0, 1, 2]
-    },
-    {
-        groupId: 1,
-        members: [1, 0]
-    }
-];
+
+
+
+
 var userid;
-var groupid;
-var activePost;
-var commentModal;
-var commentCloseBtn;
-var activeProfile;
-var navigation;
+var viewingUser;
 var postsHTML;
-var postContent;
-var postButton;
-var members;
-var requestsHTML;
-var commentHTML;
-var commentContent;
-var commentButton;
-var requestsModal;
-var requestsOpenBtn;
-var homeBtn;
 window.onload = function () {
-
-
-
-
-
     var url = new URL(window.location.href);
-    userid = Number(url.searchParams.get("userid"), 10);
-    groupid = Number(url.searchParams.get("groupid"), 10);
-    activePost = -1;
-    if (userid >= users.length) window.location.href = "index.html";
-    ommentModal = document.getElementById("comments-modal");
-    commentCloseBtn = document.getElementById("close-comments-modal");
-    activeProfile = document.getElementById("active-profile");
-    navigation = document.getElementById("navigation");
+    userid = Number(url.searchParams.get("activeUser"), 10);
+    viewingUser = Number(url.searchParams.get("userid"), 10);
     postsHTML = document.getElementById("posts");
-    postContent = document.getElementById("post-content");
-    postButton = document.getElementById("post-button");
-    requestsHTML = document.getElementById("friend-requests-listing");
-    members = document.getElementById("group-members");
-    commentHTML = document.getElementById("comments-listing");
-    commentContent = document.getElementById("comment-content");
-    commentButton = document.getElementById("comment-button");
-    commentModal = document.getElementById("comments-modal");
-
-    requestsModal = document.getElementById("friend-requests-modal");
-    requestsOpenBtn = document.getElementById("friend-requests");
-    homeBtn = document.getElementById("logo");
-
     loadTopPanel();
-
-    navigation.innerHTML = '<ul><li><a  href="home.html' + "?userid="
-        + userid + '">Home</a></li><li><a href="groups.html?userid=' + userid + '">Groups</a></li><li><a href="events.html'
-        + "?userid=" + userid + '">Events</a></li></ul></div>';
-
-    loadGroupPosts();
-
-    loadGroupMembers();
-
-    postButton.onclick = function () {
-        addPost(groupid);
-        loadGroupPosts();
-    }
-
-    // requestsModal.addEventListener("click", function () {
-    //     requestsModal.style.display = "none";
-    // });
-
-    homeBtn.addEventListener("click", function () {
-
-        window.location.href = "home.html?userid=" + userid;
-    });
-
-    requestsOpenBtn.onclick = function () {
-        if (requestsModal.style.display == "block") {
-            requestsModal.style.display = "none";
-        } else {
-            requestsModal.style.display = "block";
-        }
-    }
-
-    commentButton.onclick = function () {
-        addComment();
-    }
-    //friend reqeuests
-
-    loadFriendRequests();
-
-    commentCloseBtn.onclick = function () {
-        commentModal.style.display = "none";
-    }
-
-}
-function loadGroupPosts() {
-    var postListing = "";
-    for (i in posts) {
-        var authorid = posts[i].userId;
-        if (posts[i].groupId == groupid) {
-            postListing = '<div class="single-post"><div class="post-author"><img class="avatar" src="' +
-                users[authorid].picture + '"><a href="user.html?userid=' + authorid + '&activeUser=' + userid + '">' +
-                users[authorid].firstName + " " + users[authorid].lastName + '</a><div class="post-date">' +
-                posts[i].date + '</div></div><hr><div class="post-content">' + posts[i].content +
-                '<div class="comments-button"><button class="open-story-modal" onclick = "openComments(' + i + ')">' +
-                'view comments</button></div></div></div>' + postListing;
-
-        }
-    }
-    postsHTML.innerHTML = postListing;
-}
-function getDateNow() {
-    var date = new Date();
-    return + date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate();
-}
-function declineRequest(reqId) {
-    friendRequests[reqId].from = -1;
-    friendRequests[reqId].to = -1;
-    //reload friend requests
-    console.log("declined");
-    loadFriendRequests();
-
+    loadUserPosts(viewingUser);
 }
 
-function acceptRequest(reqId) {
-    friends[friendRequests[reqId].from].friends.push(friendRequests[reqId].to);
-    friends[friendRequests[reqId].to].friends.push(friendRequests[reqId].from);
-    friendRequests[reqId].from = -1;
-    friendRequests[reqId].to = -1;
-    console.log("accepted");
-    loadFriendRequests();
-}
-
-function loadFriendRequests() {
-    var requestsListing = "";
-    for (i in friendRequests) {
-
-        if (friendRequests[i].to == userid) {
-            requestsListing = '<div class="single-friend-request"><a href="user.html?userid=' + friendRequests[i].from + '&activeUer=' + userid +
-                '">' + users[friendRequests[i].from].firstName + " " + users[friendRequests[i].from].lastName +
-                '</a><button class="decline-request" onclick = "declineRequest(' + friendRequests[i].reqId + ')">decline</button>' +
-                '<button class="confirm-request" onclick = "acceptRequest(' + friendRequests[i].reqId + ')">confirm</button></div>' + requestsListing;
-        }
-    }
-    requestsHTML.innerHTML = requestsListing;
-}
-function loadGroupMembers() {
-    var memberList = "<h2>members:</h2>";
-    for (i in groupMembers[groupid].members) {
-        var memberid = groupMembers[groupid].members[i];
-        memberList += "<hr>" + '<div class="single-member"><div class="post-author"><img class="avatar" src="' + users[memberid].picture +
-            '"><a href="user.html?userid=' + memberid + '&activeUer=' + userid + '">' + users[memberid].firstName + " " + users[memberid].lastName + "</a></div></div>";
-    }
-    members.innerHTML = memberList;
-}
 function loadTopPanel() {
     activeProfile.innerHTML = '<img class="avatar" src="'
         + users[userid].picture + '"><div id="username"><a href="user.html' + "?userid=" + userid + '&activeUer=' + userid + '">'
         + users[userid].firstName + '</a></div>';
 }
-function addPost(currentGroupId) {
-    if (postContent.value != "") {
-        var index = posts.length;
-        posts[index] = {
-            postId: index,
-            userId: userid,
-            groupId: currentGroupId,
-            content: postContent.value,
-            date: getDateNow()
-        }
-        postContent.value = "";
-        console.log(posts[posts.length - 1]);
 
-
-    }
-}
 function openComments(currentPostId) {
     activePost = currentPostId;
     var commentsListing = "";
@@ -410,4 +238,28 @@ function addComment() {
 
         openComments(activePost);
     }
+}
+
+function loadUserPosts(viewingUser) {
+    var postListing = "";
+   
+    for (i in posts) {
+        var authorid = posts[i].userId;
+
+        if (viewingUser == authorid) {
+            var singlePost = '<div class="single-post"><div class="post-author"><img class="avatar" src="' +
+                users[authorid].picture + '"><a href="user.html?userid=' + authorid + '&activeUser=' + userid + '">'; 
+                if(posts[i].groupId != -1) singlePost += '--><a href = group.html?userid=' + userid + '&groupid=' posts[i].groupId +'">'+
+                    groups[posts[i].groupId].groupName + '</a>';
+
+                singlePost += users[authorid].firstName + " " + users[authorid].lastName + '</a><div class="post-date">' +
+                posts[i].date + '</div></div><hr><div class="post-content">' + posts[i].content +
+                '<div class="comments-button"><button class="open-story-modal" onclick = "openComments(' + i + ')">' +
+                'view comments</button></div></div></div>';
+
+                postListing += singlePost;
+
+        }
+    }
+    postsHTML.innerHTML = postListing;
 }

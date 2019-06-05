@@ -222,7 +222,7 @@ window.onload = function () {
     //     console.log(data);
     // });
     var url = new URL(window.location.href);
-    userid = Number(url.searchParams.get("userid"));
+    userid = Number(url.searchParams.get("userid"), 10);
     activePost = -1;
     commentContent = document.getElementById("comment-content");
     commentButton = document.getElementById("comment-button");
@@ -370,7 +370,7 @@ function openComments(currentPostId) {
         var authorid = comments[i].userid;
         if (comments[i].postid == currentPostId) {
             commentsListing = '<div class="single-post"><div class="post-author"><img class="avatar" src="' + users[authorid].picture +
-                '"><a href="user.html?userid=' + authorid + '&activeUer=' + userid + '">' + users[authorid].firstName + " " + users[authorid].lastName +
+                '"><a href="user.html?userid=' + authorid + '&activeUser=' + userid + '">' + users[authorid].firstName + " " + users[authorid].lastName +
                 '</a><div class="post-date">' + comments[i].date + '</div></div><hr><div class="post-content">' + comments[i].content +
                 '   </div></div>' + commentsListing;
             console.log(comments[i]);
