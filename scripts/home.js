@@ -447,3 +447,4 @@ function loadTopPanel(){
         + users[userid].picture + '"><div id="username"><a href="user.html' + "?userid=" + userid + '&activeUer=' + userid + '">'
         + users[userid].firstName + '</a></div>';
 }
+

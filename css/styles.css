@@ -1,0 +1,19 @@
+@import 'comments-modal.css';
+@import 'events.css';
+@import 'friend-requests-modal.css';
+@import 'group.css';
+@import 'groups.css';
+@import 'main.css';
+@import 'post.css';
+@import 'story-modal.css';
+@import 'top-bar.css';
+@import 'user.css';
+@import 'welcome.css';
+
+#main-component{
+    display: none;
+}
+#welcome-component{
+    display: block;
+}
+

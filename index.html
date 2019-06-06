@@ -2,47 +2,65 @@
 <html>
 
 <head>
-    <link rel="stylesheet" type="text/css" href="css/welcome.css">
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
     <script src="scripts/index.js"></script>
+
 </head>
 
 <body>
-    <h1>
-        welcome to bookface
-    </h1>
-    <div class="main-content">
-        <div class="login-section">
-            <h2> login </h2>
-            <div id = "message"></div>
-            <label>email</label>
-            <input type="text" id="email" placeholder="email">
+    <div id='welcome-component'>
+        <h1>
+            welcome to bookface
+        </h1>
+        <div class="main-content">
+            <div class="login-section">
+                <h2> login </h2>
+                <div id="message"></div>
+                <label>email</label>
+                <input type="text" id="email" placeholder="email">
 
-            <label>password</label>
-            <input type="password" id="password" placeholder="password">
+                <label>password</label>
+                <input type="password" id="password" placeholder="password">
 
 
-            <button id="login"> login </button>
+                <button id="login"> login </button>
 
+            </div>
+            <div class=signup-section>
+                <h2> create a new account </h2>
+
+
+                <label for="firstname">firstname</label>
+                <input type="text" id="firstname" placeholder="firstName">
+                <label for="lastname">lastname</label>
+                <input type="text" id="lastname" placeholder="lastname">
+
+                <label>email</label>
+                <input type="text" id="email-signup" placeholder="email">
+
+                <label for="password">password</label>
+                <input type="password" id="password-signup" placeholder="password">
+
+
+                <button id="signup">signup</button>
+
+            </div>
         </div>
-        <div class=signup-section>
-            <h2> create a new account </h2>
+    </div>
+    <div id='main-component'>
+        <div class="top-bar">
+            <img id="logo" src="images/logo.jpg">
+            <form action="/search-results.html">
+                find people: <input type="text" name="firstname">
 
-
-            <label for="firstname">firstname</label>
-            <input type="text" id="firstname" placeholder="firstName">
-            <label for="lastname">lastname</label>
-            <input type="text" id="lastname" placeholder="lastname">
-
-            <label >email</label>
-            <input type="text" id="email-signup" placeholder="email">
-
-            <label for="password">password</label>
-            <input type="password" id="password-signup" placeholder="password">
-
-
-            <button id="signup">signup</button>
-
+                <input type="submit" value="search" id="search">
+            </form>
+            <div class="active-profile">
+                <img id="friend-requests" src="images/friend-requests.jpg">
+                <div id="active-profile"></div>
+            </div>
         </div>
+        <div id = "page-component"></div>
     </div>
 
 </body>
