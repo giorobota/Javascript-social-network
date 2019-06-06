@@ -1,122 +1,30 @@
 [
     {
-        "userId": 0,
+        "id": 0,
+        "firstName": "John",
+        "lastName": "Doe",
         "picture": "images/default-profile.png",
-        "age": 26,
-        "name": "Daniels Meadows"
+        "bio": "some things about me",
+        "email": "johndoe@gmail.com",
+        "password": "1234"
     },
     {
-        "userId": 1,
-        "picture": "images/default-profile.png",
-        "age": 46,
-        "name": "Laurel Kelly"
+        "id": 1,
+        "firstName": "Johnathan",
+        "lastName": "Smith",
+        "picture": "images/https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4MSNr9P29sqLb80wUNPW6PoDiSqp0Dwth9e-JX3lgmeqbTLI9SQ-profile.png",
+        "bio": "If You Can't Handle Me at My worst, You Don't Deserve Me at My best",
+        "email": "jsmith@gmail.com",
+        "password": "1234"
     },
     {
-        "userId": 2,
-        "picture": "images/default-profile.png",
-        "age": 53,
-        "name": "Winifred Pitts"
-    },
-    {
-        "userId": 3,
-        "picture": "images/default-profile.png",
-        "age": 49,
-        "name": "Macias Clarke"
-    },
-    {
-        "userId": 4,
-        "picture": "images/default-profile.png",
-        "age": 17,
-        "name": "Jenifer Benjamin"
-    },
-    {
-        "userId": 5,
-        "picture": "images/default-profile.png",
-        "age": 28,
-        "name": "Chan Cooke"
-    },
-    {
-        "userId": 6,
-        "picture": "images/default-profile.png",
-        "age": 29,
-        "name": "Jessica Becker"
-    },
-    {
-        "userId": 7,
-        "picture": "images/default-profile.png",
-        "age": 43,
-        "name": "Blair Hebert"
-    },
-    {
-        "userId": 8,
-        "picture": "images/default-profile.png",
-        "age": 21,
-        "name": "Elaine Hinton"
-    },
-    {
-        "userId": 9,
-        "picture": "images/default-profile.png",
-        "age": 43,
-        "name": "West Atkinson"
-    },
-    {
-        "userId": 10,
-        "picture": "images/default-profile.png",
-        "age": 30,
-        "name": "Marcella Sanders"
-    },
-    {
-        "userId": 11,
-        "picture": "images/default-profile.png",
-        "age": 41,
-        "name": "Jerri Pennington"
-    },
-    {
-        "userId": 12,
-        "picture": "images/default-profile.png",
-        "age": 41,
-        "name": "Robinson Dickson"
-    },
-    {
-        "userId": 13,
-        "picture": "images/default-profile.png",
-        "age": 45,
-        "name": "Gonzalez Nichols"
-    },
-    {
-        "userId": 14,
-        "picture": "images/default-profile.png",
-        "age": 17,
-        "name": "Alston Weiss"
-    },
-    {
-        "userId": 15,
-        "picture": "images/default-profile.png",
-        "age": 20,
-        "name": "Woodward Lester"
-    },
-    {
-        "userId": 16,
-        "picture": "images/default-profile.png",
-        "age": 17,
-        "name": "Vincent Dickerson"
-    },
-    {
-        "userId": 17,
-        "picture": "images/default-profile.png",
-        "age": 52,
-        "name": "Katie Levine"
-    },
-    {
-        "userId": 18,
-        "picture": "images/default-profile.png",
-        "age": 40,
-        "name": "Brittney Langley"
-    },
-    {
-        "userId": 19,
-        "picture": "images/default-profile.png",
-        "age": 36,
-        "name": "Levy Bridges"
+        "id": 2,
+        "firstName": "Dave",
+        "lastName": "Smith",
+        "picture": "https://images.pexels.com/photos/1897503/pexels-photo-1897503.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+        "bio": "money over bitchez",
+        "email": "1234@gmail.com",
+        "password": "1234"
     }
+
 ]
