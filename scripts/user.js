@@ -312,17 +312,13 @@ function addComment() {
         }
         commentContent.value = "";
         console.log(comments[index]);
-
-
         openComments(activePost);
     }
 }
 function loadFriendRequests() {
-    
     var requestsHTML = document.getElementById("friend-requests-listing");
     var requestsListing = "";
     for (i in friendRequests) {
-
         if (friendRequests[i].to == userid) {
             requestsListing = '<div class="single-friend-request"><a href="user.html?userid=' + friendRequests[i].from + '&activeUer=' + userid +
                 '">' + users[friendRequests[i].from].firstName + " " + users[friendRequests[i].from].lastName +
@@ -331,8 +327,6 @@ function loadFriendRequests() {
         }
     }
     requestsHTML.innerHTML = requestsListing;
-    
-
 }
 
 function declineRequest(reqId) {
@@ -341,7 +335,6 @@ function declineRequest(reqId) {
     //reload friend requests
     console.log("declined");
     loadFriendRequests();
-
 }
 
 function acceptRequest(reqId) {
