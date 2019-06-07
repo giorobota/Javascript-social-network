@@ -218,24 +218,29 @@ window.onload = function () {
     var url = new URL(window.location.href);
     userid = Number(url.searchParams.get("userid"), 10);
     activePost = -1;
-    commentContent = document.getElementById("comment-content");
-    commentButton = document.getElementById("comment-button");
-    storyModal = document.getElementById("story-modal");
-    commentModal = document.getElementById("comments-modal");
-    requestsModal = document.getElementById("friend-requests-modal");
+   
+   
+    
+    
+    
     storyHTML = document.getElementById("story-listing");
     postsHTML = document.getElementById("posts");
+    
     postContent = document.getElementById("post-content");
+    suggestionsHTML = document.getElementById("friend-suggestion-listing");
+    commentContent = document.getElementById("comment-content");
+    commentButton = document.getElementById("comment-button");
     postButton = document.getElementById("post-button");
-
     
 
-    requestsOpenBtn = document.getElementById("friend-requests");
+    
     commentCloseBtn = document.getElementById("close-comments-modal");
-    requestModal = document.getElementById("friend-requests-modal");
-    homeBtn = document.getElementById("logo");
-    suggestionsHTML = document.getElementById("friend-suggestion-listing");
-
+    commentModal = document.getElementById("comments-modal");
+    
+    storyModal = document.getElementById("story-modal");
+    storyModal.addEventListener("click", function () {
+        storyModal.style.display = "none";
+    });
 
     if (userid >= users.length) window.location.href = "index.html";
 
@@ -251,12 +256,15 @@ window.onload = function () {
 
     loadPublicPosts();
 
-    loadFriendSuggestions()
+    loadFriendSuggestions();
 
     loadStories();
 
     loadFriendRequests();
 
+
+    requestModal = document.getElementById("friend-requests-modal");
+    requestsOpenBtn = document.getElementById("friend-requests");
     requestsOpenBtn.onclick = function () {
         if (requestsModal.style.display == "block") {
             requestsModal.style.display = "none";
@@ -270,9 +278,7 @@ window.onload = function () {
         window.location.href = "home.html?userid=" + userid;
     }
 
-    storyModal.addEventListener("click", function () {
-        storyModal.style.display = "none";
-    });
+
 
     // requestModal.onclick = function () {
     //     requestModal.style.display = "none";
