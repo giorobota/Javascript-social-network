@@ -239,8 +239,11 @@ var router;
 var userid;
 var groupid;
 var activePost;
-const baseUrl = "index.html" + hash;
+var templates = {};
+var map;
 function initRouter() {
+
+
     var Navigo = require("navigo");
     var root = null;
     var useHash = true;
@@ -251,7 +254,7 @@ function initRouter() {
             showWelcomePage();
         },
 
-        'home': function () {
+        'home': function (params) {
             showHomePage();
 
         },
@@ -293,17 +296,22 @@ function initRouter() {
 }
 
 window.onload = function () {
+    map = new Map();
+    getAllHTML();
     userid = -1;
     groupid = -1;
     activePost = -1;
     initRouter();
-
+    var content = document.querySelector('link[rel="import"]').import;
+    console.log(content);
+    Document.getElementById("routing-component").innerHTML = content;
 
 
 }
 
-function showHomePage() {
-    loadHTML('./home.html', 'routing-component');
+function showHomePage(userid1) {
+    this.userid = userid1;
+    loadPage('home');
     loadTopPanel();
     loadPublicPosts();
     loadFriendSuggestions();
@@ -315,7 +323,7 @@ function showHomePage() {
     initStoryModal();
     initPostButtons();
 }
-function initPostButtons(){
+function initPostButtons() {
     var postButton = document.getElementById("post-button");
     var commentCloseBtn = document.getElementById("close-comments-modal");
     var commentButton = document.getElementById("comment-button");
@@ -354,14 +362,23 @@ function initRequestsButton() {
         }
     }
 }
-function loadNavigation() {
+function loadNavigation(activePage) {
     var navigation = document.getElementById("navigation");
-    navigation.innerHTML = '<ul><li><a class="active" href="home" data-navigo>Home</a></li><li>' +
-        '<a href="groups" data-navigo>Groups</a></li><li><a href="events" data-navigo>Events</a></li></ul></div>';
+    navigation.innerHTML = '<ul><li><a id = "homeNav" href="home" data-navigo>Home</a></li><li>' +
+        '<a href="groups" id = "groupsNav" data-navigo>Groups</a></li><li><a href="events" id = "eventsNav" data-navigo>Events</a></li></ul></div>';
+    switch (activePage) {
+        case "home": document.getElementById("homeNav").className = "active";
+
+        case "groups": document.getElementById("groupsNav").className = "active";
+
+        case "events": document.getElementById("eventsNav").className = "active";
+
+        default:
+    }
+
 }
 function showWelcomePage() {
-
-    loadHTML('./welcome.html', 'routing-component');
+    loadPage('welcome');
     var passwordField = document.getElementById("password");
     var emailField = document.getElementById("email");
     var loginBtn = document.getElementById("login");
@@ -468,6 +485,7 @@ function openComments(currentPostId) {
 
 
     }
+    var commentModal = document.getElementById("comments-modal");
     commentHTML.innerHTML = commentsListing;
     commentModal.style.display = "block";
 }
@@ -511,6 +529,7 @@ function addPost(currentGroupId) {
 }
 
 function openStory(currentStoryId) {
+    storymodal = document.getElementById("story-modal");
     storyModal.innerHTML = '<div class="story-modal-content"><img src="' + stories[currentStoryId].url + '"></div>';
     storyModal.style.display = "block";
 }
@@ -538,6 +557,7 @@ function sendRequest(requestUserId) {
     console.log(friendRequests[index]);
 }
 function loadTopPanel() {
+    //will maybe change later to save in templates
     var activeProfile = document.getElementById("active-profile");
     activeProfile.innerHTML = '<img class="avatar" src="'
         + users[userid].picture + '"><div id="username"><a href="user.html' + "?userid=" + userid + '&activeUer=' + userid + '">'
@@ -557,13 +577,83 @@ function loadGroups() {
     }
     groupList.innerHTML = res;
 }
-function loadHTML(url, id) {
-    req = new XMLHttpRequest();
-    req.open('GET', url);
-    req.send();
-    req.onload = () => {
-        document.getElementById(id).innerHTML = req.responseText;
-    };
+function getAllHTML() {
+    var fs = require('file-system');
+    fs.readFile('components/welcome.html', function (err, data) {
+        
+        console.log(data);
+        templates.welcome = data;
+    });
+    // var welcome = new XMLHttpRequest();
+    // welcome.open('GET', './components/welcome.html');
+    // welcome.onload = function () {
+    //     // console.log(topBar.responseText);
+    //     templates.welcome = welcome.responseText;
+    //     map.set(1, welcome.responseText);
+    //     document.getElementById("routing-component").innerHTML = welcome.responseText;
+
+    // }
+
+    welcome.send();
+    var topBar = new XMLHttpRequest();
+    topBar.open('GET', './components/top-bar.html');
+    topBar.onreadystatechange = function () {
+        // console.log(topBar.responseText);
+        templates.topBar = topBar.responseText;
+    }
+    topBar.send();
+    var storyModal = new XMLHttpRequest();
+    storyModal.open('GET', './components/story-modal.html');
+    storyModal.onreadystatechange = function () {
+        // console.log(storyModal.responseText);
+        templates.storyModal = storyModal.responseText;
+    }
+    storyModal.send();
+    var commentsModal = new XMLHttpRequest();
+    commentsModal.open('GET', './components/comments-modal.html');
+    commentsModal.onreadystatechange = function () {
+        // console.log(commentsModal.responseText);
+        templates.commentsModal = commentsModal.responseText;
+    }
+    commentsModal.send();
+    var requestsModal = new XMLHttpRequest();
+    requestsModal.open('GET', './components/friend-requests-modal.html');
+    requestsModal.onreadystatechange = function () {
+        // console.log(requestsModal.responseText);
+        templates.requestsModal = requestsModal.response;
+    }
+    requestsModal.send();
+    var home = new XMLHttpRequest();
+    home.open('GET', './components/home.html');
+    home.onreadystatechange = function () {
+        // console.log(home.responseText);
+        var res = home.responseText;
+        templates.home = res;
+    }
+
+    home.send();
+    console.log(templates);
+    console.log(map);
+
+}
+function loadPage(pageName) {
+    var currPage = document.getElementById("routing-component");
+    switch (pageName) {
+        case "welcome": {
+            map.set(1, '<div>klevar</div>');
+            currPage.innerHTML = map.get(1);
+            console.log(map.get(1));
+            console.log(map);
+        }
+        case "home": {
+            currPage.innerHTML = templates.topBar + templates.home + templates.commentsModal + templates.requestsModal +
+                templates.commentModal;
+        }
+        case "groups": {
+
+        }
+        default:
+    }
 }
 
 

@@ -1,5 +1,114 @@
-<top-bar-component></top-bar-component>
-<home-component></home-component>
-<friend-requests-modal-component></friend-requests-modal-component>
-<comments-modal-component></comments-modal-component>
-<story-modal-component></story-modal-component>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>BookFace</title>
+
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/top-bar.css">
+    <link rel="stylesheet" type="text/css" href="css/story-modal.css">
+    <link rel="stylesheet" type="text/css" href="css/post.css">
+    <link rel="stylesheet" type="text/css" href="css/comments-modal.css">
+    <link rel="stylesheet" type="text/css" href="css/friend-requests-modal.css">
+    <script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
+    
+    <script src="scripts/home.js"></script>
+</head>
+
+<body>
+    <div class="top-bar">
+
+        <img id="logo" src="images/logo.jpg">
+        <form action="/search-results.html">
+            find people: <input type="text" name="firstname">
+
+            <input type="submit" value="search" id="search">
+        </form>
+        <div class="active-profile">
+            <img id="friend-requests" src="images/friend-requests.jpg">
+            <div id="active-profile"></div>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="left-section" id="navigation">
+            <!-- <ul>
+                <li>
+                    <a class="active" href="">Home</a>
+                </li>
+                <li>
+                    <a href="groups.html">Groups</a>
+                </li>
+                <li>
+                    <a href="events.html">Events</a>
+                </li>
+            </ul> -->
+
+        </div>
+        <div class="middle-section">
+            <div class="create-post">
+                <h3> Create post </h3>
+                
+                    <textarea class="post-content" id="post-content"></textarea>
+                    <button class="post-button" id="post-button"> post </button>
+                
+            </div>
+            <div class="posts" id="posts">
+            </div>
+        </div>
+        <div class="right-section">
+            <div class="stories">
+                <h2>stories:</h2>
+                <div id="story-listing">
+
+                </div>
+
+
+            </div>
+
+            <div class="friend-suggestions">
+                <h2>friend suggestions:</h2>
+                <div id = "friend-suggestion-listing"></div>
+ 
+
+            </div>
+        </div>
+
+    </div>
+
+    <div id="comments-modal" class="comments-modal">
+        <div class="comments-modal-content">
+            <div class="modal-header">
+                <button id="close-comments-modal" class="close-modal">close</button>
+            </div>
+            <div class="create-post">
+                <h3> add a comment </h3>
+                
+                    <textarea class="post-content" id = "comment-content"></textarea>
+                    <button class="post-button" id = "comment-button"> post </button>
+                
+            </div>
+
+            <h2> comments </h2>
+            <div id="comments-listing">
+
+
+            </div>
+
+        </div>
+
+    </div>
+    <div id="story-modal" class="story-modal">
+        <div class="story-modal-content">
+            <img src="images/story-image.png">
+        </div>
+    </div>
+
+    <div class="friend-requests-modal" id="friend-requests-modal">
+        <div class="friend-requests-modal-content">
+            <h2> friend requests </h2>
+            <div id = "friend-requests-listing"></div>
+        </div>
+    </div>
+
+
+</body>
