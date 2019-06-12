@@ -1,7 +1,7 @@
-body {
+.welcome {
     background-image: url("../images/welcome2.jpg");
     background-size: 100%;
-}
+} 
 h1{
     color: white;
     text-align: center;
@@ -17,7 +17,7 @@ h2{
     font-weight: bold;
 }
 
-input{
+.welcome input{
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -25,9 +25,9 @@ input{
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
-  }
+}
   
-input[type=submit] {
+.welcome input[type=submit] {
     width: 100%;
     background-color: rgb(74, 172, 78);
     color: white;
@@ -40,9 +40,7 @@ input[type=submit] {
     font-size: 25px;
  }
   
-input[type=submit]:hover {
-    background-color: #409b44;
-}
+
 
 .login-section{
     width: 30%;
@@ -65,4 +63,16 @@ input[type=submit]:hover {
     padding: 20px;
     font-size:20px;
     
+}
+.welcome #login, #signup{
+    background-color:crimson;
+    font-size:18px;
+    width: 100%;
+    color: white;
+    border: none;
+    height: 30px;
+}
+.welcome #login:hover, #signup:hover{
+    cursor: pointer;
+    opacity: 0.7;
 }

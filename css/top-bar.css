@@ -21,7 +21,7 @@ body{
     border-radius: 50%;
     cursor: pointer;
 }
-.top-bar form{ 
+.top-bar .search{ 
     padding-top: 10px;
     float: left;
     width:50%;
@@ -46,15 +46,23 @@ body{
     border-radius: 50%;
     float:left;
 }
-#friend-requests{ 
+#friend-requests, #logout{ 
     height: 30px;
     width: 30px;
     padding-top: 5px;
     border-radius: 30%;
-    float:left;
+ 
     margin-right: 4%;
     cursor: pointer;
 }
+#friend-requests{
+    float: left;
+}
+#logout{
+    float: right;
+    /* border-radius: 50%; */
+}
+
 .avatar:hover{
     cursor: pointer;
 }

@@ -241,6 +241,7 @@ var groupid;
 var activePost;
 var templates = {};
 var map;
+
 function initRouter() {
 
 
@@ -268,13 +269,14 @@ function initRouter() {
         'home/post/:id': function (params) {
             showHomePage();
             //show post
+            openComments(params.id);
         },
         'groups': function () {
             //show groups
 
         },
         'group/:groupid/:postid': function (params) {
-
+            
 
         },
         'group/:groupid': function (params) {
@@ -289,35 +291,51 @@ function initRouter() {
 
 
         },
+        'user/:id': function (params){
+            console.log("visiting user " + params.id);
+        }
 
 
     });
     router.resolve();
 }
 
+
 window.onload = function () {
-    map = new Map();
-    getAllHTML();
+    loadTemplates();
+
+    
+    
     userid = -1;
     groupid = -1;
     activePost = -1;
     initRouter();
-    var content = document.querySelector('link[rel="import"]').import;
-    console.log(content);
-    Document.getElementById("routing-component").innerHTML = content;
+
+
+
 
 
 }
+function loadTemplates() {
+    templates.welcome = require("../components/welcome");
+    templates.topBar = require("../components/top-bar");
+    templates.commentModal = require("../components/comments-modal");
+    templates.requestsModal = require("../components/friend-requests-modal");
+    templates.home = require("../components/home");
+    templates.storyModal = require("../components/story-modal");
+    templates.group = require("../components/group");
+    templates.groups = require("../components/groups");
+}
 
-function showHomePage(userid1) {
-    this.userid = userid1;
+function showHomePage() {
     loadPage('home');
+    
     loadTopPanel();
     loadPublicPosts();
     loadFriendSuggestions();
     loadStories();
     loadFriendRequests();
-    loadNavigation();
+    loadNavigation("home");
     initRequestsButton();
     initHomeButton();
     initStoryModal();
@@ -328,6 +346,7 @@ function initPostButtons() {
     var commentCloseBtn = document.getElementById("close-comments-modal");
     var commentButton = document.getElementById("comment-button");
     commentCloseBtn.onclick = function () {
+        commentModal = document.getElementById("comments-modal");
         commentModal.style.display = "none";
     }
 
@@ -350,6 +369,11 @@ function initHomeButton() {
     homeBtn.onclick = function () {
         router.navigate('home');
     }
+    var logoutBtn = document.getElementById("logout");
+    logoutBtn.onclick = function () {
+        userid = -1;
+        router.navigate("welcome");
+    }
 }
 function initRequestsButton() {
     var requestsModal = document.getElementById("friend-requests-modal");
@@ -368,27 +392,31 @@ function loadNavigation(activePage) {
         '<a href="groups" id = "groupsNav" data-navigo>Groups</a></li><li><a href="events" id = "eventsNav" data-navigo>Events</a></li></ul></div>';
     switch (activePage) {
         case "home": document.getElementById("homeNav").className = "active";
+            break;
 
         case "groups": document.getElementById("groupsNav").className = "active";
-
+            break;
         case "events": document.getElementById("eventsNav").className = "active";
-
-        default:
+            break;
     }
 
 }
 function showWelcomePage() {
-    loadPage('welcome');
+    loadPage("welcome");
+
     var passwordField = document.getElementById("password");
     var emailField = document.getElementById("email");
     var loginBtn = document.getElementById("login");
     var loginMsg = document.getElementById("message");
     loginBtn.addEventListener("click", function () {
 
-        for (user in users) {
+        for (var user in users) {
             if (users[user].email == emailField.value && users[user].password == passwordField.value) {
-                userid = user;
+                userid = Number(user, 10);
+                console.log(user);
+                console.log(userid);
                 router.navigate("home");
+                return;
             }
         }
         loginMsg.innerHTML = "incorrect username or password";
@@ -443,7 +471,7 @@ function loadStories() {
         //display only friends' stories and his
         if (friends[userid].friends.includes(author) || author == userid) {
             storyListing = '<div class="single-story"><div class="post-author"><img class="avatar" src="' + users[author].picture +
-                '"><button class="open-story-modal" href="javascript:;" onclick = "openStory(' + i + ')">' +
+                '"><button class="open-story-modal"  onclick = "openStory(' + i + ')">' +
                 users[author].firstName + " " + users[author].lastName + '</button></div></div>' + storyListing;
         }
     }
@@ -454,22 +482,50 @@ function loadPublicPosts() {
     var postsHTML = document.getElementById("posts");
     var postListing = "";
     var userFriends = friends[userid].friends;
+    
     for (i in posts) {
+
         var authorid = posts[i].userId;
         if (posts[i].groupId == -1 && (userFriends.includes(authorid) || userid == authorid)) {
-            postListing = '<div class="single-post"><div class="post-author"><img class="avatar" src="' +
-                users[authorid].picture + '"><a href="user.html?userid=' + authorid + '&activeUer=' + userid + '">' +
-                users[authorid].firstName + " " + users[authorid].lastName + '</a><div class="post-date">' +
-                posts[i].date + '</div></div><hr><div class="post-content">' + posts[i].content +
-                '<div class="comments-button"><button class="open-story-modal" onclick = "openComments(' + i + ')">' +
-                'view comments</button></div></div></div>' + postListing;
+            // postListing = '<div class="single-post"><div class="post-author"><img class="avatar" src="' +
+            //     users[authorid].picture + '"><a href="user.html?userid=' + authorid + '&activeUer=' + userid + '">' +
+            //     users[authorid].firstName + " " + users[authorid].lastName + '</a><div class="post-date">' +
+            //     posts[i].date + '</div></div><hr><div class="post-content">' + posts[i].content +
+            //     '<div class="comments-button"><button class="open-story-modal" onclick="test()">' +
+            //     'view comments</button></div></div></div>' + postListing;
+
+                postListing =`<div class="single-post">
+                                    <div class="post-author">
+                                        <img class="avatar" src="${users[authorid].picture}">
+                                        <a href="${"user/" + authorid}" data-navigo> ${users[authorid].firstName + " " + users[authorid].lastName}</a>
+                                        <div class="post-date">
+                                            ${posts[i].date}
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="post-content">${posts[i].content}
+                                        <div class="comments-button">
+                                            <button class="open-story-modal" id="${i}">view comments</button>
+                                        </div>
+                                    </div>
+                                </div>` + postListing;
 
         }
     }
     postsHTML.innerHTML = postListing;
+    var buttons = document.getElementsByClassName("open-story-modal");
+    for(i in buttons){
+        buttons[i].onclick = function(){
+            openComments(buttons[i].id);
+        }
+    }
 }
 
+
+
 function openComments(currentPostId) {
+    activePost = Number(currentPostId, 10);
+    console.log("opening comments");
     var commentHTML = document.getElementById("comments-listing");
     activePost = currentPostId;
     var commentsListing = "";
@@ -495,7 +551,7 @@ function addComment() {
     if (commentContent.value != "") {
         var index = comments.length;
         comments[index] = {
-            postid: activePost,
+            postid: Number(activePost),
             userid: userid,
             content: commentContent.value,
             date: getDateNow()
@@ -557,10 +613,11 @@ function sendRequest(requestUserId) {
     console.log(friendRequests[index]);
 }
 function loadTopPanel() {
-    //will maybe change later to save in templates
+    //will need to test <a> link
+    console.log(userid);
     var activeProfile = document.getElementById("active-profile");
     activeProfile.innerHTML = '<img class="avatar" src="'
-        + users[userid].picture + '"><div id="username"><a href="user.html' + "?userid=" + userid + '&activeUer=' + userid + '">'
+        + users[userid].picture + '"><div id="username"><a href="user/' + userid +'" data-navigo>'
         + users[userid].firstName + '</a></div>';
 }
 
@@ -577,82 +634,18 @@ function loadGroups() {
     }
     groupList.innerHTML = res;
 }
-function getAllHTML() {
-    var fs = require('file-system');
-    fs.readFile('components/welcome.html', function (err, data) {
-        
-        console.log(data);
-        templates.welcome = data;
-    });
-    // var welcome = new XMLHttpRequest();
-    // welcome.open('GET', './components/welcome.html');
-    // welcome.onload = function () {
-    //     // console.log(topBar.responseText);
-    //     templates.welcome = welcome.responseText;
-    //     map.set(1, welcome.responseText);
-    //     document.getElementById("routing-component").innerHTML = welcome.responseText;
 
-    // }
-
-    welcome.send();
-    var topBar = new XMLHttpRequest();
-    topBar.open('GET', './components/top-bar.html');
-    topBar.onreadystatechange = function () {
-        // console.log(topBar.responseText);
-        templates.topBar = topBar.responseText;
-    }
-    topBar.send();
-    var storyModal = new XMLHttpRequest();
-    storyModal.open('GET', './components/story-modal.html');
-    storyModal.onreadystatechange = function () {
-        // console.log(storyModal.responseText);
-        templates.storyModal = storyModal.responseText;
-    }
-    storyModal.send();
-    var commentsModal = new XMLHttpRequest();
-    commentsModal.open('GET', './components/comments-modal.html');
-    commentsModal.onreadystatechange = function () {
-        // console.log(commentsModal.responseText);
-        templates.commentsModal = commentsModal.responseText;
-    }
-    commentsModal.send();
-    var requestsModal = new XMLHttpRequest();
-    requestsModal.open('GET', './components/friend-requests-modal.html');
-    requestsModal.onreadystatechange = function () {
-        // console.log(requestsModal.responseText);
-        templates.requestsModal = requestsModal.response;
-    }
-    requestsModal.send();
-    var home = new XMLHttpRequest();
-    home.open('GET', './components/home.html');
-    home.onreadystatechange = function () {
-        // console.log(home.responseText);
-        var res = home.responseText;
-        templates.home = res;
-    }
-
-    home.send();
-    console.log(templates);
-    console.log(map);
-
-}
 function loadPage(pageName) {
     var currPage = document.getElementById("routing-component");
     switch (pageName) {
-        case "welcome": {
-            map.set(1, '<div>klevar</div>');
-            currPage.innerHTML = map.get(1);
-            console.log(map.get(1));
-            console.log(map);
-        }
-        case "home": {
-            currPage.innerHTML = templates.topBar + templates.home + templates.commentsModal + templates.requestsModal +
-                templates.commentModal;
-        }
-        case "groups": {
-
-        }
-        default:
+        case "welcome": currPage.innerHTML = templates.welcome;
+            break;
+        case "home":
+            currPage.innerHTML = templates.topBar + templates.home + templates.commentModal + templates.requestsModal +
+                templates.commentModal + templates.storyModal;
+            break;
+        case "groups":
+            break;
     }
 }
 
