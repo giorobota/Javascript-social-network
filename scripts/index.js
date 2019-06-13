@@ -12,7 +12,7 @@ var users = [
         id: 1,
         firstName: "Johnathan",
         lastName: "Smith",
-        picture: "images/https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4MSNr9P29sqLb80wUNPW6PoDiSqp0Dwth9e-JX3lgmeqbTLI9SQ-profile.png",
+        picture: "https://www.eharmony.co.uk/dating-advice/wp-content/uploads/2018/06/datingprofile2-900x600.jpg",
         bio: "If You Can't Handle Me at My worst, You Don't Deserve Me at My best",
         email: "jsmith@gmail.com",
         password: "1234"
@@ -241,61 +241,89 @@ var groupid;
 var activePost;
 var templates = {};
 var map;
-
+var hash = '#!';
+var pageUrl = "index.html";
+var activePage;
 function initRouter() {
 
 
     var Navigo = require("navigo");
     var root = null;
     var useHash = true;
-    var hash = '#!';
+
     router = new Navigo(root, useHash, hash);
     router.on({
         'welcome': function () {
+            activePage = 'welcome';
             showWelcomePage();
         },
 
-        'home': function (params) {
-            showHomePage();
+        'home': function () {
 
-        },
-        '': function () {
-            showWelcomePage();
+            userid = localStorage.getItem("userid");
+            if (activePage != 'home') {
+                showHomePage();
+                activePage = 'home';
+            }
+
         },
         'home/story/:id': function (params) {
-            showHomePage();
-            //show story
+            userid = localStorage.getItem("userid");
+            if (activePage != 'home') {
+                showHomePage();
+                activePage = "home";
+            }
+            openStory(params.id);
         },
         'home/post/:id': function (params) {
-            showHomePage();
-            //show post
+            userid = localStorage.getItem("userid");
+            if (activePage != 'home') {
+                showHomePage();
+                activePage = "home";
+            }
             openComments(params.id);
         },
         'groups': function () {
-            //show groups
+            userid = localStorage.getItem("userid");
+            if (activePage != "groups") {
+                //show groups
+            }
+
 
         },
         'group/:groupid/:postid': function (params) {
-            
+            userid = localStorage.getItem("userid");
+            if (activePage != 'group') {
+                //show group page
+                groupid = params.groupid;
+                activePage = "group";
+            }
+
+            openComments(patams.postid);
 
         },
         'group/:groupid': function (params) {
+            userid = localStorage.getItem("userid");
+            groupid = params.groupid;
 
 
         },
         'events': function (params) {
+            userid = localStorage.getItem("userid");
 
 
         },
         'events/:id': function (params) {
+            userid = localStorage.getItem("userid");
 
 
         },
-        'user/:id': function (params){
+        'user/:id': function (params) {
             console.log("visiting user " + params.id);
-        }
-
-
+        },
+    });
+    router.notFound(function (query) {
+        router.navigate("welcome");
     });
     router.resolve();
 }
@@ -304,8 +332,8 @@ function initRouter() {
 window.onload = function () {
     loadTemplates();
 
-    
-    
+
+
     userid = -1;
     groupid = -1;
     activePost = -1;
@@ -329,7 +357,6 @@ function loadTemplates() {
 
 function showHomePage() {
     loadPage('home');
-    
     loadTopPanel();
     loadPublicPosts();
     loadFriendSuggestions();
@@ -347,6 +374,7 @@ function initPostButtons() {
     var commentButton = document.getElementById("comment-button");
     commentCloseBtn.onclick = function () {
         commentModal = document.getElementById("comments-modal");
+        router.navigate(activePage);
         commentModal.style.display = "none";
     }
 
@@ -361,6 +389,7 @@ function initPostButtons() {
 function initStoryModal() {
     var storyModal = document.getElementById("story-modal");
     storyModal.addEventListener("click", function () {
+        router.navigate(activePage);
         storyModal.style.display = "none";
     });
 }
@@ -372,6 +401,7 @@ function initHomeButton() {
     var logoutBtn = document.getElementById("logout");
     logoutBtn.onclick = function () {
         userid = -1;
+        localStorage.setItem("userid", -1);
         router.navigate("welcome");
     }
 }
@@ -388,17 +418,29 @@ function initRequestsButton() {
 }
 function loadNavigation(activePage) {
     var navigation = document.getElementById("navigation");
-    navigation.innerHTML = '<ul><li><a id = "homeNav" href="home" data-navigo>Home</a></li><li>' +
-        '<a href="groups" id = "groupsNav" data-navigo>Groups</a></li><li><a href="events" id = "eventsNav" data-navigo>Events</a></li></ul></div>';
+    navigation.innerHTML = `<ul>
+        <li><button id = "homeNav">Home</button></li>
+        <li><button id = "groupsNav">Groups</button></li>
+        <li><button id = "eventsNav">Events</button></li>
+        </ul></div>`;
     switch (activePage) {
         case "home": document.getElementById("homeNav").className = "active";
             break;
-
         case "groups": document.getElementById("groupsNav").className = "active";
             break;
         case "events": document.getElementById("eventsNav").className = "active";
             break;
     }
+    document.getElementById("homeNav").onclick = function () {
+        router.navigate("home");
+    }
+    document.getElementById("groupsNav").onclick = function () {
+        router.navigate("groups");
+    }
+    document.getElementById("eventsNav").onclick = function () {
+        router.navigate("events");
+    }
+
 
 }
 function showWelcomePage() {
@@ -413,8 +455,7 @@ function showWelcomePage() {
         for (var user in users) {
             if (users[user].email == emailField.value && users[user].password == passwordField.value) {
                 userid = Number(user, 10);
-                console.log(user);
-                console.log(userid);
+                localStorage.setItem("userid", userid);
                 router.navigate("home");
                 return;
             }
@@ -454,10 +495,10 @@ function loadFriendRequests() {
     for (i in friendRequests) {
 
         if (friendRequests[i].to == userid) {
-            requestsListing = '<div class="single-friend-request"><a href="user.html?userid=' + friendRequests[i].from + '&activeUer=' + userid +
-                '">' + users[friendRequests[i].from].firstName + " " + users[friendRequests[i].from].lastName +
-                '</a><button class="decline-request" onclick = "declineRequest(' + friendRequests[i].reqId + ')">decline</button>' +
-                '<button class="confirm-request" onclick = "acceptRequest(' + friendRequests[i].reqId + ')">confirm</button></div>' + requestsListing;
+            requestsListing = `<div class="single-friend-request">
+            <a href="${pageUrl + hash + "user/" + friendRequests[i].from}"> ${users[friendRequests[i].from].firstName + " " + users[friendRequests[i].from].lastName}</a>
+            <button class="decline-request" onclick = "declineRequest(${friendRequests[i].reqId})">decline</button>
+            <button class="confirm-request" onclick = "acceptRequest(${friendRequests[i].reqId})">confirm</button></div>` + requestsListing;
         }
     }
     requestsHTML.innerHTML = requestsListing;
@@ -470,9 +511,9 @@ function loadStories() {
         var author = stories[i].userid;
         //display only friends' stories and his
         if (friends[userid].friends.includes(author) || author == userid) {
-            storyListing = '<div class="single-story"><div class="post-author"><img class="avatar" src="' + users[author].picture +
-                '"><button class="open-story-modal"  onclick = "openStory(' + i + ')">' +
-                users[author].firstName + " " + users[author].lastName + '</button></div></div>' + storyListing;
+            storyListing = `<div class="single-story"><div class="post-author">
+            <img class="avatar" src="${users[author].picture}"><a class="open-story-modal"  href="${pageUrl + hash + "home/story/" + i}">
+                ${users[author].firstName + " " + users[author].lastName}</button></div></div>` + storyListing;
         }
     }
     storyHTML.innerHTML = storyListing;
@@ -482,22 +523,17 @@ function loadPublicPosts() {
     var postsHTML = document.getElementById("posts");
     var postListing = "";
     var userFriends = friends[userid].friends;
-    
+
     for (i in posts) {
 
         var authorid = posts[i].userId;
         if (posts[i].groupId == -1 && (userFriends.includes(authorid) || userid == authorid)) {
-            // postListing = '<div class="single-post"><div class="post-author"><img class="avatar" src="' +
-            //     users[authorid].picture + '"><a href="user.html?userid=' + authorid + '&activeUer=' + userid + '">' +
-            //     users[authorid].firstName + " " + users[authorid].lastName + '</a><div class="post-date">' +
-            //     posts[i].date + '</div></div><hr><div class="post-content">' + posts[i].content +
-            //     '<div class="comments-button"><button class="open-story-modal" onclick="test()">' +
-            //     'view comments</button></div></div></div>' + postListing;
 
-                postListing =`<div class="single-post">
+
+            postListing = `<div class="single-post">
                                     <div class="post-author">
                                         <img class="avatar" src="${users[authorid].picture}">
-                                        <a href="${"user/" + authorid}" data-navigo> ${users[authorid].firstName + " " + users[authorid].lastName}</a>
+                                        <a href="${pageUrl + hash + "user/" + authorid}" data-navigo> ${users[authorid].firstName + " " + users[authorid].lastName}</a>
                                         <div class="post-date">
                                             ${posts[i].date}
                                         </div>
@@ -505,7 +541,7 @@ function loadPublicPosts() {
                                     <hr>
                                     <div class="post-content">${posts[i].content}
                                         <div class="comments-button">
-                                            <button class="open-story-modal" id="${i}">view comments</button>
+                                            <a href = "${pageUrl + hash + "home/post/" + i}" class="open-story-modal" >view comments</button>
                                         </div>
                                     </div>
                                 </div>` + postListing;
@@ -513,12 +549,7 @@ function loadPublicPosts() {
         }
     }
     postsHTML.innerHTML = postListing;
-    var buttons = document.getElementsByClassName("open-story-modal");
-    for(i in buttons){
-        buttons[i].onclick = function(){
-            openComments(buttons[i].id);
-        }
-    }
+
 }
 
 
@@ -532,10 +563,14 @@ function openComments(currentPostId) {
     for (i in comments) {
         var authorid = comments[i].userid;
         if (comments[i].postid == currentPostId) {
-            commentsListing = '<div class="single-post"><div class="post-author"><img class="avatar" src="' + users[authorid].picture +
-                '"><a href="user.html?userid=' + authorid + '&activeUser=' + userid + '">' + users[authorid].firstName + " " + users[authorid].lastName +
-                '</a><div class="post-date">' + comments[i].date + '</div></div><hr><div class="post-content">' + comments[i].content +
-                '   </div></div>' + commentsListing;
+            commentsListing = `<div class="single-post">
+            <div class="post-author">
+            <img class="avatar" src="${users[authorid].picture}">
+            <a href="${pageUrl + hash + "user/" + authorid}">${users[authorid].firstName + " " + users[authorid].lastName} </a>
+            <div class="post-date"> ${comments[i].date} 
+            </div></div><hr>
+            <div class="post-content"> ${comments[i].content} 
+            </div></div>` + commentsListing;
             console.log(comments[i]);
         }
 
@@ -585,7 +620,7 @@ function addPost(currentGroupId) {
 }
 
 function openStory(currentStoryId) {
-    storymodal = document.getElementById("story-modal");
+    storyModal = document.getElementById("story-modal");
     storyModal.innerHTML = '<div class="story-modal-content"><img src="' + stories[currentStoryId].url + '"></div>';
     storyModal.style.display = "block";
 }
@@ -595,10 +630,10 @@ function loadFriendSuggestions() {
     var suggestionListing = "";
     for (var i = 0; i < 3; i++) {
         if (i != userid) {
-            suggestionListing = '<div class="single-friend-suggestion"><div class="post-author"><img class="avatar" src="' +
-                users[i].picture + '"><a href="user.html?userid=' + users[i].id + '&activeUer=' + userid + '">' + users[i].firstName + " " +
-                users[i].lastName + '</a><button class="confirm-request" onclick = "sendRequest(' + users[i].id +
-                ')">add</button></div></div>' + suggestionListing;
+            suggestionListing = `<div class="single-friend-suggestion"><div class="post-author">
+            <img class="avatar" src="${users[i].picture}">
+            <a href="${pageUrl + hash + "user/" + i}"> ${users[i].firstName + " " + users[i].lastName}</a>
+            </div></div>` + suggestionListing;
         }
         console.log(users[i]);
     }
@@ -613,12 +648,11 @@ function sendRequest(requestUserId) {
     console.log(friendRequests[index]);
 }
 function loadTopPanel() {
-    //will need to test <a> link
+
     console.log(userid);
     var activeProfile = document.getElementById("active-profile");
-    activeProfile.innerHTML = '<img class="avatar" src="'
-        + users[userid].picture + '"><div id="username"><a href="user/' + userid +'" data-navigo>'
-        + users[userid].firstName + '</a></div>';
+    activeProfile.innerHTML = `<img class="avatar" src="${users[userid].picture}"><div id="username"><a href="${pageUrl + hash + "user/" + userid}">
+         ${users[userid].firstName}  </a></div>`;
 }
 
 function loadGroups() {
