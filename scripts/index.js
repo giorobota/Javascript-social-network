@@ -244,6 +244,7 @@ var map;
 var hash = '#!';
 var pageUrl = "index.html";
 var activePage;
+const API = "dummy-data.json";
 function initRouter() {
 
 
@@ -262,7 +263,7 @@ function initRouter() {
 
             userid = localStorage.getItem("userid");
             if (activePage != 'home') {
-                showHomePage();
+                showPage("home");
                 activePage = 'home';
             }
 
@@ -270,7 +271,7 @@ function initRouter() {
         'home/story/:id': function (params) {
             userid = localStorage.getItem("userid");
             if (activePage != 'home') {
-                showHomePage();
+                showPage("home");
                 activePage = "home";
             }
             openStory(params.id);
@@ -278,7 +279,7 @@ function initRouter() {
         'home/post/:id': function (params) {
             userid = localStorage.getItem("userid");
             if (activePage != 'home') {
-                showHomePage();
+                showPage("home");
                 activePage = "home";
             }
             openComments(params.id);
@@ -286,7 +287,7 @@ function initRouter() {
         'groups': function () {
             userid = localStorage.getItem("userid");
             if (activePage != "groups") {
-                //show groups
+                showPage("groups");
             }
 
 
@@ -320,7 +321,8 @@ function initRouter() {
         },
         'user/:id': function (params) {
             console.log("visiting user " + params.id);
-        },
+        }
+
     });
     router.notFound(function (query) {
         router.navigate("welcome");
@@ -331,18 +333,10 @@ function initRouter() {
 
 window.onload = function () {
     loadTemplates();
-
-
-
     userid = -1;
     groupid = -1;
     activePost = -1;
     initRouter();
-
-
-
-
-
 }
 function loadTemplates() {
     templates.welcome = require("../components/welcome");
@@ -355,18 +349,52 @@ function loadTemplates() {
     templates.groups = require("../components/groups");
 }
 
-function showHomePage() {
-    loadPage('home');
-    loadTopPanel();
-    loadPublicPosts();
-    loadFriendSuggestions();
-    loadStories();
-    loadFriendRequests();
-    loadNavigation("home");
-    initRequestsButton();
-    initHomeButton();
-    initStoryModal();
-    initPostButtons();
+function showPage(page) {
+    switch (page) {
+        case "home":
+            loadPage(page);
+            loadTopPanel();
+            loadPublicPosts();
+            loadFriendSuggestions();
+            loadStories();
+            loadFriendRequests();
+            initRequestsButton();
+            initStoryModal();
+            initPostButtons();
+            break;
+        case "welcome":
+            loadPage(page);
+            loadWelcomeButtons();
+            break;
+        case "groups":
+            loadPage(page);
+            loadTopPanel();
+            loadGroups();
+            loadFriendRequests();
+            initRequestsButton();
+
+    }
+
+}
+function loadGroups() {
+    var groupList = document.getElementById("groups");
+    var groupSuggestions = document.getElementById("group-suggestions");
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", API, true);
+    xhttp.onreadystatechange = function () {
+        var res = "";
+        var suggestions = "";
+        for (var group in groups) {
+            
+            res += `<div class="single-event"><div class="event-author">
+                    <h2><a class="event-name" href="${pageUrl + hash + "group/" + group}">${groups[group].groupName} </a></h2></div><hr><div class="event-content"> ${groups[group].description} </div></div>`;
+            suggestions += `<div class="single-event-suggestion"></div><h3><a  href="${pageUrl + hash + "group/" + group}">
+                ${groups[group].groupName}</a> </h3></div>`;
+            if (group <= 3) groupSuggestions.innerHTML = suggestions;
+        }
+        groupList.innerHTML = res;
+    }
+    xhttp.send();
 }
 function initPostButtons() {
     var postButton = document.getElementById("post-button");
@@ -443,24 +471,30 @@ function loadNavigation(activePage) {
 
 
 }
-function showWelcomePage() {
-    loadPage("welcome");
 
+function loadWelcomeButtons() {
     var passwordField = document.getElementById("password");
     var emailField = document.getElementById("email");
     var loginBtn = document.getElementById("login");
     var loginMsg = document.getElementById("message");
     loginBtn.addEventListener("click", function () {
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("GET", API, true);
+        xhttp.onreadystatechange = function () {
+            for (var user in users) {
+                if (users[user].email == emailField.value && users[user].password == passwordField.value) {
 
-        for (var user in users) {
-            if (users[user].email == emailField.value && users[user].password == passwordField.value) {
-                userid = Number(user, 10);
-                localStorage.setItem("userid", userid);
-                router.navigate("home");
-                return;
+                    userid = Number(user, 10);
+                    localStorage.setItem("userid", userid);
+
+                    router.navigate("home");
+                    return;
+                }
             }
-        }
-        loginMsg.innerHTML = "incorrect username or password";
+            loginMsg.innerHTML = "incorrect username or password";
+        };
+        xhttp.send();
+
     });
 
     var signupBtn = document.getElementById("signup");
@@ -472,65 +506,92 @@ function showWelcomePage() {
 
 
 function declineRequest(reqId) {
-    friendRequests[reqId].from = -1;
-    friendRequests[reqId].to = -1;
-    //reload friend requests
-    console.log("declined");
-    loadFriendRequests();
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("post", API, true);
+    xhttp.onreadystatechange = function () {
+        friendRequests[reqId].from = -1;
+        friendRequests[reqId].to = -1;
+        //reload friend requests
+        console.log("declined");
+        loadFriendRequests();
+    }
+    xhttp.send();
 
 }
 
 function acceptRequest(reqId) {
-    friends[friendRequests[reqId].from].friends.push(friendRequests[reqId].to);
-    friends[friendRequests[reqId].to].friends.push(friendRequests[reqId].from);
-    friendRequests[reqId].from = -1;
-    friendRequests[reqId].to = -1;
-    console.log("accepted");
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("post", API, true);
+    xhttp.onreadystatechange = function () {
+        friends[friendRequests[reqId].from].friends.push(friendRequests[reqId].to);
+        friends[friendRequests[reqId].to].friends.push(friendRequests[reqId].from);
+        friendRequests[reqId].from = -1;
+        friendRequests[reqId].to = -1;
+        console.log("accepted");
+    }
+    xhttp.send();
     loadFriendRequests();
 }
 
 function loadFriendRequests() {
-    var requestsHTML = document.getElementById("friend-requests-listing");
-    var requestsListing = "";
-    for (i in friendRequests) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", API, true);
 
-        if (friendRequests[i].to == userid) {
-            requestsListing = `<div class="single-friend-request">
+    xhttp.onreadystatechange = function () {
+        var requestsHTML = document.getElementById("friend-requests-listing");
+        var requestsListing = "";
+        for (i in friendRequests) {
+
+            if (friendRequests[i].to == userid) {
+                requestsListing = `<div class="single-friend-request">
             <a href="${pageUrl + hash + "user/" + friendRequests[i].from}"> ${users[friendRequests[i].from].firstName + " " + users[friendRequests[i].from].lastName}</a>
             <button class="decline-request" onclick = "declineRequest(${friendRequests[i].reqId})">decline</button>
             <button class="confirm-request" onclick = "acceptRequest(${friendRequests[i].reqId})">confirm</button></div>` + requestsListing;
+            }
         }
+        requestsHTML.innerHTML = requestsListing;
     }
-    requestsHTML.innerHTML = requestsListing;
+    xhttp.send();
+
 }
 
 function loadStories() {
     var storyHTML = document.getElementById("story-listing");
-    var storyListing = "";
-    for (i in stories) {
-        var author = stories[i].userid;
-        //display only friends' stories and his
-        if (friends[userid].friends.includes(author) || author == userid) {
-            storyListing = `<div class="single-story"><div class="post-author">
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", API, true);
+    xhttp.onreadystatechange = function () {
+        var storyListing = "";
+        for (i in stories) {
+            var author = stories[i].userid;
+            //display only friends' stories and his
+            if (friends[userid].friends.includes(author) || author == userid) {
+                storyListing = `<div class="single-story"><div class="post-author">
             <img class="avatar" src="${users[author].picture}"><a class="open-story-modal"  href="${pageUrl + hash + "home/story/" + i}">
                 ${users[author].firstName + " " + users[author].lastName}</button></div></div>` + storyListing;
+            }
         }
+        storyHTML.innerHTML = storyListing;
     }
-    storyHTML.innerHTML = storyListing;
+    xhttp.send();
+
 }
 
 function loadPublicPosts() {
     var postsHTML = document.getElementById("posts");
-    var postListing = "";
-    var userFriends = friends[userid].friends;
-
-    for (i in posts) {
-
-        var authorid = posts[i].userId;
-        if (posts[i].groupId == -1 && (userFriends.includes(authorid) || userid == authorid)) {
 
 
-            postListing = `<div class="single-post">
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", API, true);
+    xhttp.onload = function () {
+        var userFriends = friends[userid].friends;
+        var postListing = "";
+        for (i in posts) {
+
+            var authorid = posts[i].userId;
+            if (posts[i].groupId == -1 && (userFriends.includes(authorid) || userid == authorid)) {
+
+
+                postListing = `<div class="single-post">
                                     <div class="post-author">
                                         <img class="avatar" src="${users[authorid].picture}">
                                         <a href="${pageUrl + hash + "user/" + authorid}" data-navigo> ${users[authorid].firstName + " " + users[authorid].lastName}</a>
@@ -546,9 +607,13 @@ function loadPublicPosts() {
                                     </div>
                                 </div>` + postListing;
 
+            }
         }
+        postsHTML.innerHTML = postListing;
     }
-    postsHTML.innerHTML = postListing;
+    xhttp.send();
+
+
 
 }
 
@@ -559,11 +624,16 @@ function openComments(currentPostId) {
     console.log("opening comments");
     var commentHTML = document.getElementById("comments-listing");
     activePost = currentPostId;
-    var commentsListing = "";
-    for (i in comments) {
-        var authorid = comments[i].userid;
-        if (comments[i].postid == currentPostId) {
-            commentsListing = `<div class="single-post">
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", API, true);
+    xhttp.onload = function () {
+        var commentsListing = "";
+        for (i in comments) {
+
+            var authorid = comments[i].userid;
+            if (comments[i].postid == currentPostId) {
+                commentsListing = `<div class="single-post">
             <div class="post-author">
             <img class="avatar" src="${users[authorid].picture}">
             <a href="${pageUrl + hash + "user/" + authorid}">${users[authorid].firstName + " " + users[authorid].lastName} </a>
@@ -571,30 +641,38 @@ function openComments(currentPostId) {
             </div></div><hr>
             <div class="post-content"> ${comments[i].content} 
             </div></div>` + commentsListing;
-            console.log(comments[i]);
+                console.log(comments[i]);
+            }
+
+
         }
 
-
+        commentHTML.innerHTML = commentsListing;
     }
+    xhttp.send();
     var commentModal = document.getElementById("comments-modal");
-    commentHTML.innerHTML = commentsListing;
     commentModal.style.display = "block";
 }
 
 function addComment() {
     var commentContent = document.getElementById("comment-content");
-    if (commentContent.value != "") {
-        var index = comments.length;
-        comments[index] = {
-            postid: Number(activePost),
-            userid: userid,
-            content: commentContent.value,
-            date: getDateNow()
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("post", API, true);
+    xhttp.onreadystatechange = function () {
+        if (commentContent.value != "") {
+            var index = comments.length;
+            comments[index] = {
+                postid: Number(activePost),
+                userid: userid,
+                content: commentContent.value,
+                date: getDateNow()
+            }
+            commentContent.value = "";
+            console.log(comments[index]);
+            openComments(activePost);
         }
-        commentContent.value = "";
-        console.log(comments[index]);
-        openComments(activePost);
     }
+    xhttp.send();
 }
 
 function getDateNow() {
@@ -604,70 +682,83 @@ function getDateNow() {
 
 function addPost(currentGroupId) {
     var postContent = document.getElementById("post-content");
-    if (postContent.value != "") {
-        var index = posts.length;
-        posts[index] = {
-            postId: index,
-            userId: userid,
-            groupId: currentGroupId,
-            content: postContent.value,
-            date: getDateNow()
-        }
-        postContent.value = "";
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", API, true);
+    xhttp.onreadystatechange = function () {
+        if (postContent.value != "") {
+            var index = posts.length;
+            posts[index] = {
+                postId: index,
+                userId: userid,
+                groupId: currentGroupId,
+                content: postContent.value,
+                date: getDateNow()
+            }
+            postContent.value = "";
 
-        loadPublicPosts();
+            loadPublicPosts();
+        }
     }
+    xhttp.send();
 }
 
 function openStory(currentStoryId) {
     storyModal = document.getElementById("story-modal");
-    storyModal.innerHTML = '<div class="story-modal-content"><img src="' + stories[currentStoryId].url + '"></div>';
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", API, true);
+    xhttp.onreadystatechange = function () {
+
+        storyModal.innerHTML = '<div class="story-modal-content"><img src="' + stories[currentStoryId].url + '"></div>';
+    }
+    xhttp.send();
     storyModal.style.display = "block";
 }
 
 function loadFriendSuggestions() {
     var suggestionsHTML = document.getElementById("friend-suggestion-listing");
     var suggestionListing = "";
-    for (var i = 0; i < 3; i++) {
-        if (i != userid) {
-            suggestionListing = `<div class="single-friend-suggestion"><div class="post-author">
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", API, true);
+    xhttp.onreadystatechange = function () {
+        for (var i = 0; i < 3; i++) {
+            if (i != userid) {
+                suggestionListing = `<div class="single-friend-suggestion"><div class="post-author">
             <img class="avatar" src="${users[i].picture}">
             <a href="${pageUrl + hash + "user/" + i}"> ${users[i].firstName + " " + users[i].lastName}</a>
             </div></div>` + suggestionListing;
+            }
+            console.log(users[i]);
         }
-        console.log(users[i]);
+        suggestionsHTML.innerHTML = suggestionListing;
     }
-    suggestionsHTML.innerHTML = suggestionListing;
+    xhttp.send();
 }
 
 function sendRequest(requestUserId) {
-    var index = friendRequests.length;
-    friendRequests[index].from = userid;
-    friendRequests[index].to = requestUserId;
-    friendRequests[index].reqId = index;
-    console.log(friendRequests[index]);
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("post", API, true);
+    xhttp.onreadystatechange = function () {
+        var index = friendRequests.length;
+        friendRequests[index].from = userid;
+        friendRequests[index].to = requestUserId;
+        friendRequests[index].reqId = index;
+        console.log(friendRequests[index]);
+    }
+    xhttp.send();
 }
 function loadTopPanel() {
-
-    console.log(userid);
-    var activeProfile = document.getElementById("active-profile");
-    activeProfile.innerHTML = `<img class="avatar" src="${users[userid].picture}"><div id="username"><a href="${pageUrl + hash + "user/" + userid}">
+    initHomeButton();
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", API, true);
+    xhttp.onreadystatechange = function () {
+        console.log(userid);
+        var activeProfile = document.getElementById("active-profile");
+        activeProfile.innerHTML = `<img class="avatar" src="${users[userid].picture}"><div id="username"><a href="${pageUrl + hash + "user/" + userid}">
          ${users[userid].firstName}  </a></div>`;
+    }
+    xhttp.send();
 }
 
-function loadGroups() {
-    var res = "";
-    var suggestions = "";
-    for (var group in groups) {
-        //will need to fix url later after adding user database
-        res += '<div class="single-event"><div class="event-author"><h2><a class="event-name" href="group.html?groupid=' + groups[group].groupId +
-            "&userid=" + userid + '">' + groups[group].groupName + '</a></h2></div><hr><div class="event-content">' + groups[group].description + "</div></div>";
-        suggestions += '<div class="single-event-suggestion"></div><h3><a href="group.html?groupid=' + groups[group].groupId + "&userid=" + userid + '">' +
-            groups[group].groupName + "</a> </h3></div>";
-        if (group <= 3) groupSuggestions.innerHTML = suggestions;
-    }
-    groupList.innerHTML = res;
-}
 
 function loadPage(pageName) {
     var currPage = document.getElementById("routing-component");
@@ -677,9 +768,14 @@ function loadPage(pageName) {
         case "home":
             currPage.innerHTML = templates.topBar + templates.home + templates.commentModal + templates.requestsModal +
                 templates.commentModal + templates.storyModal;
+            loadNavigation(pageName);
             break;
         case "groups":
+            currPage.innerHTML = templates.topBar + templates.groups + templates.requestsModal;
+            loadNavigation(pageName);
             break;
+        case "group":
+        // currPage.innerHTML = 
     }
 }
 
