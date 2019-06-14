@@ -26,6 +26,7 @@ h2{
   
 }
 .main-content .left-section li button{
+    font-size: 20px;
     display: block;
     color: #000;
     padding: 8px 16px;

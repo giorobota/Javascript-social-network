@@ -240,7 +240,6 @@ var userid;
 var groupid;
 var activePost;
 var templates = {};
-var map;
 var hash = '#!';
 var pageUrl = "index.html";
 var activePage;
@@ -256,15 +255,16 @@ function initRouter() {
     router.on({
         'welcome': function () {
             activePage = 'welcome';
-            showWelcomePage();
+            showPage("welcome");
         },
 
         'home': function () {
 
             userid = localStorage.getItem("userid");
             if (activePage != 'home') {
-                showPage("home");
                 activePage = 'home';
+                showPage("home");
+                
             }
 
         },
@@ -286,37 +286,50 @@ function initRouter() {
         },
         'groups': function () {
             userid = localStorage.getItem("userid");
-            if (activePage != "groups") {
-                showPage("groups");
-            }
+            activePage = "groups";
+            showPage("groups");
+
+
 
 
         },
-        'group/:groupid/:postid': function (params) {
+        'group/:groupid/post/:postid': function (params) {
             userid = localStorage.getItem("userid");
-            if (activePage != 'group') {
-                //show group page
-                groupid = params.groupid;
-                activePage = "group";
+            groupid = params.groupid;
+            if (activePage != 'group/' + groupid) {
+                activePage = 'group/' + groupid;
+                showPage("group");
             }
 
-            openComments(patams.postid);
+            openComments(params.postid);
 
         },
         'group/:groupid': function (params) {
             userid = localStorage.getItem("userid");
             groupid = params.groupid;
+            if (activePage != 'group/' + groupid) {
+
+                activePage = 'group/' + groupid;
+                showPage("group");
+            }
 
 
         },
         'events': function (params) {
             userid = localStorage.getItem("userid");
-
+            if (activePage != 'events') {
+                activePage = events;
+                showPage('events');
+            }
 
         },
         'events/:id': function (params) {
             userid = localStorage.getItem("userid");
-
+            if (activePage != 'events') {
+                activePage = events;
+                showPage('events');
+            }
+            openEvent(params.id);
 
         },
         'user/:id': function (params) {
@@ -347,6 +360,8 @@ function loadTemplates() {
     templates.storyModal = require("../components/story-modal");
     templates.group = require("../components/group");
     templates.groups = require("../components/groups");
+    templates.events = require("../components/events");
+    templates.eventsModal = require("../components/events-modal");
 }
 
 function showPage(page) {
@@ -360,7 +375,6 @@ function showPage(page) {
             loadFriendRequests();
             initRequestsButton();
             initStoryModal();
-            initPostButtons();
             break;
         case "welcome":
             loadPage(page);
@@ -372,6 +386,22 @@ function showPage(page) {
             loadGroups();
             loadFriendRequests();
             initRequestsButton();
+            break;
+        case "group":
+            loadPage(page);
+            loadTopPanel();
+            loadGroupPosts();
+            loadFriendRequests();
+            initRequestsButton();
+            loadGroupMembers();
+            break;
+        case "events":
+            loadPage(page);
+            loadTopPanel();
+            loadFriendRequests();
+            initRequestsButton();
+            loadEvents();
+        // initEventInviteButton(activeEvent);
 
     }
 
@@ -381,11 +411,11 @@ function loadGroups() {
     var groupSuggestions = document.getElementById("group-suggestions");
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", API, true);
-    xhttp.onreadystatechange = function () {
+    xhttp.onload = function () {
         var res = "";
         var suggestions = "";
         for (var group in groups) {
-            
+
             res += `<div class="single-event"><div class="event-author">
                     <h2><a class="event-name" href="${pageUrl + hash + "group/" + group}">${groups[group].groupName} </a></h2></div><hr><div class="event-content"> ${groups[group].description} </div></div>`;
             suggestions += `<div class="single-event-suggestion"></div><h3><a  href="${pageUrl + hash + "group/" + group}">
@@ -402,7 +432,8 @@ function initPostButtons() {
     var commentButton = document.getElementById("comment-button");
     commentCloseBtn.onclick = function () {
         commentModal = document.getElementById("comments-modal");
-        router.navigate(activePage);
+        console.log(activePage);
+        router.navigate(activePage, false);
         commentModal.style.display = "none";
     }
 
@@ -424,13 +455,13 @@ function initStoryModal() {
 function initHomeButton() {
     var homeBtn = document.getElementById("logo");
     homeBtn.onclick = function () {
-        router.navigate('home');
+        router.navigate('home', false);
     }
     var logoutBtn = document.getElementById("logout");
     logoutBtn.onclick = function () {
         userid = -1;
         localStorage.setItem("userid", -1);
-        router.navigate("welcome");
+        router.navigate("welcome", false);
     }
 }
 function initRequestsButton() {
@@ -480,7 +511,7 @@ function loadWelcomeButtons() {
     loginBtn.addEventListener("click", function () {
         var xhttp = new XMLHttpRequest();
         xhttp.open("GET", API, true);
-        xhttp.onreadystatechange = function () {
+        xhttp.onload = function () {
             for (var user in users) {
                 if (users[user].email == emailField.value && users[user].password == passwordField.value) {
 
@@ -508,7 +539,7 @@ function loadWelcomeButtons() {
 function declineRequest(reqId) {
     var xhttp = new XMLHttpRequest();
     xhttp.open("post", API, true);
-    xhttp.onreadystatechange = function () {
+    xhttp.onload = function () {
         friendRequests[reqId].from = -1;
         friendRequests[reqId].to = -1;
         //reload friend requests
@@ -522,7 +553,7 @@ function declineRequest(reqId) {
 function acceptRequest(reqId) {
     var xhttp = new XMLHttpRequest();
     xhttp.open("post", API, true);
-    xhttp.onreadystatechange = function () {
+    xhttp.onload = function () {
         friends[friendRequests[reqId].from].friends.push(friendRequests[reqId].to);
         friends[friendRequests[reqId].to].friends.push(friendRequests[reqId].from);
         friendRequests[reqId].from = -1;
@@ -537,7 +568,7 @@ function loadFriendRequests() {
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", API, true);
 
-    xhttp.onreadystatechange = function () {
+    xhttp.onload = function () {
         var requestsHTML = document.getElementById("friend-requests-listing");
         var requestsListing = "";
         for (i in friendRequests) {
@@ -559,7 +590,7 @@ function loadStories() {
     var storyHTML = document.getElementById("story-listing");
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", API, true);
-    xhttp.onreadystatechange = function () {
+    xhttp.onload = function () {
         var storyListing = "";
         for (i in stories) {
             var author = stories[i].userid;
@@ -578,7 +609,7 @@ function loadStories() {
 
 function loadPublicPosts() {
     var postsHTML = document.getElementById("posts");
-
+    initPostButtons();
 
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", API, true);
@@ -658,7 +689,7 @@ function addComment() {
     var commentContent = document.getElementById("comment-content");
     var xhttp = new XMLHttpRequest();
     xhttp.open("post", API, true);
-    xhttp.onreadystatechange = function () {
+    xhttp.onload = function () {
         if (commentContent.value != "") {
             var index = comments.length;
             comments[index] = {
@@ -684,7 +715,7 @@ function addPost(currentGroupId) {
     var postContent = document.getElementById("post-content");
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", API, true);
-    xhttp.onreadystatechange = function () {
+    xhttp.onload = function () {
         if (postContent.value != "") {
             var index = posts.length;
             posts[index] = {
@@ -695,8 +726,9 @@ function addPost(currentGroupId) {
                 date: getDateNow()
             }
             postContent.value = "";
+            if (groupid == -1) loadPublicPosts();
+            else loadGroupPosts();
 
-            loadPublicPosts();
         }
     }
     xhttp.send();
@@ -706,7 +738,7 @@ function openStory(currentStoryId) {
     storyModal = document.getElementById("story-modal");
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", API, true);
-    xhttp.onreadystatechange = function () {
+    xhttp.onload = function () {
 
         storyModal.innerHTML = '<div class="story-modal-content"><img src="' + stories[currentStoryId].url + '"></div>';
     }
@@ -716,10 +748,12 @@ function openStory(currentStoryId) {
 
 function loadFriendSuggestions() {
     var suggestionsHTML = document.getElementById("friend-suggestion-listing");
-    var suggestionListing = "";
+
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", API, true);
-    xhttp.onreadystatechange = function () {
+    xhttp.onload = function () {
+        console.log(xhttp.response);
+        var suggestionListing = "";
         for (var i = 0; i < 3; i++) {
             if (i != userid) {
                 suggestionListing = `<div class="single-friend-suggestion"><div class="post-author">
@@ -737,7 +771,7 @@ function loadFriendSuggestions() {
 function sendRequest(requestUserId) {
     var xhttp = new XMLHttpRequest();
     xhttp.open("post", API, true);
-    xhttp.onreadystatechange = function () {
+    xhttp.onload = function () {
         var index = friendRequests.length;
         friendRequests[index].from = userid;
         friendRequests[index].to = requestUserId;
@@ -750,7 +784,7 @@ function loadTopPanel() {
     initHomeButton();
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", API, true);
-    xhttp.onreadystatechange = function () {
+    xhttp.onload = function () {
         console.log(userid);
         var activeProfile = document.getElementById("active-profile");
         activeProfile.innerHTML = `<img class="avatar" src="${users[userid].picture}"><div id="username"><a href="${pageUrl + hash + "user/" + userid}">
@@ -775,9 +809,162 @@ function loadPage(pageName) {
             loadNavigation(pageName);
             break;
         case "group":
-        // currPage.innerHTML = 
+            currPage.innerHTML = templates.topBar + templates.group + templates.commentModal + templates.requestsModal;
+            loadNavigation(pageName);
+            break;
+        case "events": currPage.innerHTML = templates.topBar + templates.events + templates.requestsModal + templates.eventsModal;
+            loadNavigation(pageName);
+            break;
     }
 }
 
+function loadGroupPosts() {
+    initPostButtons();
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", API, true);
+    xhttp.onload = function () {
+        var postsHTML = document.getElementById("posts");
+        var postListing = "";
+        for (i in posts) {
+            var authorid = posts[i].userId;
+            if (posts[i].groupId == groupid) {
+                postListing = `<div class="single-post"><div class="post-author"><img class="avatar" src="${users[authorid].picture}">
+                <a href="${pageUrl + hash + "user/" + authorid}">
+                    ${users[authorid].firstName + " " + users[authorid].lastName}</a><div class="post-date">
+                    ${posts[i].date}</div></div><hr><div class="post-content">${posts[i].content} 
+                    <div class="comments-button"><a class="open-story-modal" href = "${pageUrl + hash + router.lastRouteResolved().url + "/post/" + i}">
+                    'view comments</button></div></div></div>` + postListing;
 
+            }
+        }
+        postsHTML.innerHTML = postListing;
+    }
+    xhttp.send();
+}
 
+function loadGroupMembers() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", API, true);
+    xhttp.onload = function () {
+        var members = document.getElementById("group-members");
+        var memberList = "<h2>members:</h2>";
+        for (i in groupMembers[groupid].members) {
+            var memberid = groupMembers[groupid].members[i];
+            memberList += `<hr><div class="single-member"><div class="post-author"><img class="avatar" src="${users[memberid].picture}">
+            <a href="${pageUrl + hash + "user/" + i}">${users[memberid].firstName + " " + users[memberid].lastName} </a></div></div>`;
+        }
+        members.innerHTML = memberList;
+    }
+    xhttp.send();
+}
+function loadEvents() {
+    document.getElementById("close-event-modal").onclick = function () {
+        router.navigate("events");
+    }
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", API, true);
+    xhttp.onload = function () {
+        eventsHTML = document.getElementById("events");
+        eventSuggestions = document.getElementById("event-suggestions");
+        var eventListing = "";
+        var suggestions = "";
+        for (i in events) {
+
+            eventListing = `<div class="single-event"><div class="event-author"><a class="open-events-modal" href = "${pageUrl + hash + "events/" + i}"> 
+            ${events[i].eventName}</a><div class="event-date"> ${events[i].eventDate}</div></div><hr><div class="event-content">
+                ${events[i].eventDescription}</div></div>` + eventListing;
+
+            if (i <= 3) {
+                suggestions += `<div class="single-event-suggestion" ><a class="open-events-modal" href = "${pageUrl + hash + "events/" + i}">
+                    ${events[i].eventName}</a></div>`;
+            }
+        }
+        eventsHTML.innerHTML = eventListing;
+        eventSuggestions.innerHTML = suggestions;
+    }
+    xhttp.send();
+}
+function openEvent(id) {
+    activeEvent = id;
+    var userGoing = false;
+    var eventModal = document.getElementById("event-modal");
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", API, true);
+
+    xhttp.onload = function () {
+        var eventButton = document.getElementById("going");
+        var participantsList = document.getElementById("event-participants");
+
+        var listing = ""
+        for (i in eventParticipants) {
+            if (eventParticipants[i].eventid == id) {
+                listing += '<a href="user.html?userid=' + eventParticipants[i].userid + '&activeuser='
+                    + userid + '">' + users[eventParticipants[i].userid].firstName + " " + users[eventParticipants[i].userid].lastName + '  '
+                    + '</a>';
+                if (eventParticipants[i].userid == userid) userGoing = true;
+            }
+        }
+        if (userGoing) {
+            eventButton.innerHTML = 'not going';
+            eventButton.onclick = function () {
+                removeParticipant(activeEvent);
+            }
+        } else {
+            eventButton.innerHTML = 'going';
+            eventButton.onclick = function () {
+                addParticipant(activeEvent, userid);
+            }
+        }
+        participantsList.innerHTML = listing;
+
+    }
+    xhttp.send();
+    eventModal.style.display = "block";
+    initEventInviteButton(activeEvent);
+}
+
+function initEventInviteButton(activeEvent) {
+    document.getElementById("inviteButton").onclick = function () {
+        var field = document.getElementById("invitedUser");
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("GET", API, true);
+        xhttp.onload = function () {
+            for (i in users) {
+                if ((users[i].firstName + " " + users[i].lastName) == field.value) {
+                    addParticipant(activeEvent, i);
+                }
+            }
+            field.value = "";
+            console.log("finished adding");
+        }
+    }
+}
+function removeParticipant(activeEvent) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", API, true);
+    xhttp.onload = function () {
+        for (i in eventParticipants) {
+            if (eventParticipants[i].eventid == activeEvent && eventParticipants[i].userid == userid) {
+                eventParticipants[i].eventid = -1;
+                eventParticipants[i].userid = -1;
+                openEvent(activeEvent);
+            }
+        }
+    }
+    xhttp.send();
+}
+
+function addParticipant(activeEvent, user) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", API, true);
+    xhttp.onload = function () {
+        var index = eventParticipants.length
+        eventParticipants[index] = {
+            eventid: activeEvent,
+            userid: user
+        };
+        openEvent(activeEvent);
+        console.log("adding");
+    }
+    xhttp.send();
+}

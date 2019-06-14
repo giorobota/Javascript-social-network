@@ -393,7 +393,6 @@ function openEvent(id){
     }
     participantsList.innerHTML = listing;
     eventModal.style.display = "block";
-
 }
 function removeParticipant(){
     for(i in eventParticipants){
