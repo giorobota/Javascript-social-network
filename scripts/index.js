@@ -240,10 +240,11 @@ var userid;
 var groupid;
 var activePost;
 var templates = {};
-var hash = '#!';
-var pageUrl = "index.html";
 var activePage;
+var viewingUser;
 const API = "dummy-data.json";
+const hash = '#!';
+const pageUrl = "index.html";
 function initRouter() {
 
 
@@ -259,12 +260,11 @@ function initRouter() {
         },
 
         'home': function () {
-
             userid = localStorage.getItem("userid");
             if (activePage != 'home') {
                 activePage = 'home';
                 showPage("home");
-                
+
             }
 
         },
@@ -333,8 +333,24 @@ function initRouter() {
 
         },
         'user/:id': function (params) {
-            console.log("visiting user " + params.id);
+            viewingUser = params.id;
+            userid = localStorage.getItem("userid");
+            if (activePage != 'user/' + params.id) {
+                activePage = "user/" + params.id;
+                showPage('user');
+            }
+        },
+        'user/:id/post/:postid': function (params) {
+            viewingUser = params.id;
+
+            userid = localStorage.getItem("userid");
+            if (activePage != 'user/' + params.id) {
+                activePage = "user/" + params.id;
+                showPage('user');
+            }
+            openComments(params.postid);
         }
+
 
     });
     router.notFound(function (query) {
@@ -362,6 +378,7 @@ function loadTemplates() {
     templates.groups = require("../components/groups");
     templates.events = require("../components/events");
     templates.eventsModal = require("../components/events-modal");
+    templates.user = require("../components/user");
 }
 
 function showPage(page) {
@@ -401,7 +418,16 @@ function showPage(page) {
             loadFriendRequests();
             initRequestsButton();
             loadEvents();
-        // initEventInviteButton(activeEvent);
+            break;
+        case "user":
+            loadPage(page);
+            loadTopPanel();
+            loadFriendRequests();
+            loadUserPosts();
+            initRequestsButton();
+            loadAddFriend();
+            initCommentButtons();
+            loadBio();
 
     }
 
@@ -428,19 +454,21 @@ function loadGroups() {
 }
 function initPostButtons() {
     var postButton = document.getElementById("post-button");
+    initCommentButtons();
+    postButton.onclick = function () {
+        addPost(groupid);
+    }
+
+}
+function initCommentButtons() {
     var commentCloseBtn = document.getElementById("close-comments-modal");
     var commentButton = document.getElementById("comment-button");
     commentCloseBtn.onclick = function () {
         commentModal = document.getElementById("comments-modal");
         console.log(activePage);
-        router.navigate(activePage, false);
         commentModal.style.display = "none";
+        router.navigate(activePage, false);
     }
-
-    postButton.onclick = function () {
-        addPost(groupid);
-    }
-
     commentButton.onclick = function () {
         addComment();
     }
@@ -815,6 +843,8 @@ function loadPage(pageName) {
         case "events": currPage.innerHTML = templates.topBar + templates.events + templates.requestsModal + templates.eventsModal;
             loadNavigation(pageName);
             break;
+        case "user": currPage.innerHTML = templates.topBar + templates.user + templates.requestsModal + templates.commentModal;
+            break;
     }
 }
 
@@ -965,6 +995,95 @@ function addParticipant(activeEvent, user) {
         };
         openEvent(activeEvent);
         console.log("adding");
+    }
+    xhttp.send();
+}
+function loadUserPosts() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", API, true);
+    xhttp.onload = function () {
+        var postsHTML = document.getElementById("posts");
+        var postListing = "<h2> posts </h2>";
+        for (i in posts) {
+            var authorid = posts[i].userId;
+            if (viewingUser == authorid) {
+                var singlePost = `<div class="single-post"><div class="post-author"><img class="avatar" src="${users[authorid].picture}">
+                <a href="${pageUrl + hash + router.lastRouteResolved().url}">${users[authorid].firstName + " " + users[authorid].lastName}</a>`;
+                if (posts[i].groupId != -1) singlePost += `>><a href = "${pageUrl + hash + "group/" + posts[i].groupId}">
+                ${groups[posts[i].groupId].groupName}</a>`;
+
+                singlePost += `<div class="post-date">${posts[i].date} </div></div><hr>
+                <div class="post-content">${posts[i].content} <div class="comments-button">
+                <a class="open-story-modal" href = "${pageUrl + hash + router.lastRouteResolved().url + "/post/" + i}">
+                view comments</a></div></div></div>`;
+                console.log(pageUrl + hash + router.lastRouteResolved().url + "/post/" + i);
+                postListing += singlePost;
+            }
+        }
+        postsHTML.innerHTML = postListing;
+
+    }
+    xhttp.send();
+}
+
+function loadAddFriend() {
+    var button = document.getElementById("add-friend");
+
+    if (userid == viewingUser) {
+        button.style.display = 'none';
+    } else {
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("GET", API, true);
+        xhttp.onload = function () {
+            var userFriends = friends[userid].friends;
+            console.log(userFriends);
+            console.log(viewingUser);
+            var isFriend = userFriends.includes(Number(viewingUser));
+            if (isFriend) {
+                button.innerHTML = 'friends';
+                button.disabled = true;
+                console.log("friends");
+            } else {
+                var requestSent = false;
+                var requestRecieved = false;
+                var reqId;
+                for (i in friendRequests) {
+                    if (friendRequests[i].from == userid && friendRequests[i].to == viewingUser) requestSent = true;
+                    if (friendRequests[i].to == userid && friendRequests[i].from == viewingUser) {
+                        requestRecieved = true;
+                        reqId = friendRequests[i].reqId;
+                    }
+                }
+                if (requestSent) {
+                    console.log("requestSent");
+                    button.innerHTML = 'request sent';
+                    button.disabled = true;
+                } else if (requestRecieved) {
+                    console.log("requestRecieved");
+                    button.innerHTML = 'accept friend request';
+                    button.onclick = function () {
+                        acceptRequest(reqId);
+                        button.innerHTML = 'friends';
+                        button.disabled = true;
+                    }
+                } else {
+                    button.onclick = function () {
+                        sendRequest(viewingUser);
+                        button.innerHTML = 'request sent';
+                        button.disabled = true;
+                    }
+                }
+            }
+        }
+        xhttp.send();
+    }
+}
+function loadBio() {
+    var bio = document.getElementById("bio");
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", API, true);
+    xhttp.onload = function () {
+        bio.innerHTML = users[viewingUser].bio;
     }
     xhttp.send();
 }

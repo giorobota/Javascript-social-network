@@ -10,10 +10,4 @@
 @import 'user.css';
 @import 'welcome.css';
 
-#main-component{
-    display: none;
-}
-#welcome-component{
-    display: block;
-}
 

@@ -7,7 +7,7 @@ body{
     height: 40px;
     
     color: white;
-    /* position: sticky; */
+
     top: 0;
 }
 
@@ -25,7 +25,6 @@ body{
     padding-top: 10px;
     float: left;
     width:50%;
-    /* vertical-align: middle; */
 }
 
 .top-bar form #search{ 
@@ -60,7 +59,7 @@ body{
 }
 #logout{
     float: right;
-    /* border-radius: 50%; */
+    
 }
 
 .avatar:hover{
