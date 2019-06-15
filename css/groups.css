@@ -1,16 +1,4 @@
-h2{
-    text-align:center;
-    color: crimson;
-}
 
-
-.main-content .middle-section{
-    padding-left:10px;
-    padding-right:10px;
-    width: 55%;
-    float:left;
-
-}
 .main-content .middle-section .events .single-event{
     border: crimson 1px solid;
     margin: 5px;

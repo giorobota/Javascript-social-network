@@ -1,9 +1,6 @@
-h2{
-    text-align: center;
-    color: crimson;
-}
 
- .fullname{
+
+.fullname{
     color:crimson;
     font-size: 20px;
    
@@ -29,12 +26,11 @@ h2{
     height: 100px;
     
 }
-#profile-photo-big :hover{
-
+#profile-photo-big:hover{
     cursor: pointer;
 }
 .about{
-    margin-top: 100px;
+    margin-top: 50px;
     border-bottom: crimson 1px solid;
     color: crimson;
 }
@@ -81,4 +77,25 @@ h2{
     margin: 5px;
     height: 35px;
     
+}
+#bio input, button{
+    
+    height: 30px;
+}
+#bio button{
+    color: white;
+    background-color: crimson;
+    border: black 2px;
+    font-size: 20px;
+    margin-left:10px;
+}
+#bio button:hover{
+    cursor:pointer;
+}
+#bio input{
+    width: 70%;
+}
+#fullname{
+    font-size: 22px;
+    padding-left: 50px;
 }

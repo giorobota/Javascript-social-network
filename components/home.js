@@ -4,7 +4,7 @@ var home = `<div class="main-content">
 </div>
 <div class="middle-section">
     <div class="create-post">
-        <h3> add a comment </h3>
+        <h3> post </h3>
         <textarea class="post-content" id="post-content"></textarea>
         <button class="post-button" id="post-button"> post </button>
     </div>
