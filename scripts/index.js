@@ -1,7 +1,7 @@
 var users = require("../data/users");
 var posts = require("../data/posts");
 var friends = require("../data/friends");
-var comments =  require("../data/comments");
+var comments = require("../data/comments");
 var stories = require("../data/stories");
 var friendRequests = require("../data/friendRequests");
 var groups = require("../data/groups");
@@ -169,6 +169,7 @@ function showPage(page) {
         case "welcome":
             loadPage(page);
             loadWelcomeButtons();
+
             break;
         case "groups":
             loadPage(page);
@@ -331,10 +332,7 @@ function loadWelcomeButtons() {
 
     });
 
-    var signupBtn = document.getElementById("signup");
-    signupBtn.onclick = function () {
-        //add new user to database
-    }
+    initRegistration();
 }
 
 
@@ -571,9 +569,11 @@ function sendRequest(requestUserId) {
     xhttp.open("post", API, true);
     xhttp.onload = function () {
         var index = friendRequests.length;
-        friendRequests[index].from = userid;
-        friendRequests[index].to = requestUserId;
-        friendRequests[index].reqId = index;
+        friendRequests[index] = {
+            from: userid,
+            to: requestUserId,
+            reqId: index
+        }
         console.log(friendRequests[index]);
     }
     xhttp.send();
@@ -887,14 +887,14 @@ function loadProfile() {
     var image = document.getElementById("profile-photo-big");
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", API, true);
-    
+
     var name = document.getElementById("fullname");
     xhttp.onload = function () {
         image.src = users[viewingUser].picture;
         name.innerHTML = users[viewingUser].firstName + " " + users[viewingUser].lastName;
     }
     xhttp.send();
-    image.onclick = function(){
+    image.onclick = function () {
         var imgUpload = document.getElementById("image-upload");
 
         imgUpload.click();
@@ -904,5 +904,62 @@ function loadProfile() {
             console.log(URL.createObjectURL(singleFile));
         });
     }
-    
+
+}
+function initRegistration() {
+
+    var button = document.getElementById("signup");
+
+
+
+
+
+    button.onclick = function () {
+        var email = document.getElementById("email-signup").value;
+        var fName = document.getElementById("firstname").value;
+        var lName = document.getElementById("lastname").value;
+        var password = document.getElementById("password-signup").value;
+        if (email == "" || fName == "" || lName == "" || password == "") {
+            document.getElementById("message-signup").innerHTML = "please fill all fields";
+        } else {
+
+            var index = users.length;
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", API, true);
+            xhttp.onload = function () {
+                if (emailInUse(email)) {
+                    document.getElementById("message-signup").innerHTML = "email is already in use";
+                } else {
+                    users[index] = {
+                        id: index,
+                        firstName: fName,
+                        lastName: lName,
+                        picture: "images/default-profile.png",
+                        bio: "the user has not updated his bio",
+                        email: email,
+                        password: password
+                    }
+                    userid = index;
+                    friends[friends.length] = {
+                        userid: userid,
+                        friends: []
+                    }
+                    localStorage.setItem("userid", userid);
+                    router.navigate("home", false);
+
+                }
+            }
+            xhttp.send();
+        }
+    }
+
+
+}
+function emailInUse(email) {
+    var inUse = false;
+    for (i in users) {
+        if (users[i].email == email) inUse = true;
+    }
+    return inUse;
 }
