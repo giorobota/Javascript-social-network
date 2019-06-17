@@ -1,3 +1,5 @@
+require("../scripts/requests");
+
 var users = require("../data/users");
 var posts = require("../data/posts");
 var friends = require("../data/friends");
@@ -16,9 +18,10 @@ var activePost;
 var templates = {};
 var activePage;
 var viewingUser;
-const API = "dummy-data.json";
+const API = "http://twitter.com/";
 const hash = '#!';
 const pageUrl = "index.html";
+var req = require("../scripts/requests")
 function initRouter() {
     var Navigo = require("navigo");
     var root = null;
@@ -83,7 +86,7 @@ function initRouter() {
         'events': function (params) {
             userid = localStorage.getItem("userid");
             if (activePage != 'events') {
-                activePage = events;
+                activePage = "events";
                 showPage('events');
             }
 
@@ -91,7 +94,7 @@ function initRouter() {
         'events/:id': function (params) {
             userid = localStorage.getItem("userid");
             if (activePage != 'events') {
-                activePage = events;
+                activePage = "events";
                 showPage('events');
             }
             openEvent(params.id);
@@ -377,11 +380,12 @@ function loadFriendRequests() {
             if (friendRequests[i].to == userid) {
                 requestsListing = `<div class="single-friend-request">
             <a href="${pageUrl + hash + "user/" + friendRequests[i].from}"> ${users[friendRequests[i].from].firstName + " " + users[friendRequests[i].from].lastName}</a>
-            <a class="decline-request" href="${pageUrl + hash + 'declineRequest/' + friendRequests[i].reqId}">decline</a>
-            <a class="confirm-request" href="${pageUrl + hash + 'acceptRequest/' + friendRequests[i].reqId}">confirm</a></div>` + requestsListing;
+            <button class="decline-request" onclick="declineRequest(${i})">decline</button>
+            <button class="confirm-request" onclick="acceptRequest(${i})">confirm</button></div>` + requestsListing;
             }
         }
         requestsHTML.innerHTML = requestsListing;
+
     }
     xhttp.send();
 
@@ -450,6 +454,7 @@ function openComments(currentPostId) {
     activePost = Number(currentPostId, 10);
     console.log("opening comments");
     var commentHTML = document.getElementById("comments-listing");
+    commentHTML.innerHTML = "loading...";
     activePost = currentPostId;
 
     var xhttp = new XMLHttpRequest();
@@ -532,11 +537,13 @@ function addPost(currentGroupId) {
 
 function openStory(currentStoryId) {
     storyModal = document.getElementById("story-modal");
+    storyImage = document.getElementById("story-image");
+    storyImage.src = "images/loading.gif";
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", API, true);
     xhttp.onload = function () {
 
-        storyModal.innerHTML = '<div class="story-modal-content"><img src="' + stories[currentStoryId].url + '"></div>';
+        storyImage.src = stories[currentStoryId].url;
     }
     xhttp.send();
     storyModal.style.display = "block";
@@ -659,6 +666,8 @@ function loadGroupMembers() {
 }
 function loadEvents() {
     document.getElementById("close-event-modal").onclick = function () {
+        var eventModal = document.getElementById("event-modal");
+        eventModal.style.display = "none";
         router.navigate("events");
     }
     var xhttp = new XMLHttpRequest();
@@ -688,13 +697,17 @@ function openEvent(id) {
     activeEvent = id;
     var userGoing = false;
     var eventModal = document.getElementById("event-modal");
+    var eventButton = document.getElementById("going");
+    eventButton.innerHTML = "loading...";
+    eventButton.disabled = true;
+
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", API, true);
 
     xhttp.onload = function () {
-        var eventButton = document.getElementById("going");
+       
         var participantsList = document.getElementById("event-participants");
-
+        
         var listing = ""
         for (i in eventParticipants) {
             if (eventParticipants[i].eventid == id) {
@@ -705,11 +718,13 @@ function openEvent(id) {
             }
         }
         if (userGoing) {
+            eventButton.disabled = false;
             eventButton.innerHTML = 'not going';
             eventButton.onclick = function () {
                 removeParticipant(activeEvent);
             }
         } else {
+            eventButton.disabled = false;
             eventButton.innerHTML = 'going';
             eventButton.onclick = function () {
                 addParticipant(activeEvent, userid);
@@ -791,7 +806,7 @@ function loadUserPosts() {
             }
         }
         postsHTML.innerHTML = postListing;
-
+        
     }
     xhttp.send();
 }
@@ -809,8 +824,7 @@ function loadAddFriend() {
         xhttp.open("GET", API, true);
         xhttp.onload = function () {
             var userFriends = friends[userid].friends;
-            console.log(userFriends);
-            console.log(viewingUser);
+
             var isFriend = userFriends.includes(Number(viewingUser));
             if (isFriend) {
                 button.innerHTML = 'friends';
@@ -895,14 +909,15 @@ function loadProfile() {
     }
     xhttp.send();
     image.onclick = function () {
-        var imgUpload = document.getElementById("image-upload");
+        var imgUpload = document.getElementById("imgupload");
+        if (viewingUser == userid) {
+            imgUpload.click();
+            imgUpload.addEventListener('change', function () {
 
-        imgUpload.click();
-        imgUpload.addEventListener('change', function () {
-
-            var singleFile = imgUpload.files[0];
-            console.log(URL.createObjectURL(singleFile));
-        });
+                var singleFile = imgUpload.files[0];
+                console.log(URL.createObjectURL(singleFile));
+            });
+        }
     }
 
 }
