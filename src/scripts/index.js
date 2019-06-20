@@ -33,7 +33,7 @@ var events = require("../data/events");
 var eventParticipants = require("../data/eventParticipants");
 
 var router;
-var userid; 
+var userid;
 var groupid;
 var activePost;
 var activeEvent;
@@ -219,7 +219,7 @@ function showPage(page) {
     }
 
 }
-function initHomeButton() {
+function initButtons() {
     var homeBtn = document.getElementById("logo");
     homeBtn.onclick = function () {
         router.navigate('home', false);
@@ -229,6 +229,10 @@ function initHomeButton() {
         userid = -1;
         localStorage.setItem("userid", -1);
         router.navigate("welcome", false);
+    }
+    var avatar = document.getElementById("avatar");
+    avatar.onclick = function () {
+        router.navigate("user/" + userid, false);
     }
 }
 function initRequestsButton() {
@@ -285,14 +289,16 @@ function loadFriendRequests() {
 }
 
 function loadTopPanel() {
-    initHomeButton(); 
+
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", API, true);
     xhttp.onload = function () {
         console.log(userid);
-        var activeProfile = document.getElementById("active-profile");
-        activeProfile.innerHTML = `<img class="avatar" src="${users[userid].picture}"><div id="username"><a href="${pageUrl + hash + "user/" + userid}">
+        
+        templates.topbar = tmp.getTopBar
+        `<img class="avatar" id = "avatar" src="${users[userid].picture}"><div id="username"><a href="${pageUrl + hash + "user/" + userid}">
          ${users[userid].firstName}  </a></div>`;
+        initButtons();
     }
     xhttp.send();
 }
