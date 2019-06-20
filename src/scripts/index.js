@@ -209,7 +209,7 @@ function showPage(page) {
             loadGroupPosts(API, posts, pageUrl, hash, router, groupid, users);
             loadFriendRequests();
             initRequestsButton();
-            loadGroupMembers(users, groupMembers, API, pageUrl, hash, groupid);
+            loadGroupMembers(userid, users, groupMembers, API, pageUrl, hash, groupid);
             break;
         case "events":
             loadPage(page);

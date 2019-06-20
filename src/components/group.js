@@ -11,6 +11,7 @@ var group = `<div class="main-content">
     </div>
 </div>
 <div class="right-section">
+    <button id = "join-group"></button>
     <div class="group-members" id="group-members">
     </div>
 </div>

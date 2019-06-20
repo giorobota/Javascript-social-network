@@ -9,10 +9,26 @@
 }
 
 
-
-
+#join-group{
+    margin-top:20px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 22px;
+    color:white;
+    border: none;
+    background-color:crimson;
+    width: 100%;
+}
+#join-group:hover{
+    cursor: pointer; 
+} 
+#join-group:disabled{
+    opacity: 0.65;
+    cursor: not-allowed; 
+} 
+ 
 .main-content  a{
-    text-decoration: none;
+    text-decoration: none; 
     color: crimson;
 
 
