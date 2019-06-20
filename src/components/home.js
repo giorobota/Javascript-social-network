@@ -1,9 +1,8 @@
 var home = `<div class="main-content">
 <div class="left-section" id="navigation">
-    <!-- list navigation if works -->
 </div>
 <div class="middle-section">
-    <div class="create-post">
+    <div class="create-post"> 
         <h3> post </h3>
         <textarea class="post-content" id="post-content"></textarea>
         <button class="post-button" id="post-button"> post </button>
@@ -12,16 +11,18 @@ var home = `<div class="main-content">
 </div>
 <div class="right-section">
     <div class="stories">
-        <input id="storyUrl">
-        <button id="add-story">add story</button>
+        <div class="story-wrapper">
+            <input id="storyUrl" placeholder="paste url here">
+            <button id="add-story">add story</button>
+        </div>
         <h2>stories:</h2>
         <div id="story-listing">
         </div>
     </div>
     <div class="friend-suggestions">
-        <h2>friend suggestions:</h2> 
+        <h2>friend suggestions:</h2>
         <div id="friend-suggestion-listing"></div>
     </div>
-</div>
+</div> 
 </div>`;
-module.exports = home;
+module.exports = home;  

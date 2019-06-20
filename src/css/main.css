@@ -104,14 +104,19 @@ h2{
     background-color: crimson;
     color: white;
     border: none;
+    margin-top: 2px;
 }
 #add-story:hover{
     cursor: pointer;
     opacity: 0.85;
 }
 #storyUrl{
-    float:left;
+    margin-top:5px;
+    float:left; 
     width: 60%;
     height: 20px; 
-} 
- 
+}   
+.story-wrapper{ 
+    height: 40px;
+    border-bottom: 1px solid crimson;
+}

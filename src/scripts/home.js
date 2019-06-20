@@ -86,7 +86,6 @@ export function openStory(currentStoryId, stories, API) {
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", API, true);
     xhttp.onload = function () {
-
         storyImage.src = stories[currentStoryId].url;
     }
     xhttp.send();

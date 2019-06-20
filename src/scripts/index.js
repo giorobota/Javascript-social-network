@@ -169,7 +169,7 @@ function loadTemplates() {
 function showPage(page) {
     switch (page) {
         case "home":
-            console.log("showing home ies");
+
             loadPage(page);
             loadTopPanel();
             loadPublicPosts(users, friends, API, userid, posts, pageUrl, hash);
@@ -185,7 +185,7 @@ function showPage(page) {
         case "groups":
             loadPage(page);
             loadTopPanel();
-            loadGroups(groups, pageUrl, hash, API);
+            loadGroups(groups, pageUrl, hash, API, groupMembers);
             loadFriendRequests();
             initRequestsButton();
             break;
@@ -294,13 +294,12 @@ function loadTopPanel() {
     xhttp.open("GET", API, true);
     xhttp.onload = function () {
         console.log(userid);
-        
-        templates.topbar = tmp.getTopBar
-        `<img class="avatar" id = "avatar" src="${users[userid].picture}"><div id="username"><a href="${pageUrl + hash + "user/" + userid}">
+        var activeProfile = document.getElementById("active-profile");
+        activeProfile.innerHTML = `<img class="avatar" id = "avatar"src="${users[userid].picture}"><div id="username"><a href="${pageUrl + hash + "user/" + userid}">
          ${users[userid].firstName}  </a></div>`;
         initButtons();
     }
-    xhttp.send();
+    xhttp.send(); 
 }
 
 function loadPage(pageName) {
@@ -339,10 +338,11 @@ export function initPostButtons() {
 
 function addPost(groupid) {
     var postContent = document.getElementById("post-content");
+    if (postContent.value != "") {
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", API, true);
     xhttp.onload = function () {
-        if (postContent.value != "") {
+        
             var index = posts.length;
             posts[index] = {
                 postId: index,
@@ -354,7 +354,6 @@ function addPost(groupid) {
             postContent.value = "";
             if (groupid == -1) loadPublicPosts(users, friends, API, userid, posts, pageUrl, hash);
             else loadGroupPosts(API, posts, pageUrl, hash, router, groupid, users);
-
         }
     }
     xhttp.send();
