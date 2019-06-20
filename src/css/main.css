@@ -75,6 +75,7 @@ h2{
     border: crimson 1px solid;
     max-height: 250px;
     overflow-y: scroll;
+    padding: 5px;
     
     
 }
@@ -82,7 +83,7 @@ h2{
     padding-bottom: 20px;
     margin-top:1px black;
     padding-left: 5px;
-}
+} 
 
 .main-content .right-section .friend-suggestions{
     border: crimson 1px solid;
@@ -96,3 +97,21 @@ h2{
     padding-left: 5px;
 
 }
+#add-story{
+    float: right;
+    width: 35%;
+    height: 30px;
+    background-color: crimson;
+    color: white;
+    border: none;
+}
+#add-story:hover{
+    cursor: pointer;
+    opacity: 0.85;
+}
+#storyUrl{
+    float:left;
+    width: 60%;
+    height: 20px; 
+} 
+ 

@@ -12,7 +12,7 @@ export function loadPublicPosts(users, friends, API, userid, posts, pageUrl, has
         for (var i = 0; i < posts.length; i++) {
             var authorid = posts[i].userId;
             if (posts[i].groupId == -1 && (userFriends.includes(authorid) || userid == authorid)) {
-                
+
                 postListing = getPost(authorid, users, posts, i, pageUrl, hash + "home") + postListing;
             }
         }
@@ -23,6 +23,12 @@ export function loadPublicPosts(users, friends, API, userid, posts, pageUrl, has
 
 export function loadStories(router, users, friends, API, stories, pageUrl, hash, userid, activePage) {
     initStoryModal(router, activePage);
+    var button = document.getElementById("add-story");
+    var input = document.getElementById("storyUrl");
+    button.onclick = function(){
+        addStory(router, users, friends, API, stories, pageUrl, hash, userid, activePage, input.value);
+        input.value = "";
+    }
     var storyHTML = document.getElementById("story-listing");
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", API, true);
@@ -85,4 +91,19 @@ export function openStory(currentStoryId, stories, API) {
     }
     xhttp.send();
     storyModal.style.display = "block";
+}
+
+function addStory(router, users, friends, API, stories, pageUrl, hash, userid, activePage, url){
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("post", API, true);
+    xhttp.onload = function () {
+        var index = stories.length;
+        stories[index] = {
+            storyid: index,
+            userid: Number(userid),
+            url: url
+        }
+        loadStories(router, users, friends, API, stories, pageUrl, hash, userid, activePage);
+    }
+    xhttp.send();
 }

@@ -12,12 +12,14 @@ var home = `<div class="main-content">
 </div>
 <div class="right-section">
     <div class="stories">
+        <input id="storyUrl">
+        <button id="add-story">add story</button>
         <h2>stories:</h2>
         <div id="story-listing">
         </div>
     </div>
     <div class="friend-suggestions">
-        <h2>friend suggestions:</h2>
+        <h2>friend suggestions:</h2> 
         <div id="friend-suggestion-listing"></div>
     </div>
 </div>
