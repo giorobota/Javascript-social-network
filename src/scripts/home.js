@@ -1,6 +1,7 @@
-import {initPostButtons} from './index.js'
+import { initPostButtons } from './index.js';
+import { getPost } from './templates.js';
 
-export function loadPublicPosts(users, friends,API, userid, posts, pageUrl, hash) {
+export function loadPublicPosts(users, friends, API, userid, posts, pageUrl, hash) {
     var postsHTML = document.getElementById("posts");
     initPostButtons();
     var xhttp = new XMLHttpRequest();
@@ -8,25 +9,11 @@ export function loadPublicPosts(users, friends,API, userid, posts, pageUrl, hash
     xhttp.onload = function () {
         var userFriends = friends[userid].friends;
         var postListing = "";
-        for (var i=0; i<posts.length; i++) {
+        for (var i = 0; i < posts.length; i++) {
             var authorid = posts[i].userId;
             if (posts[i].groupId == -1 && (userFriends.includes(authorid) || userid == authorid)) {
-                postListing = `<div class="single-post">
-                                    <div class="post-author">
-                                        <img class="avatar" src="${users[authorid].picture}">
-                                        <a href="${pageUrl + hash + "user/" + authorid}" data-navigo> ${users[authorid].firstName + " " + users[authorid].lastName}</a>
-                                        <div class="post-date">
-                                            ${posts[i].date}
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="post-content">${posts[i].content}
-                                        <div class="comments-button">
-                                            <a href = "${pageUrl + hash + "home/post/" + i}" class="open-story-modal" >view comments</button>
-                                        </div>
-                                    </div>
-                                </div>` + postListing;
-
+                
+                postListing = getPost(authorid, users, posts, i, pageUrl, hash + "home") + postListing;
             }
         }
         postsHTML.innerHTML = postListing;
@@ -34,7 +21,7 @@ export function loadPublicPosts(users, friends,API, userid, posts, pageUrl, hash
     xhttp.send();
 }
 
-export function loadStories(router, users, friends,API, stories, pageUrl, hash, userid, activePage) {
+export function loadStories(router, users, friends, API, stories, pageUrl, hash, userid, activePage) {
     initStoryModal(router, activePage);
     var storyHTML = document.getElementById("story-listing");
     var xhttp = new XMLHttpRequest();
@@ -53,7 +40,7 @@ export function loadStories(router, users, friends,API, stories, pageUrl, hash, 
         storyHTML.innerHTML = storyListing;
     }
     xhttp.send();
-    
+
 
 }
 

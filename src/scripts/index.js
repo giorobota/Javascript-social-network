@@ -11,7 +11,6 @@ import '../css/story-modal.css';
 import '../css/top-bar.css';
 import '../css/user.css';
 import '../css/welcome.css';
- 
 
 
 import { loadWelcomeButtons } from './welcome.js';
@@ -20,8 +19,7 @@ import { loadGroups } from './groups.js';
 import { loadGroupPosts, loadGroupMembers } from './group.js';
 import { loadEvents, openEvent } from './events.js';
 import { loadAddFriend, loadBio, loadProfile, loadUserPosts } from './user.js';
-
-
+import * as tmp from './templates.js';
 
 var users = require("../data/users");
 var posts = require("../data/posts");
@@ -35,7 +33,7 @@ var events = require("../data/events");
 var eventParticipants = require("../data/eventParticipants");
 
 var router;
-var userid;
+var userid; 
 var groupid;
 var activePost;
 var activeEvent;
@@ -63,7 +61,6 @@ function initRouter() {
                 showPage("home");
 
             }
-
         },
         'home/story/:id': function (params) {
             userid = localStorage.getItem("userid");
@@ -140,18 +137,7 @@ function initRouter() {
             }
             openComments(params.postid);
         },
-        // "declineRequest/:id" : function (params) {
-        //     declineRequest(params.id);
-        //     console.log(activePage);
-        //     router.navigate(activePage);
 
-        // },
-        // "acceptRequest/:id" : function (params) {
-        //     acceptRequest(params.id);
-        //     console.log(activePage);
-        //     router.navigate(activePage);
-
-        // }
     });
     router.notFound(function (query) {
         router.navigate("welcome");
@@ -233,7 +219,6 @@ function showPage(page) {
     }
 
 }
-
 function initHomeButton() {
     var homeBtn = document.getElementById("logo");
     homeBtn.onclick = function () {
@@ -286,37 +271,21 @@ function loadNavigation(activePage) {
 function loadFriendRequests() {
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", API, true);
-
     xhttp.onload = function () {
         var requestsHTML = document.getElementById("friend-requests-listing");
         var requestsListing = "";
         for (var i in friendRequests) {
-
             if (friendRequests[i].to == userid) {
-                requestsListing = `<div class="single-friend-request"><img class = "avatar" src = "${users[friendRequests[i].from].picture}">
-            <a href="${pageUrl + hash + "user/" + friendRequests[i].from}"> ${users[friendRequests[i].from].firstName + " " + users[friendRequests[i].from].lastName}</a>
-                        </div><hr>` + requestsListing;
+                requestsListing = tmp.getFriendRequest(i, friendRequests, pageUrl, hash, users) + requestsListing;
             }
         }
         requestsHTML.innerHTML = requestsListing;
-        // var acceptButtons = document.getElementsByClassName("confirm-request");
-        // var declineButtons = document.getElementsByClassName("decline-request");
-        // for (var i in acceptButtons) {
-        //     if (i >= acceptButtons.length) break;
-        //     console.log("entered buton list");
-        //     acceptButtons[i].onclick = function () { 
-        //         acceptRequest(acceptButtons[i].id);
-        //     } 
-        //     declineButtons[i].onclick = function () {
-        //         declineRequest(declineButtons[i].id);
-        //     }
-        // }
     }
     xhttp.send();
 }
 
 function loadTopPanel() {
-    initHomeButton();
+    initHomeButton(); 
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", API, true);
     xhttp.onload = function () {
@@ -432,17 +401,9 @@ function openComments(currentPostId) {
     xhttp.onload = function () {
         var commentsListing = "";
         for (var i in comments) {
-
             var authorid = comments[i].userid;
             if (comments[i].postid == currentPostId) {
-                commentsListing = `<div class="single-post">
-            <div class="post-author">
-            <img class="avatar" src="${users[authorid].picture}">
-            <a href="${pageUrl + hash + "user/" + authorid}">${users[authorid].firstName + " " + users[authorid].lastName} </a>
-            <div class="post-date"> ${comments[i].date} 
-            </div></div><hr>
-            <div class="post-content"> ${comments[i].content} 
-            </div></div>` + commentsListing;
+                commentsListing = tmp.getComment(i, users, authorid, comments, pageUrl, hash) + commentsListing;
                 console.log(comments[i]);
             }
         }

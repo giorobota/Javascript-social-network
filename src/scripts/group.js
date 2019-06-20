@@ -1,5 +1,5 @@
 import {initPostButtons} from './index.js'
-
+import { getPost } from './templates.js';
 export function loadGroupPosts(API, posts, pageUrl, hash, router, groupid, users) {
     initPostButtons();
     var xhttp = new XMLHttpRequest();
@@ -10,16 +10,12 @@ export function loadGroupPosts(API, posts, pageUrl, hash, router, groupid, users
         for (var i in posts) {
             var authorid = posts[i].userId;
             if (posts[i].groupId == groupid) {
-                postListing = `<div class="single-post"><div class="post-author"><img class="avatar" src="${users[authorid].picture}">
-                <a href="${pageUrl + hash + "user/" + authorid}">
-                    ${users[authorid].firstName + " " + users[authorid].lastName}</a><div class="post-date">
-                    ${posts[i].date}</div></div><hr><div class="post-content">${posts[i].content} 
-                    <div class="comments-button"><a class="open-story-modal" href = "${pageUrl + hash + router.lastRouteResolved().url + "/post/" + i}">
-                    'view comments</button></div></div></div>` + postListing;
+            
+                postListing =  getPost(authorid, users, posts, i, pageUrl, hash + router.lastRouteResolved().url) + postListing;
 
             }
         }
-        postsHTML.innerHTML = postListing;
+        postsHTML.innerHTML = postListing; 
     }
     xhttp.send();
 }
