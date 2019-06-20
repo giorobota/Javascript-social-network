@@ -41,7 +41,7 @@
     text-align: center;
 }
 
-#add-friend{
+#add-friend, #decline-request{
     margin-top: 10px;
     float:right;
     color:whitesmoke;
@@ -52,6 +52,16 @@
     height:40px;
     
 }
+#decline-request{
+    background-color: yellowgreen;
+    display: none;
+    margin-right:10px;
+}
+#decline-request:hover{
+    background-color: rgb(113, 151, 38);
+    cursor: pointer;
+}
+
 #add-friend:hover{
     cursor: pointer;
     background-color:rgb(173, 16, 48);

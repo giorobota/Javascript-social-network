@@ -3,6 +3,7 @@ var user = `<div class="timeline">
     <img id="profile-photo-big" src="../src/images/default-profile.png">
 </div>
 <button id="add-friend"></button>
+<button id = "decline-request">decline request</button>
 <div class="about">
     <div id = "fullname"></div>
     <h2>About:</h2>
@@ -10,5 +11,5 @@ var user = `<div class="timeline">
 </div>
 <div class="posts" id="posts"></div>
 </div>
-<input type="file" id="imgupload" style="display:none" accept="image/*"> `
+<input type="file" id="imgupload" style="display:none" accept="image/*">  `
 module.exports = user;

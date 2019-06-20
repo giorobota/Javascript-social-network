@@ -1,5 +1,4 @@
 
-import {sendRequest, acceptRequest} from './index.js'
 
 export function loadUserPosts(API, pageUrl, hash, router, posts, viewingUser, users, groups) {
     var xhttp = new XMLHttpRequest();
@@ -29,7 +28,8 @@ export function loadUserPosts(API, pageUrl, hash, router, posts, viewingUser, us
 }
 export function loadAddFriend(API, friends, friendRequests, userid, viewingUser, users) {
     var button = document.getElementById("add-friend");
-
+    var decline = document.getElementById("decline-request");
+    decline.style.display = "none";
     if (userid == viewingUser) {
         button.innerHTML = "edit bio";
         button.onclick = function () {
@@ -50,6 +50,7 @@ export function loadAddFriend(API, friends, friendRequests, userid, viewingUser,
                 var requestSent = false;
                 var requestRecieved = false;
                 var reqId;
+                console.log(friendRequests);
                 for (var i in friendRequests) {
                     if (friendRequests[i].from == userid && friendRequests[i].to == viewingUser) requestSent = true;
                     if (friendRequests[i].to == userid && friendRequests[i].from == viewingUser) {
@@ -57,28 +58,28 @@ export function loadAddFriend(API, friends, friendRequests, userid, viewingUser,
                         reqId = friendRequests[i].reqId;
                     }
                 }
-                if (requestSent) {
+                if (requestSent) { 
                     console.log("requestSent");
                     button.innerHTML = 'request sent';
                     button.disabled = true;
                 } else if (requestRecieved) {
                     console.log("requestRecieved");
                     button.innerHTML = 'accept friend request';
+                    decline.style.display = "block";
+                    decline.onclick = function () {
+                        declineRequest(reqId, API, friends, friendRequests, userid, viewingUser, users);
+                    }
                     button.onclick = function () {
-                        acceptRequest(reqId);
-                        button.innerHTML = 'friends';
-                        button.disabled = true;
+                        acceptRequest(reqId, API, friends, friendRequests, userid, viewingUser, users);
                     }
                 } else {
                     button.innerHTML = "add friend";
                     button.onclick = function () {
-                        sendRequest(viewingUser);
-                        button.innerHTML = 'request sent';
-                        button.disabled = true;
+                        sendRequest(API, friends, friendRequests, userid, viewingUser, users);
                     }
                 }
             }
-        }
+        } 
         xhttp.send();
     }
 }
@@ -128,6 +129,46 @@ export function loadBio(API, users, viewingUser) {
     xhttp.open("GET", API, true);
     xhttp.onload = function () {
         bio.innerHTML = users[viewingUser].bio;
+    }
+    xhttp.send();
+}
+function declineRequest(reqId, API, friends, friendRequests, userid, viewingUser, users) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("post", API, true);
+    xhttp.onload = function () {
+        friendRequests[reqId].from = -1;
+        friendRequests[reqId].to = -1;
+        console.log("declined");
+        loadAddFriend(API, friends, friendRequests, userid, viewingUser, users);
+    }
+    xhttp.send();
+}
+function acceptRequest(reqId, API, friends, friendRequests, userid, viewingUser, users) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("post", API, true);
+    xhttp.onload = function () {
+        friends[friendRequests[reqId].from].friends.push(friendRequests[reqId].to);
+        friends[friendRequests[reqId].to].friends.push(friendRequests[reqId].from);
+        friendRequests[reqId].from = -1;
+        friendRequests[reqId].to = -1;
+        console.log("accepted");
+        loadAddFriend(API, friends, friendRequests, userid, viewingUser, users);
+    } 
+    xhttp.send();
+
+}
+function sendRequest(API, friends, friendRequests, userid, viewingUser, users) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("post", API, true);
+    xhttp.onload = function () {
+        var index = friendRequests.length;
+        friendRequests[index] = {
+            from: Number(userid),
+            to: Number(viewingUser),
+            reqId: index
+        }
+        console.log(friendRequests[index]); 
+        loadAddFriend(API, friends, friendRequests, userid, viewingUser, users);
     }
     xhttp.send();
 }

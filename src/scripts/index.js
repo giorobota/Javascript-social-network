@@ -11,7 +11,7 @@ import '../css/story-modal.css';
 import '../css/top-bar.css';
 import '../css/user.css';
 import '../css/welcome.css';
-
+ 
 
 
 import { loadWelcomeButtons } from './welcome.js';
@@ -282,32 +282,7 @@ function loadNavigation(activePage) {
         router.navigate("events");
     }
 }
-function declineRequest(reqId) {
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("post", API, true);
-    xhttp.onload = function () {
-        friendRequests[reqId].from = -1;
-        friendRequests[reqId].to = -1;
-        //reload friend requests
-        console.log("declined");
-        loadFriendRequests();
-    }
-    xhttp.send();
 
-}
-export function acceptRequest(reqId) {
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("post", API, true);
-    xhttp.onload = function () {
-        friends[friendRequests[reqId].from].friends.push(friendRequests[reqId].to);
-        friends[friendRequests[reqId].to].friends.push(friendRequests[reqId].from);
-        friendRequests[reqId].from = -1;
-        friendRequests[reqId].to = -1;
-        console.log("accepted");
-    }
-    xhttp.send();
-    loadFriendRequests();
-}
 function loadFriendRequests() {
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", API, true);
@@ -318,42 +293,28 @@ function loadFriendRequests() {
         for (var i in friendRequests) {
 
             if (friendRequests[i].to == userid) {
-                requestsListing = `<div class="single-friend-request">
+                requestsListing = `<div class="single-friend-request"><img class = "avatar" src = "${users[friendRequests[i].from].picture}">
             <a href="${pageUrl + hash + "user/" + friendRequests[i].from}"> ${users[friendRequests[i].from].firstName + " " + users[friendRequests[i].from].lastName}</a>
-            <button class="decline-request"  id = "${i}">decline</button>
-            <button class="confirm-request" id = "${i}">confirm</button></div>` + requestsListing;
+                        </div><hr>` + requestsListing;
             }
         }
         requestsHTML.innerHTML = requestsListing;
-        var acceptButtons = document.getElementsByClassName("confirm-request");
-        var declineButtons = document.getElementsByClassName("decline-request");
-        for (var i in acceptButtons) {
-            if (i >= acceptButtons.length) break;
-            console.log("entered buton list");
-            acceptButtons[i].onclick = function () {
-                acceptRequest(acceptButtons[i].id);
-            }
-            declineButtons[i].onclick = function () {
-                declineRequest(declineButtons[i].id);
-            }
-        }
+        // var acceptButtons = document.getElementsByClassName("confirm-request");
+        // var declineButtons = document.getElementsByClassName("decline-request");
+        // for (var i in acceptButtons) {
+        //     if (i >= acceptButtons.length) break;
+        //     console.log("entered buton list");
+        //     acceptButtons[i].onclick = function () { 
+        //         acceptRequest(acceptButtons[i].id);
+        //     } 
+        //     declineButtons[i].onclick = function () {
+        //         declineRequest(declineButtons[i].id);
+        //     }
+        // }
     }
     xhttp.send();
 }
-export function sendRequest(requestUserId) {
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("post", API, true);
-    xhttp.onload = function () {
-        var index = friendRequests.length;
-        friendRequests[index] = {
-            from: userid,
-            to: requestUserId,
-            reqId: index
-        }
-        console.log(friendRequests[index]);
-    }
-    xhttp.send();
-}
+
 function loadTopPanel() {
     initHomeButton();
     var xhttp = new XMLHttpRequest();
@@ -466,8 +427,6 @@ function openComments(currentPostId) {
     console.log("opening comments");
     var commentHTML = document.getElementById("comments-listing");
     commentHTML.innerHTML = "loading...";
-    // activePost = currentPostId;
-
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", API, true);
     xhttp.onload = function () {
