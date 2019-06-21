@@ -304,17 +304,17 @@ function loadTopPanel() {
     }
     xhttp.send();
 }
-function initSearchButton(){
+function initSearchButton() {
     var button = document.getElementById("search-button");
     var input = document.getElementById("search-keyword");
-    button.onclick = function (){
-        if(input.value != ""){
+    button.onclick = function () {
+        if (input.value != "") {
             router.navigate("search/" + input.value);
         }
-        
+
     }
 }
- 
+
 function loadPage(pageName) {
     var currPage = document.getElementById("routing-component");
     switch (pageName) {
@@ -428,7 +428,7 @@ function openComments(currentPostId) {
                 console.log(comments[i]);
             }
         }
-        if(commentsListing == "") commentsListing = "no comments yet";
+        if (commentsListing == "") commentsListing = "no comments yet";
         commentHTML.innerHTML = commentsListing;
     }
     xhttp.send();
@@ -436,21 +436,25 @@ function openComments(currentPostId) {
     commentModal.style.display = "block";
 }
 
-function showSearchResults(keyword){
+function showSearchResults(keyword) {
     var results = document.getElementById('search-results');
     var listing = "";
-    var parts = keyword.split("%20");
-    for(var i in users){   
+    var parts = keyword.split("%20")[0].split(" ");
+    console.log(parts);
+    for (var i in users) {
         var isResult = false;
-        for(var j in parts){
-            if(users[i].firstName.includes(parts[j]) || users[i].lastName.includes(parts[j]))isResult = true;
+        for (var j in parts) {
+            var fname = (users[i].firstName).toLowerCase();
+            var lname = (users[i].lastName).toLowerCase();
+            var kword = (parts[j]).toLowerCase();
+            if (fname.includes(kword) || lname.includes(kword)) isResult = true;
         }
-        if (isResult) listing += tmp.getSearchResult(users[i].picture, (pageUrl + hash + "user/" + i), 
+        if (isResult) listing += tmp.getSearchResult(users[i].picture, (pageUrl + hash + "user/" + i),
             (users[i].firstName + " " + users[i].lastName), users[i].bio);
     }
-    if(listing == ""){
-        results.innerHTML = "no results"; 
-    }else{
+    if (listing == "") {
+        results.innerHTML = "no results";
+    } else {
         results.innerHTML = listing;
     }
-}
+}    
