@@ -1,35 +1,5 @@
 
-.main-content .middle-section .events .single-event{
-    border: crimson 1px solid;
-    margin: 5px;
-    
-}
-.main-content .middle-section .events .single-event .event-content{
-    margin: 5px;
-    
-}
-.main-content .middle-section .events .single-event .event-author{
-    
-    margin: 5px;
-    height: 30px;
 
-}
-.main-content  a{
-    text-decoration: none;
-    color: crimson;
-
-
-}
-.main-content a:hover{
-    
-    color: crimson;
-    text-decoration: underline;
-
-}
-.main-content .middle-section .events .single-event .event-author .event-date{
-    float:right;
-
-}
 
 .main-content .right-section{
     float:right;
@@ -39,9 +9,6 @@
 .main-content .right-section .event-suggestions{
     margin-top: 20px;
     border: crimson 1px solid;
-    
-    
-    
 }
 .main-content .right-section .event-suggestions .single-event-suggestion{
     padding-bottom: 5px;
@@ -52,7 +19,7 @@
 }
 a{
     text-decoration: none;
-    color: crimson;
+    color: crimson; 
 }
 a:hover{
     text-decoration: underline;

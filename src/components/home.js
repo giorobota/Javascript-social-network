@@ -12,7 +12,7 @@ var home = `<div class="main-content">
 <div class="right-section">
     <div class="stories">
         <div class="story-wrapper">
-            <input id="storyUrl" placeholder="paste url here">
+            <input type="url" id="storyUrl" placeholder="paste url here">
             <button id="add-story">add story</button>
         </div>
         <h2>stories:</h2>
@@ -22,7 +22,7 @@ var home = `<div class="main-content">
     <div class="friend-suggestions">
         <h2>friend suggestions:</h2>
         <div id="friend-suggestion-listing"></div>
-    </div>
-</div> 
-</div>`;
+    </div> 
+</div>
+</div>`; 
 module.exports = home;  

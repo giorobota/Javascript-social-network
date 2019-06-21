@@ -1,10 +1,8 @@
-export function loadEvents(API,pageUrl, hash, router, events) {
 
-    document.getElementById("close-event-modal").onclick = function () {
-        var eventModal = document.getElementById("event-modal");
-        eventModal.style.display = "none";
-        router.navigate("events");
-    }
+import { getSingleEvent } from './templates.js';
+
+export function loadEvents(API, eventParticipants, users, userid, events, pageUrl, hash) {
+    loadButtons(API, eventParticipants, users, userid, events, pageUrl, hash);
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", API, true);
     xhttp.onload = function () {
@@ -14,10 +12,7 @@ export function loadEvents(API,pageUrl, hash, router, events) {
         var suggestions = "";
         for (var i in events) {
 
-            eventListing = `<div class="single-event"><div class="event-author"><a class="open-events-modal" href = "${pageUrl + hash + "events/" + i}"> 
-            ${events[i].eventName}</a><div class="event-date"> ${events[i].eventDate}</div></div><hr><div class="event-content">
-                ${events[i].eventDescription}</div></div>` + eventListing;
-
+            eventListing = getSingleEvent((pageUrl + hash + "events/" + i), events[i].eventName, events[i].eventDate, events[i].eventDescription) + eventListing;
             if (i <= 3) {
                 suggestions += `<div class="single-event-suggestion" ><a class="open-events-modal" href = "${pageUrl + hash + "events/" + i}">
                     ${events[i].eventName}</a></div>`;
@@ -28,7 +23,8 @@ export function loadEvents(API,pageUrl, hash, router, events) {
     }
     xhttp.send();
 }
-export function openEvent(activeEvent, API, eventParticipants, users, userid) {
+export function openEvent(id, API, eventParticipants, users, userid, events, pageUrl, hash, router) {
+    loadCloseBtn(router);
     var userGoing = false;
     var eventModal = document.getElementById("event-modal");
     var eventButton = document.getElementById("going");
@@ -37,54 +33,42 @@ export function openEvent(activeEvent, API, eventParticipants, users, userid) {
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", API, true);
     xhttp.onload = function () {
+        var evt = document.getElementById("active-event");
+        evt.innerHTML = getSingleEvent(pageUrl + hash + "events/" + id, events[id].eventName, events[id].eventDate, events[id].eventDescription);
         var participantsList = document.getElementById("event-participants");
-        var listing = ""
+        var listing = "";
+        console.log(listing);
         for (var i in eventParticipants) {
-            if (eventParticipants[i].eventid == activeEvent) {
-                listing += '<a href="user.html?userid=' + eventParticipants[i].userid + '&activeuser='
-                    + userid + '">' + users[eventParticipants[i].userid].firstName + " " + users[eventParticipants[i].userid].lastName + '  '
-                    + '</a>';
+            if (eventParticipants[i].eventid == id) {
+                listing += `<a href="${pageUrl + hash + "user/" + eventParticipants[i].userid}"> 
+                ${users[eventParticipants[i].userid].firstName + " " + users[eventParticipants[i].userid].lastName}
+                </a>`;
                 if (eventParticipants[i].userid == userid) userGoing = true;
             }
         }
+        participantsList.innerHTML = listing;
+
         if (userGoing) {
             eventButton.disabled = false;
             eventButton.innerHTML = 'not going';
             eventButton.onclick = function () {
-                removeParticipant(activeEvent, API, eventParticipants, users, userid);
+                removeParticipant(id, API, eventParticipants, users, userid, events, pageUrl, hash, router);
             }
         } else {
             eventButton.disabled = false;
             eventButton.innerHTML = 'going';
             eventButton.onclick = function () {
-                addParticipant(activeEvent, API, eventParticipants, users, userid);
+                addParticipant(id, API, eventParticipants, users, userid, events, pageUrl, hash, router);
             }
         }
-        participantsList.innerHTML = listing;
+
 
     }
     xhttp.send();
     eventModal.style.display = "block";
-    // initEventInviteButton(activeEvent);
 }
 
-// function initEventInviteButton(activeEvent) {
-//     document.getElementById("inviteButton").onclick = function () {
-//         var field = document.getElementById("invitedUser");
-//         var xhttp = new XMLHttpRequest();
-//         xhttp.open("GET", API, true);
-//         xhttp.onload = function () {
-//             for (var i in users) {
-//                 if ((users[i].firstName + " " + users[i].lastName) == field.value) {
-//                     addParticipant(API, activeEvent, i, eventParticipants);
-//                 }
-//             }
-//             field.value = "";
-//             console.log("finished adding");
-//         }
-//     }
-// }
-function removeParticipant(activeEvent, API, eventParticipants, users, userid) {
+function removeParticipant(activeEvent, API, eventParticipants, users, userid, events, pageUrl, hash, router) {
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", API, true);
     xhttp.onload = function () {
@@ -92,23 +76,52 @@ function removeParticipant(activeEvent, API, eventParticipants, users, userid) {
             if (eventParticipants[i].eventid == activeEvent && eventParticipants[i].userid == userid) {
                 eventParticipants[i].eventid = -1;
                 eventParticipants[i].userid = -1;
-                openEvent(activeEvent, API, eventParticipants, users, userid);
+                openEvent(activeEvent, API, eventParticipants, users, userid, events, pageUrl, hash, router);
             }
         }
     }
     xhttp.send();
 }
-function addParticipant(activeEvent, API, eventParticipants, users, id) {
+function addParticipant(activeEvent, API, eventParticipants, users, userid, events, pageUrl, hash, router) {
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", API, true);
     xhttp.onload = function () {
         var index = eventParticipants.length
         eventParticipants[index] = {
             eventid: activeEvent,
-            userid: id
+            userid: userid,
         };
-        openEvent(activeEvent, API, eventParticipants, users, id);
+        openEvent(activeEvent, API, eventParticipants, users, userid, events, pageUrl, hash, router);
         console.log("adding");
     }
     xhttp.send();
+}
+
+function loadButtons(API, eventParticipants, users, userid, events, pageUrl, hash) {
+    var name = document.getElementById("event-name");
+    var desc = document.getElementById("event-description");
+    var date = document.getElementById("event-date");
+    var btn = document.getElementById("create-event-button");
+    btn.onclick = function () {
+        if (name.value != "") {
+            var index = events.length;
+            var tmp = date.value.split('T');
+            events[index] = {
+                eventId: index,
+                eventName: name.value, 
+                eventDescription: desc.value,
+                eventDate: tmp[1] + " " + tmp[0],   
+            }
+            name.value = "";
+            desc.value = "";
+            loadEvents(API, eventParticipants, users, userid, events, pageUrl, hash);
+        }
+    }
+}
+function loadCloseBtn(router) {
+    document.getElementById("close-event-modal").onclick = function () {
+        var eventModal = document.getElementById("event-modal");
+        eventModal.style.display = "none";
+        router.navigate("events");
+    }
 }

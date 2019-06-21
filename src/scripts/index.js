@@ -117,7 +117,7 @@ function initRouter() {
                 activePage = "events";
                 showPage('events');
             }
-            openEvent(params.id, API, eventParticipants, users, userid);
+            openEvent(params.id, API, eventParticipants, users, userid, events, pageUrl, hash, router);
         },
         'user/:id': function (params) {
             viewingUser = params.id;
@@ -167,10 +167,9 @@ function loadTemplates() {
 }
 
 function showPage(page) {
+    loadPage(page);
     switch (page) {
         case "home":
-
-            loadPage(page);
             loadTopPanel();
             loadPublicPosts(users, friends, API, userid, posts, pageUrl, hash);
             loadFriendSuggestions(users, API, userid, pageUrl, hash);
@@ -179,30 +178,26 @@ function showPage(page) {
             initRequestsButton();
             break;
         case "welcome":
-            loadPage(page);
             loadWelcomeButtons(router, users, friends, API, userid);
             break;
         case "groups":
-            loadPage(page);
             loadTopPanel();
             loadGroups(groups, pageUrl, hash, API, groupMembers);
             loadFriendRequests();
             initRequestsButton();
             break;
         case "group":
-            loadPage(page);
             loadTopPanel();
             loadGroupPosts(API, posts, pageUrl, hash, router, groupid, users);
             loadFriendRequests();
             initRequestsButton();
-            loadGroupMembers(userid, users, groupMembers, API, pageUrl, hash, groupid);
+            loadGroupMembers(userid, users, groupMembers, API, pageUrl, hash, groupid); 
             break;
         case "events":
-            loadPage(page);
             loadTopPanel();
             loadFriendRequests();
             initRequestsButton();
-            loadEvents(API, pageUrl, hash, router, events);
+            loadEvents(API, eventParticipants, users, userid, events, pageUrl, hash);
             break;
         case "user":
             loadPage(page);
@@ -215,7 +210,6 @@ function showPage(page) {
             loadBio(API, users, viewingUser);
             loadProfile(API, viewingUser, userid, users);
             break;
-
     }
 
 }
@@ -393,7 +387,7 @@ export function initCommentButtons() {
 }
 function getDateNow() {
     var date = new Date();
-    return + date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate();
+    return + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
 }
 
 function openComments(currentPostId) {

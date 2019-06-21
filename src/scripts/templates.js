@@ -33,21 +33,27 @@ export function getFriendRequest(i, friendRequests, pageUrl, hash, users){
                         </div><hr>`;
 }
 
-export function getTopBar(picture, url, firstName){
-    return `<div class="top-bar">
-    <img id="logo" src="../src/images/logo.jpg">
-    <div class="search">
-        <input type="text" name="firstname" placeholder="find people:">
+// export function getTopBar(picture, url, firstName){
+//     return `<div class="top-bar">
+//     <img id="logo" src="../src/images/logo.jpg">
+//     <div class="search">
+//         <input type="text" name="firstname" placeholder="find people:">
 
-        <input type="submit" value="search" id="search">
-    </div>
-    <div class="active-profile">
-        <img id="friend-requests" src="../src/images/friend-requests.jpg">
-        <img id="logout" src= '../src/images/logout.png' >
-        <div id="active-profile">
-        <img class="avatar" id = "avatar" src="${picture}">
-        <div id="username"><a href="${url}">${firstName}</a></div>
-        </div>
-    </div>
-    </div>`;
+//         <input type="submit" value="search" id="search">
+//     </div>
+//     <div class="active-profile">
+//         <img id="friend-requests" src="../src/images/friend-requests.jpg">
+//         <img id="logout" src= '../src/images/logout.png' >
+//         <div id="active-profile">
+//         <img class="avatar" id = "avatar" src="${picture}">
+//         <div id="username"><a href="${url}">${firstName}</a></div>
+//         </div>
+//     </div>
+//     </div>`;
+// }
+
+export function getSingleEvent(url, name, date, description){
+    return `<div class="single-event"><div class="event-author"><a class="open-events-modal" href = "${url}"> 
+            ${name}</a><div class="event-date"> ${date}</div></div><hr><div class="event-content">
+                ${description}</div></div>`;
 }
