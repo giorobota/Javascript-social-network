@@ -20,7 +20,7 @@ var posts = [
         userId: 2,
         groupId: -1,
         content: "Labore in dolore irure officia incididunt. Consectetur sunt enim labore laborum commodo pariatur sit in elit aliquip ipsum. Consectetur elit anim dolore non anim nulla ex mollit duis incididunt officia laboris. Incididunt nulla labore proident tempor Lorem culpa do veniam occaecat aliquip. Deserunt velit magna laborum dolore.",
-        date: "2019/3/23"
+        date: "2019-3-23"
 
     },
     {
@@ -28,7 +28,7 @@ var posts = [
         userId: 2,
         groupId: -1,
         content: "Labore in dolore irure officia incididunt. Consectetur sunt enim labore laborum commodo pariatur sit in elit aliquip ipsum. Consectetur elit anim dolore non anim nulla ex mollit duis incididunt officia laboris. Incididunt nulla labore proident tempor Lorem culpa do veniam occaecat aliquip. Deserunt velit magna laborum dolore.",
-        date: "2019/5/31"
+        date: "2019-5-31"
 
     },
     {
@@ -36,7 +36,7 @@ var posts = [
         userId: 1,
         groupId: -1,
         content: "Labore in dolore irure officia incididunt. Consectetur sunt enim labore laborum commodo pariatur sit in elit aliquip ipsum. Consectetur elit anim dolore non anim nulla ex mollit duis incididunt officia laboris. Incididunt nulla labore proident tempor Lorem culpa do veniam occaecat aliquip. Deserunt velit magna laborum dolore.",
-        date: "2019/3/25"
+        date: "2019-3-25"
 
     },
     {
@@ -44,7 +44,7 @@ var posts = [
         userId: 2,
         groupId: 0,
         content: "Labore in dolore irure officia incididunt. Consectetur sunt enim labore laborum commodo pariatur sit in elit aliquip ipsum. Consectetur elit anim dolore non anim nulla ex mollit duis incididunt officia laboris. Incididunt nulla labore proident tempor Lorem culpa do veniam occaecat aliquip. Deserunt velit magna laborum dolore.",
-        date: "2019/3/25"
+        date: "2019-3-25"
 
     },
     {
@@ -52,7 +52,7 @@ var posts = [
         userId: 1,
         groupId: 1,
         content: "Labore in dolore irure officia incididunt. Consectetur sunt enim labore laborum commodo pariatur sit in elit aliquip ipsum. Consectetur elit anim dolore non anim nulla ex mollit duis incididunt officia laboris. Incididunt nulla labore proident tempor Lorem culpa do veniam occaecat aliquip. Deserunt velit magna laborum dolore.",
-        date: "2019/3/25"
+        date: "2019-3-25"
 
     },
     {
@@ -60,9 +60,9 @@ var posts = [
         userId: 1,
         groupId: 0,
         content: "Labore in dolore irure officia incididunt. Consectetur sunt enim labore laborum commodo pariatur sit in elit aliquip ipsum. Consectetur elit anim dolore non anim nulla ex mollit duis incididunt officia laboris. Incididunt nulla labore proident tempor Lorem culpa do veniam occaecat aliquip. Deserunt velit magna laborum dolore.",
-        date: "2019/3/25"
+        date: "2019-3-25"
 
     },
 
 ];
-module.exports = posts;
+module.exports = posts; 

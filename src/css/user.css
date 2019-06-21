@@ -88,7 +88,7 @@
     height: 35px;
     
 }
-#bio input, button{
+#bio input, #bio button{
     
     height: 30px;
 }
@@ -96,7 +96,7 @@
     color: white;
     background-color: crimson;
     border: black 2px;
-    font-size: 20px;
+    font-size: 20px; 
     margin-left:10px;
 }
 #bio button:hover{

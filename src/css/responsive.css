@@ -11,13 +11,19 @@
         width: 100% !important;
         float: right;
     }
-    .middle-section{
+    .middle-section{ 
         width:65% !important;
     }
     .right-section{
-        width: 30% !important;
+        width: 30% !important; 
     }
     .comments-modal-content{
         width: 85% !important;
     }
- }
+    .search-section{
+        width: 90%;
+    }
+    .single-search-result{
+        height: auto;
+    }
+ } 

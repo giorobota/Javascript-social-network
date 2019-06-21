@@ -11,6 +11,7 @@ import '../css/story-modal.css';
 import '../css/top-bar.css';
 import '../css/user.css';
 import '../css/welcome.css';
+import '../css/search.css';
 
 
 import { loadWelcomeButtons } from './welcome.js';
@@ -59,7 +60,6 @@ function initRouter() {
             if (activePage != 'home') {
                 activePage = 'home';
                 showPage("home");
-
             }
         },
         'home/story/:id': function (params) {
@@ -137,7 +137,12 @@ function initRouter() {
             }
             openComments(params.postid);
         },
+        'search/:keyword': function (params) {
+            userid = localStorage.getItem("userid");
+            showPage("search");
+            showSearchResults(params.keyword, users);
 
+        }
     });
     router.notFound(function (query) {
         router.navigate("welcome");
@@ -164,6 +169,7 @@ function loadTemplates() {
     templates.events = require("../components/events");
     templates.eventsModal = require("../components/events-modal");
     templates.user = require("../components/user");
+    templates.search = require('../components/search');
 }
 
 function showPage(page) {
@@ -191,7 +197,7 @@ function showPage(page) {
             loadGroupPosts(API, posts, pageUrl, hash, router, groupid, users);
             loadFriendRequests();
             initRequestsButton();
-            loadGroupMembers(userid, users, groupMembers, API, pageUrl, hash, groupid); 
+            loadGroupMembers(userid, users, groupMembers, API, pageUrl, hash, groupid);
             break;
         case "events":
             loadTopPanel();
@@ -209,6 +215,9 @@ function showPage(page) {
             initCommentButtons();
             loadBio(API, users, viewingUser);
             loadProfile(API, viewingUser, userid, users);
+            break;
+        case "search":
+            loadTopPanel();
             break;
     }
 
@@ -283,7 +292,7 @@ function loadFriendRequests() {
 }
 
 function loadTopPanel() {
-
+    initSearchButton();
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", API, true);
     xhttp.onload = function () {
@@ -293,9 +302,19 @@ function loadTopPanel() {
          ${users[userid].firstName}  </a></div>`;
         initButtons();
     }
-    xhttp.send(); 
+    xhttp.send();
 }
-
+function initSearchButton(){
+    var button = document.getElementById("search-button");
+    var input = document.getElementById("search-keyword");
+    button.onclick = function (){
+        if(input.value != ""){
+            router.navigate("search/" + input.value);
+        }
+        
+    }
+}
+ 
 function loadPage(pageName) {
     var currPage = document.getElementById("routing-component");
     switch (pageName) {
@@ -319,6 +338,9 @@ function loadPage(pageName) {
             break;
         case "user": currPage.innerHTML = templates.topBar + templates.user + templates.requestsModal + templates.commentModal;
             break;
+        case "search": currPage.innerHTML = templates.topBar + templates.search;
+            loadNavigation(pageName);
+            break;
     }
 }
 
@@ -333,10 +355,10 @@ export function initPostButtons() {
 function addPost(groupid) {
     var postContent = document.getElementById("post-content");
     if (postContent.value != "") {
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", API, true);
-    xhttp.onload = function () {
-        
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("GET", API, true);
+        xhttp.onload = function () {
+
             var index = posts.length;
             posts[index] = {
                 postId: index,
@@ -406,6 +428,7 @@ function openComments(currentPostId) {
                 console.log(comments[i]);
             }
         }
+        if(commentsListing == "") commentsListing = "no comments yet";
         commentHTML.innerHTML = commentsListing;
     }
     xhttp.send();
@@ -413,3 +436,21 @@ function openComments(currentPostId) {
     commentModal.style.display = "block";
 }
 
+function showSearchResults(keyword){
+    var results = document.getElementById('search-results');
+    var listing = "";
+    var parts = keyword.split("%20");
+    for(var i in users){   
+        var isResult = false;
+        for(var j in parts){
+            if(users[i].firstName.includes(parts[j]) || users[i].lastName.includes(parts[j]))isResult = true;
+        }
+        if (isResult) listing += tmp.getSearchResult(users[i].picture, (pageUrl + hash + "user/" + i), 
+            (users[i].firstName + " " + users[i].lastName), users[i].bio);
+    }
+    if(listing == ""){
+        results.innerHTML = "no results"; 
+    }else{
+        results.innerHTML = listing;
+    }
+}

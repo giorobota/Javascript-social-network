@@ -57,3 +57,10 @@ export function getSingleEvent(url, name, date, description){
             ${name}</a><div class="event-date"> ${date}</div></div><hr><div class="event-content">
                 ${description}</div></div>`;
 }
+export function getSearchResult(image, userUrl, name, bio){
+    return `<div class = "single-search-result">
+            <img src = "${image}">
+            <a href = "${userUrl}">${name}</a>
+            <h2>bio: ${bio}</h2>
+        </div>`;
+}

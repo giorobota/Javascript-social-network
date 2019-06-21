@@ -7,7 +7,7 @@ h2{
 .main-content{
     
     height: 100%;
-    background-color: pink;
+
 }
 .main-content .left-section{
     
@@ -17,7 +17,7 @@ h2{
     background-color: pink;
     
 }
-.main-content .left-section ul{
+.main-content .left-section ul{ 
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -29,13 +29,13 @@ h2{
     font-size: 20px;
     display: block;
     color: #000;
-    
+    height: 35px;
     text-decoration: none;
     width: 100%;
     border: none;
     background-color: transparent;
   
-}
+} 
 .main-content .left-section li button.active {
     background-color: rgb(139, 6, 33);
     color: white;
