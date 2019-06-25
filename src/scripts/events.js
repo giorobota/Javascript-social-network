@@ -44,10 +44,10 @@ export function openEvent(id, API, eventParticipants, users, userid, events, pag
                 ${users[eventParticipants[i].userid].firstName + " " + users[eventParticipants[i].userid].lastName}
                 </a>`;
                 if (eventParticipants[i].userid == userid) userGoing = true;
-            }
-        }
+            } 
+        } 
         participantsList.innerHTML = listing;
-
+  
         if (userGoing) {
             eventButton.disabled = false;
             eventButton.innerHTML = 'not going';

@@ -21,7 +21,7 @@ import { loadGroupPosts, loadGroupMembers } from './group.js';
 import { loadEvents, openEvent } from './events.js';
 import { loadAddFriend, loadBio, loadProfile, loadUserPosts } from './user.js';
 import * as tmp from './templates.js';
-
+ 
 var users = require("../data/users");
 var posts = require("../data/posts");
 var friends = require("../data/friends");
@@ -41,6 +41,7 @@ var activeEvent;
 var templates = {};
 var activePage;
 var viewingUser;
+
 const API = "http://twitter.com/";
 const hash = '#!';
 const pageUrl = "index.html";
@@ -184,12 +185,12 @@ function showPage(page) {
             initRequestsButton();
             break;
         case "welcome":
-            loadWelcomeButtons(router, users, friends, API, userid);
+            loadWelcomeButtons(router, users, friends, API);
             break;
         case "groups":
             loadTopPanel();
             loadGroups(groups, pageUrl, hash, API, groupMembers);
-            loadFriendRequests();
+            loadFriendRequests(); 
             initRequestsButton();
             break;
         case "group":

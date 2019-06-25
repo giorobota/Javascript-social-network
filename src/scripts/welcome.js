@@ -1,6 +1,6 @@
 
 
-export function loadWelcomeButtons(router, users, friends,API, userid) {
+export function loadWelcomeButtons(router, users, friends, API) {
     var passwordField = document.getElementById("password");
     var emailField = document.getElementById("email");
     var loginBtn = document.getElementById("login");
@@ -12,21 +12,21 @@ export function loadWelcomeButtons(router, users, friends,API, userid) {
             for (var user in users) {
                 if (users[user].email == emailField.value && users[user].password == passwordField.value) {
 
-                    userid = Number(user, 10);
+                    var userid = Number(user, 10);
                     localStorage.setItem("userid", userid);
                     router.navigate("home");
                     return;
                 }
             }
             loginMsg.innerHTML = "incorrect username or password";
-        };
+        }; 
         xhttp.send();
-
+ 
     });
     console.log("bla");
-    initRegistration(router, users, friends,API);
+    initRegistration(router, users, friends, API);
 }
-function initRegistration(router, users, friends,API, userid) {
+function initRegistration(router, users, friends, API) {
 
     var button = document.getElementById("signup");
     button.onclick = function () {
@@ -43,7 +43,7 @@ function initRegistration(router, users, friends,API, userid) {
             var xhttp = new XMLHttpRequest();
             xhttp.open("GET", API, true);
             xhttp.onload = function () {
-                if (emailInUse(email)) {
+                if (emailInUse(email, users)) {
                     document.getElementById("message-signup").innerHTML = "email is already in use";
                 } else {
                     users[index] = {
@@ -55,24 +55,28 @@ function initRegistration(router, users, friends,API, userid) {
                         email: email,
                         password: password
                     }
-                    userid = index;
-                    friends[friends.length] = {
+                    var userid = index;
+                    friends[index] = {
                         userid: userid,
                         friends: []
                     }
                     localStorage.setItem("userid", userid);
-                    router.navigate("home", false);
-
-                }
+                    router.navigate("home", false); 
+                    console.log("navigated");
+                } 
             }
             xhttp.send();
         }
     }
 }
-function emailInUse(email) {
+function emailInUse(email, users) {
     var inUse = false;
     for (var i in users) {
-        if (users[i].email == email) inUse = true;
+        if (users[i].email == email) {
+            inUse = true;
+        }
     }
     return inUse;
 }
+
+ 
