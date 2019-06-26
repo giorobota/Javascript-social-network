@@ -3,9 +3,9 @@
         display:none;
     }
     .timeline{
-     padding-left: 5%;
+     padding-left: 5% !important;
      height: 100%;
-     padding-right: 5%; 
+     padding-right: 5% !important; 
     }
     .left-section{
         width: 100% !important;
@@ -15,7 +15,7 @@
         width:65% !important;
     }
     .right-section{
-        width: 30% !important; 
+        width: 30% !important;  
     }
     .comments-modal-content{
         width: 85% !important;

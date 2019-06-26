@@ -21,7 +21,7 @@ import { loadGroupPosts, loadGroupMembers } from './group.js';
 import { loadEvents, openEvent } from './events.js';
 import { loadAddFriend, loadBio, loadProfile, loadUserPosts } from './user.js';
 import * as tmp from './templates.js';
- 
+
 var users = require("../data/users");
 var posts = require("../data/posts");
 var friends = require("../data/friends");
@@ -57,14 +57,14 @@ function initRouter() {
             showPage("welcome");
         },
         'home': function () {
-            userid = localStorage.getItem("userid");
+            userid = Number(localStorage.getItem("userid"));
             if (activePage != 'home') {
                 activePage = 'home';
                 showPage("home");
             }
         },
         'home/story/:id': function (params) {
-            userid = localStorage.getItem("userid");
+            userid = Number(localStorage.getItem("userid"));
             if (activePage != 'home') {
                 showPage("home");
                 activePage = "home";
@@ -72,7 +72,7 @@ function initRouter() {
             openStory(params.id, stories, API);
         },
         'home/post/:id': function (params) {
-            userid = localStorage.getItem("userid");
+            userid = Number(localStorage.getItem("userid"));
             if (activePage != 'home') {
                 showPage("home");
                 activePage = "home";
@@ -80,12 +80,12 @@ function initRouter() {
             openComments(params.id);
         },
         'groups': function () {
-            userid = localStorage.getItem("userid");
+            userid = Number(localStorage.getItem("userid"));
             activePage = "groups";
             showPage("groups");
         },
         'group/:groupid/post/:postid': function (params) {
-            userid = localStorage.getItem("userid");
+            userid = Number(localStorage.getItem("userid"));
             groupid = params.groupid;
             if (activePage != 'group/' + groupid) {
                 activePage = 'group/' + groupid;
@@ -96,7 +96,7 @@ function initRouter() {
 
         },
         'group/:groupid': function (params) {
-            userid = localStorage.getItem("userid");
+            userid = Number(localStorage.getItem("userid"));
             groupid = params.groupid;
             if (activePage != 'group/' + groupid) {
 
@@ -105,7 +105,7 @@ function initRouter() {
             }
         },
         'events': function (params) {
-            userid = localStorage.getItem("userid");
+            userid = Number(localStorage.getItem("userid"));
             if (activePage != 'events') {
                 activePage = "events";
                 showPage('events');
@@ -113,7 +113,7 @@ function initRouter() {
 
         },
         'events/:id': function (params) {
-            userid = localStorage.getItem("userid");
+            userid = Number(localStorage.getItem("userid"));
             if (activePage != 'events') {
                 activePage = "events";
                 showPage('events');
@@ -122,7 +122,7 @@ function initRouter() {
         },
         'user/:id': function (params) {
             viewingUser = params.id;
-            userid = localStorage.getItem("userid");
+            userid = Number(localStorage.getItem("userid"));
             if (activePage != 'user/' + params.id) {
                 activePage = "user/" + params.id;
                 showPage('user');
@@ -131,7 +131,7 @@ function initRouter() {
         'user/:id/post/:postid': function (params) {
             viewingUser = params.id;
 
-            userid = localStorage.getItem("userid");
+            userid = Number(localStorage.getItem("userid"));
             if (activePage != 'user/' + params.id) {
                 activePage = "user/" + params.id;
                 showPage('user');
@@ -139,7 +139,7 @@ function initRouter() {
             openComments(params.postid);
         },
         'search/:keyword': function (params) {
-            userid = localStorage.getItem("userid");
+            userid = Number(localStorage.getItem("userid"));
             showPage("search");
             showSearchResults(params.keyword, users);
 
@@ -190,7 +190,7 @@ function showPage(page) {
         case "groups":
             loadTopPanel();
             loadGroups(groups, pageUrl, hash, API, groupMembers);
-            loadFriendRequests(); 
+            loadFriendRequests();
             initRequestsButton();
             break;
         case "group":
@@ -207,7 +207,6 @@ function showPage(page) {
             loadEvents(API, eventParticipants, users, userid, events, pageUrl, hash);
             break;
         case "user":
-            loadPage(page);
             loadTopPanel();
             loadFriendRequests();
             loadUserPosts(API, pageUrl, hash, router, posts, viewingUser, users, groups);
@@ -365,7 +364,7 @@ function addPost(groupid) {
                 postId: index,
                 userId: Number(userid),
                 groupId: groupid,
-                content: postContent.value, 
+                content: postContent.value,
                 date: getDateNow()
             }
             postContent.value = "";
@@ -387,7 +386,7 @@ function addComment() {
                 userid: Number(userid),
                 content: commentContent.value,
                 date: getDateNow()
-            } 
+            }
             commentContent.value = "";
             console.log(comments[index]);
             openComments(activePost);
