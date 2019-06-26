@@ -363,9 +363,9 @@ function addPost(groupid) {
             var index = posts.length;
             posts[index] = {
                 postId: index,
-                userId: userid,
+                userId: Number(userid),
                 groupId: groupid,
-                content: postContent.value,
+                content: postContent.value, 
                 date: getDateNow()
             }
             postContent.value = "";
@@ -384,10 +384,10 @@ function addComment() {
             var index = comments.length;
             comments[index] = {
                 postid: Number(activePost),
-                userid: userid,
+                userid: Number(userid),
                 content: commentContent.value,
                 date: getDateNow()
-            }
+            } 
             commentContent.value = "";
             console.log(comments[index]);
             openComments(activePost);
