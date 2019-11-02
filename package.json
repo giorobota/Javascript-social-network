@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "babel": "^6.23.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "navigo": "^7.1.2"
   }
 }
