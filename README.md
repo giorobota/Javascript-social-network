@@ -8,5 +8,5 @@ https://webpack.js.org/
 how to run:
 
 >npm run start:dev
-go to localhost:8080/dist from browser
+>localhost:8080/dist from browser
 
