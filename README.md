@@ -10,7 +10,8 @@ https://webpack.js.org/
 how to run:
 
 >npm run start
->localhost:8080/dist from browser
+
+ go to localhost:8080/dist from browser
 
 
 register new user or use default user profiles:
