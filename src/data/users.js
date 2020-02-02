@@ -12,7 +12,7 @@ var users = [
         id: 1,
         firstName: "Johnathan",
         lastName: "Smith",
-        picture: "https://www.eharmony.co.uk/dating-advice/wp-content/uploads/2018/06/datingprofile2-900x600.jpg",
+        picture: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
         bio: "If You Can't Handle Me at My worst, You Don't Deserve Me at My best",
         email: "jsmith@gmail.com",
         password: "1234"
@@ -25,7 +25,7 @@ var users = [
         bio: "money over bitchez",
         email: "1234@gmail.com",
         password: "1234"
-    },
+    }
 
 ]
 module.exports = users;

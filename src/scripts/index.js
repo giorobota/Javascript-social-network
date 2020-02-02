@@ -42,7 +42,7 @@ var templates = {};
 var activePage;
 var viewingUser;
 
-const API = "http://twitter.com/";
+const API = "";
 const hash = '#!';
 const pageUrl = "index.html";
 
